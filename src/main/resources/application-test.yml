@@ -1,0 +1,9 @@
+oauth:
+  google:
+    auth_uri: https://accounts.google.com/o/oauth2/v2/auth
+    client_id: google-client-id
+    client_secret: google-client-secret
+    grant_type: authorization_code
+    redirect_uri: http://localhost:8080/google/sign-in
+    token_url: https://oauth2.googleapis.com/token
+    scopes: openid,profile,email
