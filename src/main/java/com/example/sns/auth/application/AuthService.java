@@ -8,6 +8,9 @@ import java.net.URI;
 public class AuthService {
 
     public URI getRedirectURI() {
+    public URI getAuthRedirectURI() {
+        return client.getAuthRedirectURI();
+    }
         return null;
     }
 }

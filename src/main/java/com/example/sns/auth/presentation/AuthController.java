@@ -21,7 +21,7 @@ public class AuthController {
 
     @GetMapping("/redirect")
     public ResponseEntity<Void> redirectToProvider() {
-        URI redirectURI = authService.getRedirectURI();
+        URI redirectURI = authService.getAuthRedirectURI();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(redirectURI);
