@@ -1,17 +1,16 @@
 package com.example.sns.auth.infrastructure;
 
+import com.example.sns.auth.application.dto.OAuthUserInfoDto;
 import com.example.sns.auth.config.AuthProperties;
 import com.example.sns.auth.presentation.dto.TokenResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Answers;
-import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -19,7 +18,7 @@ import java.net.URI;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -38,6 +37,7 @@ class GoogleClientTest {
     String redirectURI;
     String authURI;
     String tokenURI;
+    String grantType;
     List<String> scopes;
 
     @BeforeEach
@@ -47,10 +47,11 @@ class GoogleClientTest {
         clientId = "client-id";
         clientSecret = "client-secret";
         tokenURI = "https://oauth2.googleapis.com/token";
+        grantType = "authorization_code";
         scopes = List.of("openid", "profile", "email");
-        properties = new AuthProperties(redirectURI, authURI, clientId, clientSecret, tokenURI, scopes);
+        properties = new AuthProperties(redirectURI, authURI, clientId, clientSecret, tokenURI, grantType, scopes);
         webClient = mock(WebClient.class, Answers.RETURNS_DEEP_STUBS);
-        client = new GoogleClient(properties, webClient);
+        client = new GoogleClient(properties, webClient, new ObjectMapper());
     }
 
     @Test
@@ -93,5 +94,28 @@ class GoogleClientTest {
 
         //then
         assertThat(idToken).isEqualTo(expect);
+    }
+
+    @Test
+    @DisplayName("id token에서 유저 정보 가져와야 함")
+    void getUserInfoDto() throws Exception {
+        //given
+        String idToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Iuq5gOynhO2YuCIsImVtYWlsIjoidGVzdEB0ZXN0LnRlc3QiLCJwaWN0dXJlIjoiaHR0cDovL2ltYWdldXJsLnRlc3QiLCJpYXQiOjE1MTYyMzkwMjJ9.UNDTgoj1GKEy0XrY_RkfyHUtxJE6ha4yd84IED_xC6c";
+        String socialId = "1234567890";
+        String name = "김진호";
+        String email = "test@test.test";
+        String picture = "http://imageurl.test";
+
+        //when
+        OAuthUserInfoDto userInfo = client.getUserInfo(idToken);
+
+        //then
+        assertSoftly(softAssertions -> {
+                softAssertions.assertThat(userInfo.getSocialId()).isEqualTo(socialId);
+                softAssertions.assertThat(userInfo.getName()).isEqualTo(name);
+                softAssertions.assertThat(userInfo.getEmail()).isEqualTo(email);
+                softAssertions.assertThat(userInfo.getImageUrl()).isEqualTo(picture);
+            }
+        );
     }
 }
