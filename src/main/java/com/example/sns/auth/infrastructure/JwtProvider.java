@@ -25,7 +25,7 @@ public class JwtProvider {
     public JwtProvider(
             @Value("${jwt.token.secret-key}") String key,
             @Value("${jwt.token.expired}") long expireMillSecond,
-            @Value("${jwt.issuer}") String issuer) {
+            @Value("${jwt.token.issuer}") String issuer) {
         this.key = Keys.hmacShaKeyFor(key.getBytes(StandardCharsets.UTF_8));
         this.expireMillSecond = expireMillSecond;
         this.issuer = issuer;
