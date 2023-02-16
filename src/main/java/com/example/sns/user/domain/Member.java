@@ -15,7 +15,7 @@ import javax.persistence.Id;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User extends BaseTimeEntity {
+public class Member extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,14 +30,14 @@ public class User extends BaseTimeEntity {
 
     private String biography;
 
-    private User(String socialId, String userName, String nickName, String email) {
+    private Member(String socialId, String userName, String nickName, String email) {
         this.socialId = socialId;
         this.info = new UserInfo(userName, nickName, email);
     }
 
-    public static User createUserFrom(OAuthUserInfoDto userInfo) {
+    public static Member createUserFrom(OAuthUserInfoDto userInfo) {
         String nickName = getNickNameFromEmail(userInfo);
-        return new User(userInfo.getSocialId(), userInfo.getName(), nickName, userInfo.getEmail());
+        return new Member(userInfo.getSocialId(), userInfo.getName(), nickName, userInfo.getEmail());
     }
 
     private static String getNickNameFromEmail(OAuthUserInfoDto userInfo) {

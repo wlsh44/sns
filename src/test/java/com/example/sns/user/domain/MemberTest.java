@@ -8,12 +8,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
-class UserTest {
+class MemberTest {
 
     @Test
     void createUserFromInfo() throws Exception {
@@ -27,14 +26,14 @@ class UserTest {
         given(userInfoDto.getName()).willReturn(userName);
 
         //when
-        User user = User.createUserFrom(userInfoDto);
+        Member member = Member.createUserFrom(userInfoDto);
 
         //then
         assertSoftly(softAssertions -> {
-            softAssertions.assertThat(user.getInfo().getUserName()).isEqualTo(userName);
-            softAssertions.assertThat(user.getInfo().getEmail()).isEqualTo(email);
-            softAssertions.assertThat(user.getInfo().getNickName()).isEqualTo("nickname");
-            softAssertions.assertThat(user.getSocialId()).isEqualTo(socialId);
+            softAssertions.assertThat(member.getInfo().getUserName()).isEqualTo(userName);
+            softAssertions.assertThat(member.getInfo().getEmail()).isEqualTo(email);
+            softAssertions.assertThat(member.getInfo().getNickName()).isEqualTo("nickname");
+            softAssertions.assertThat(member.getSocialId()).isEqualTo(socialId);
         });
     }
 }
