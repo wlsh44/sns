@@ -20,11 +20,12 @@ public class User extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String socialId;
+
     @Embedded
     private UserInfo info;
 
-    @Embedded
-    private Profile profile;
+    private String profileUrl;
 
     private String biography;
 }

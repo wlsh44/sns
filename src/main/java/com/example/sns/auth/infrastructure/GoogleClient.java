@@ -3,7 +3,7 @@ package com.example.sns.auth.infrastructure;
 import com.example.sns.auth.application.dto.OAuthUserInfoDto;
 import com.example.sns.auth.config.AuthProperties;
 import com.example.sns.auth.exception.OAuthException;
-import com.example.sns.auth.presentation.dto.TokenResponse;
+import com.example.sns.auth.infrastructure.dto.GoogleAuthResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -51,14 +51,14 @@ public class GoogleClient {
 
     public String getIdToken(String code) {
         try {
-            TokenResponse tokenResponse = oauthProvider.post()
+            GoogleAuthResponse googleAuthResponse = oauthProvider.post()
                     .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                     .bodyValue(getTokenUriFormData(code))
                     .retrieve()
-                    .bodyToMono(TokenResponse.class)
+                    .bodyToMono(GoogleAuthResponse.class)
                     .block();
 
-            return tokenResponse.getIdToken();
+            return googleAuthResponse.getIdToken();
         } catch (Exception e) {
             throw new OAuthException();
         }

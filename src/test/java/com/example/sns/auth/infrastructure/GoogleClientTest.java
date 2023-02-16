@@ -2,7 +2,7 @@ package com.example.sns.auth.infrastructure;
 
 import com.example.sns.auth.application.dto.OAuthUserInfoDto;
 import com.example.sns.auth.config.AuthProperties;
-import com.example.sns.auth.presentation.dto.TokenResponse;
+import com.example.sns.auth.infrastructure.dto.GoogleAuthResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -78,12 +78,12 @@ class GoogleClientTest {
         //given
         String authenticationCode = "code";
         String expect = "idToken";
-        TokenResponse response = mock(TokenResponse.class);
+        GoogleAuthResponse response = mock(GoogleAuthResponse.class);
         given(webClient.post()
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .bodyValue(any())
                 .retrieve()
-                .bodyToMono(TokenResponse.class)
+                .bodyToMono(GoogleAuthResponse.class)
                 .block())
                 .willReturn(response);
         given(response.getIdToken())
@@ -104,7 +104,6 @@ class GoogleClientTest {
         String socialId = "1234567890";
         String name = "김진호";
         String email = "test@test.test";
-        String picture = "http://imageurl.test";
 
         //when
         OAuthUserInfoDto userInfo = client.getUserInfo(idToken);
@@ -114,7 +113,6 @@ class GoogleClientTest {
                 softAssertions.assertThat(userInfo.getSocialId()).isEqualTo(socialId);
                 softAssertions.assertThat(userInfo.getName()).isEqualTo(name);
                 softAssertions.assertThat(userInfo.getEmail()).isEqualTo(email);
-                softAssertions.assertThat(userInfo.getImageUrl()).isEqualTo(picture);
             }
         );
     }

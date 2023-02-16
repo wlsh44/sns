@@ -11,9 +11,6 @@ public class OAuthUserInfoDto {
     private String name;
     private String email;
 
-    @JsonProperty("picture")
-    private String imageUrl;
-
     @JsonProperty("sub")
     private String socialId;
 }
