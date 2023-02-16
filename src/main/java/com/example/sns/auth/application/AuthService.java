@@ -4,8 +4,8 @@ import com.example.sns.auth.application.dto.OAuthUserInfoDto;
 import com.example.sns.auth.infrastructure.GoogleClient;
 import com.example.sns.auth.infrastructure.JwtProvider;
 import com.example.sns.auth.presentation.dto.TokenResponse;
-import com.example.sns.user.domain.Member;
-import com.example.sns.user.infrastructure.UserRepository;
+import com.example.sns.member.domain.Member;
+import com.example.sns.member.infrastructure.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     private final GoogleClient client;
     private final JwtProvider jwtProvider;
 
@@ -25,7 +25,7 @@ public class AuthService {
 
     public TokenResponse signIn(String code) {
         OAuthUserInfoDto userInfo = getUserInfo(code);
-        Member member = userRepository.findBySocialId(userInfo.getSocialId())
+        Member member = memberRepository.findBySocialId(userInfo.getSocialId())
                 .orElseGet(() -> signUp(userInfo));
         String token = jwtProvider.createToken(member.getId());
 
@@ -39,6 +39,6 @@ public class AuthService {
 
     private Member signUp(OAuthUserInfoDto userInfo) {
         Member member = Member.createUserFrom(userInfo);
-        return userRepository.save(member);
+        return memberRepository.save(member);
     }
 }

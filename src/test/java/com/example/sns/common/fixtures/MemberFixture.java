@@ -1,7 +1,7 @@
 package com.example.sns.common.fixtures;
 
 import com.example.sns.auth.application.dto.OAuthUserInfoDto;
-import com.example.sns.user.domain.Member;
+import com.example.sns.member.domain.Member;
 
 public class MemberFixture {
 

@@ -29,10 +29,10 @@ class JwtProviderTest {
         String token = provider.createToken(1L);
 
         //when
-        Long userId = provider.parseUserId(token);
+        Long memberId = provider.parseMemberId(token);
 
         //then
-        assertThat(userId).isEqualTo(1L);
+        assertThat(memberId).isEqualTo(1L);
     }
 
     @Test
@@ -43,7 +43,7 @@ class JwtProviderTest {
         String token = provider.createToken(1L);
 
         //when then
-        assertThatThrownBy(() -> provider.parseUserId(token))
+        assertThatThrownBy(() -> provider.parseMemberId(token))
                 .isInstanceOf(ExpiredTokenException.class);
     }
 
@@ -54,7 +54,7 @@ class JwtProviderTest {
         String token = "token token";
 
         //when then
-        assertThatThrownBy(() -> provider.parseUserId(token))
+        assertThatThrownBy(() -> provider.parseMemberId(token))
                 .isInstanceOf(InvalidTokenException.class);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.sns.user.domain;
+package com.example.sns.member.domain;
 
 import com.example.sns.auth.application.dto.OAuthUserInfoDto;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,6 @@ import static com.example.sns.common.fixtures.MemberFixture.BASIC_SOCIAL_ID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)

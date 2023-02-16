@@ -1,4 +1,4 @@
-package com.example.sns.user.domain;
+package com.example.sns.member.domain;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

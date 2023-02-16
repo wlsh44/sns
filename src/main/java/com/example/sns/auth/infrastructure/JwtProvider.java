@@ -44,7 +44,7 @@ public class JwtProvider {
                 .compact();
     }
 
-    public Long parseUserId(String token) {
+    public Long parseMemberId(String token) {
         try {
             JwtParser parser = Jwts.parserBuilder()
                     .requireIssuer(issuer)

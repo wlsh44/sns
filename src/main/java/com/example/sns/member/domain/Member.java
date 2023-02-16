@@ -1,4 +1,4 @@
-package com.example.sns.user.domain;
+package com.example.sns.member.domain;
 
 import com.example.sns.auth.application.dto.OAuthUserInfoDto;
 import com.example.sns.common.entity.BaseTimeEntity;
