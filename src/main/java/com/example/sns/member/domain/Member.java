@@ -24,7 +24,7 @@ public class Member extends BaseTimeEntity {
     private String socialId;
 
     @Embedded
-    private UserInfo info;
+    private MemberInfo info;
 
     private String profileUrl;
 
@@ -32,7 +32,7 @@ public class Member extends BaseTimeEntity {
 
     private Member(String socialId, String userName, String nickName, String email) {
         this.socialId = socialId;
-        this.info = new UserInfo(userName, nickName, email);
+        this.info = new MemberInfo(userName, nickName, email);
     }
 
     public static Member createUserFrom(OAuthUserInfoDto userInfo) {

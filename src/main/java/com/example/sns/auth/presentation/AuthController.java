@@ -1,7 +1,6 @@
 package com.example.sns.auth.presentation;
 
 import com.example.sns.auth.application.AuthService;
-import com.example.sns.auth.infrastructure.dto.GoogleAuthResponse;
 import com.example.sns.auth.presentation.dto.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;

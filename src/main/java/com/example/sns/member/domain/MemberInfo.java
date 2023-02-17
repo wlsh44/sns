@@ -11,9 +11,9 @@ import javax.persistence.Embeddable;
 @Embeddable
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserInfo {
+public class MemberInfo {
 
-    private String userName;
+    private String name;
 
     private String nickName;
 
