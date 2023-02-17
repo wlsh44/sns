@@ -2,6 +2,7 @@ package com.example.sns.auth.infrastructure;
 
 import com.example.sns.auth.application.dto.OAuthUserInfoDto;
 import com.example.sns.auth.config.AuthProperties;
+import com.example.sns.auth.exception.AuthException;
 import com.example.sns.auth.exception.OAuthException;
 import com.example.sns.auth.infrastructure.dto.GoogleAuthResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -59,6 +60,8 @@ public class GoogleClient {
                     .block();
 
             return googleAuthResponse.getIdToken();
+        } catch (NullPointerException e) {
+            throw new AuthException();
         } catch (Exception e) {
             throw new OAuthException();
         }
@@ -81,7 +84,7 @@ public class GoogleClient {
         try {
             return objectMapper.readValue(decode, OAuthUserInfoDto.class);
         } catch (JsonProcessingException e) {
-            throw new OAuthException();
+            throw new AuthException();
         }
     }
 
