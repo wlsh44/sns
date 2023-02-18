@@ -1,19 +1,18 @@
 package com.example.sns.auth.exception;
 
-import lombok.AllArgsConstructor;
+import com.example.sns.common.exception.SnsException;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-@AllArgsConstructor
-public class AuthException extends RuntimeException {
+public class AuthException extends SnsException {
     public static final String ERROR_MSG = "예상하지 못한 인증 에러입니다.";
 
-    private final String errorMsg;
-    private final HttpStatus status;
+    public AuthException(String errorMsg, HttpStatus status) {
+        super(errorMsg, status);
+    }
 
     public AuthException() {
-        this.errorMsg = ERROR_MSG;
-        this.status = HttpStatus.INTERNAL_SERVER_ERROR;
+        super(ERROR_MSG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

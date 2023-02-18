@@ -18,4 +18,12 @@ public class SnsControllerAdvice {
                 .status(e.getStatus())
                 .body(new ErrorResponse(e.getErrorMsg()));
     }
+
+    @ExceptionHandler(SnsException.class)
+    public ResponseEntity<ErrorResponse> snsException(SnsException e) {
+        log.error("e.getErrorMsg() = {}", e.getErrorMsg());
+        return ResponseEntity
+                .status(e.getStatus())
+                .body(new ErrorResponse(e.getErrorMsg()));
+    }
 }
