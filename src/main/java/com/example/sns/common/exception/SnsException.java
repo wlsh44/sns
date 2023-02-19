@@ -10,9 +10,17 @@ public class SnsException extends RuntimeException {
 
     private final String errorMsg;
     private final HttpStatus status;
+    private final Throwable throwable;
 
     public SnsException(String errorMsg, HttpStatus status) {
         this.errorMsg = errorMsg;
         this.status = status;
+        this.throwable = null;
+    }
+
+    public SnsException(String errorMsg, Throwable throwable) {
+        this.errorMsg = errorMsg;
+        this.status = HttpStatus.INTERNAL_SERVER_ERROR;
+        this.throwable = throwable;
     }
 }

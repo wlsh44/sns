@@ -22,6 +22,7 @@ public class SnsControllerAdvice {
     @ExceptionHandler(SnsException.class)
     public ResponseEntity<ErrorResponse> snsException(SnsException e) {
         log.error("e.getErrorMsg() = {}", e.getErrorMsg());
+        log.error("e.getThrowable().getMessage() = {}", e.getThrowable().getMessage());
         return ResponseEntity
                 .status(e.getStatus())
                 .body(new ErrorResponse(e.getErrorMsg()));
