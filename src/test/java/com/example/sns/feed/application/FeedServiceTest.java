@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -25,8 +24,6 @@ import static com.example.sns.common.fixtures.FeedFixture.FEED_IMAGE_PATH1;
 import static com.example.sns.common.fixtures.FeedFixture.FEED_IMAGE_PATH2;
 import static com.example.sns.common.fixtures.FeedFixture.getBasicFeedImages;
 import static com.example.sns.common.fixtures.FeedFixture.getBasicUploadRequest;
-import static com.example.sns.common.fixtures.ImageStoreFixture.BASIC_FEED_IMAGE1;
-import static com.example.sns.common.fixtures.ImageStoreFixture.BASIC_FEED_IMAGE2;
 import static com.example.sns.common.fixtures.MemberFixture.getBasicMember;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
