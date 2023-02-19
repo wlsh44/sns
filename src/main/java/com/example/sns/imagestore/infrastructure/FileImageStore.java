@@ -2,7 +2,6 @@ package com.example.sns.imagestore.infrastructure;
 
 import com.example.sns.imagestore.exception.ImageEmptyException;
 import com.example.sns.imagestore.exception.ImageStoreException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,7 +50,9 @@ public class FileImageStore implements ImageStore {
         feedImages.stream()
                 .filter(MultipartFile::isEmpty)
                 .findAny()
-                .orElseThrow(ImageEmptyException::new);
+                .ifPresent(multipartFile -> {
+                    throw new ImageEmptyException();
+                });
     }
 
     private String storeImage(MultipartFile feedImage, String feedStorePath) {
