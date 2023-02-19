@@ -5,7 +5,7 @@ import com.example.sns.auth.infrastructure.JwtProvider;
 import com.example.sns.auth.presentation.dto.TokenResponse;
 import com.example.sns.common.fixtures.MemberFixture;
 import com.example.sns.member.domain.Member;
-import com.example.sns.member.infrastructure.MemberRepository;
+import com.example.sns.member.domain.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

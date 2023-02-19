@@ -8,7 +8,7 @@ import com.example.sns.feed.domain.FeedRepository;
 import com.example.sns.imagestore.infrastructure.ImageStore;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.exception.MemberNotFoundException;
-import com.example.sns.member.infrastructure.MemberRepository;
+import com.example.sns.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

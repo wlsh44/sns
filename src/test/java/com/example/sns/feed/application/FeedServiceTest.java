@@ -8,7 +8,7 @@ import com.example.sns.imagestore.exception.ImageStoreException;
 import com.example.sns.imagestore.infrastructure.ImageStore;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.exception.MemberNotFoundException;
-import com.example.sns.member.infrastructure.MemberRepository;
+import com.example.sns.member.domain.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,6 @@ import static com.example.sns.common.fixtures.MemberFixture.getBasicMember;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 

@@ -5,7 +5,7 @@ import com.example.sns.auth.infrastructure.GoogleClient;
 import com.example.sns.auth.infrastructure.JwtProvider;
 import com.example.sns.auth.presentation.dto.TokenResponse;
 import com.example.sns.member.domain.Member;
-import com.example.sns.member.infrastructure.MemberRepository;
+import com.example.sns.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

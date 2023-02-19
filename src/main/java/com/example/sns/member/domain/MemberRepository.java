@@ -1,4 +1,4 @@
-package com.example.sns.member.infrastructure;
+package com.example.sns.member.domain;
 
 import com.example.sns.member.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
