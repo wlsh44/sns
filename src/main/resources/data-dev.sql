@@ -1,1 +1,0 @@
-insert into MEMBER values (1, null, null, null, 'test@test.test', 'devName', 'devNickname', null, 1);
