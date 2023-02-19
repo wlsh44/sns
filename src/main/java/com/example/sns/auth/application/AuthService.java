@@ -5,9 +5,10 @@ import com.example.sns.auth.infrastructure.GoogleClient;
 import com.example.sns.auth.infrastructure.JwtProvider;
 import com.example.sns.auth.presentation.dto.TokenResponse;
 import com.example.sns.member.domain.Member;
-import com.example.sns.member.infrastructure.MemberRepository;
+import com.example.sns.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URI;
 
@@ -23,6 +24,7 @@ public class AuthService {
         return client.getAuthRedirectURI();
     }
 
+    @Transactional(readOnly = true)
     public TokenResponse signIn(String code) {
         OAuthUserInfoDto userInfo = getUserInfo(code);
         Member member = memberRepository.findBySocialId(userInfo.getSocialId())
@@ -37,7 +39,8 @@ public class AuthService {
         return client.getUserInfo(idToken);
     }
 
-    private Member signUp(OAuthUserInfoDto userInfo) {
+    @Transactional
+    public Member signUp(OAuthUserInfoDto userInfo) {
         Member member = Member.createUserFrom(userInfo);
         return memberRepository.save(member);
     }

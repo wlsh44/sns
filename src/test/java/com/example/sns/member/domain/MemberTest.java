@@ -27,7 +27,7 @@ class MemberTest {
 
         //then
         assertSoftly(softAssertions -> {
-            softAssertions.assertThat(member.getInfo().getUserName()).isEqualTo(BASIC_NAME);
+            softAssertions.assertThat(member.getInfo().getName()).isEqualTo(BASIC_NAME);
             softAssertions.assertThat(member.getInfo().getEmail()).isEqualTo(BASIC_EMAIL);
             softAssertions.assertThat(member.getInfo().getNickName()).isEqualTo(BASIC_NICKNAME);
             softAssertions.assertThat(member.getSocialId()).isEqualTo(BASIC_SOCIAL_ID);
