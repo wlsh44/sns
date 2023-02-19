@@ -26,6 +26,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
+@Transactional
 @SpringBootTest
 class AuthServiceTest {
 
@@ -42,7 +43,6 @@ class AuthServiceTest {
     MemberRepository memberRepository;
 
     @Test
-    @Transactional
     @DisplayName("유저 처음 로그인 시 db에 저장")
     void signIn_userNotExist() throws Exception {
         //given
