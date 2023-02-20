@@ -1,10 +1,12 @@
 package com.example.sns.feed.application;
 
+import com.example.sns.feed.application.dto.FeedUpdateRequest;
 import com.example.sns.feed.application.dto.FeedUploadRequest;
 import com.example.sns.feed.domain.Feed;
 import com.example.sns.feed.domain.FeedImage;
 import com.example.sns.feed.domain.FeedImageRepository;
 import com.example.sns.feed.domain.FeedRepository;
+import com.example.sns.feed.exception.FeedNotFoundException;
 import com.example.sns.imagestore.infrastructure.ImageStore;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.exception.MemberNotFoundException;
@@ -32,8 +34,7 @@ public class FeedService {
         Member member = getMember(memberId);
         Feed feed = saveFeed(request, member);
 
-        List<String> imagePaths = imageStore.storeFeedImages(images);
-        List<FeedImage> feedImages = saveFeedImages(feed, imagePaths);
+        List<FeedImage> feedImages = saveFeedImages(images, feed);
 
         feed.updateFeedImage(feedImages);
     }
@@ -43,11 +44,21 @@ public class FeedService {
         return feedRepository.save(newFeed);
     }
 
-    private List<FeedImage> saveFeedImages(Feed feed, List<String> imagePaths) {
+    private List<FeedImage> saveFeedImages(List<MultipartFile> images, Feed feed) {
+        List<String> imagePaths = imageStore.storeFeedImages(images);
         return imagePaths.stream()
                 .map(imagePath -> new FeedImage(imagePath, feed))
                 .map(feedImageRepository::save)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void updateFeed(Long memberId, Long feedId, FeedUpdateRequest request, List<MultipartFile> images) {
+        Feed feed = feedRepository.findByIdAndMemberId(feedId, memberId)
+                .orElseThrow(() -> new FeedNotFoundException(feedId));
+
+        List<FeedImage> feedImages = saveFeedImages(images, feed);
+        feed.editFeed(request.getContent(), feedImages);
     }
 
     private Member getMember(Long memberId) {

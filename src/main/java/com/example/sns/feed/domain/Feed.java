@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -31,7 +32,7 @@ public class Feed {
     private Member member;
 
     @OneToMany(mappedBy = "feed")
-    private List<FeedImage> images;
+    private List<FeedImage> images = new ArrayList<>();
 
     public Feed(Member member, String content) {
         this.content = content;
@@ -45,4 +46,10 @@ public class Feed {
     public void updateFeedImage(List<FeedImage> feedImages) {
         this.images = feedImages;
     }
+
+    public void editFeed(String content, List<FeedImage> feedImages) {
+        this.content = content;
+        this.images = feedImages;
+    }
+
 }
