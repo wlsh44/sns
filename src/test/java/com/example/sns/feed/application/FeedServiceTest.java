@@ -1,9 +1,11 @@
 package com.example.sns.feed.application;
 
+import com.example.sns.feed.application.dto.FeedUpdateRequest;
 import com.example.sns.feed.domain.Feed;
 import com.example.sns.feed.domain.FeedImage;
 import com.example.sns.feed.domain.FeedImageRepository;
 import com.example.sns.feed.domain.FeedRepository;
+import com.example.sns.feed.exception.FeedNotFoundException;
 import com.example.sns.imagestore.exception.ImageStoreException;
 import com.example.sns.imagestore.infrastructure.ImageStore;
 import com.example.sns.member.domain.Member;
@@ -20,9 +22,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static com.example.sns.common.fixtures.FeedFixture.BASIC_FEED_CONTENT;
+import static com.example.sns.common.fixtures.FeedFixture.BASIC_FEED_IMAGE2;
+import static com.example.sns.common.fixtures.FeedFixture.EDIT_FEED_CONTENT;
 import static com.example.sns.common.fixtures.FeedFixture.FEED_IMAGE_PATH1;
 import static com.example.sns.common.fixtures.FeedFixture.FEED_IMAGE_PATH2;
 import static com.example.sns.common.fixtures.FeedFixture.getBasicFeedImages;
+import static com.example.sns.common.fixtures.FeedFixture.getBasicUpdateRequest;
 import static com.example.sns.common.fixtures.FeedFixture.getBasicUploadRequest;
 import static com.example.sns.common.fixtures.MemberFixture.getBasicMember;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -103,5 +108,31 @@ class FeedServiceTest {
         //when then
         assertThatThrownBy(() -> feedService.uploadFeed(member.getId(), getBasicUploadRequest(), getBasicFeedImages()))
                 .isInstanceOf(ImageStoreException.class);
+    }
+
+    @Test
+    void editFeed() throws Exception {
+        //given
+        Feed feed = feedRepository.save(new Feed(member, BASIC_FEED_CONTENT));
+        feed.updateFeedImage(List.of(new FeedImage(FEED_IMAGE_PATH1, feed)));
+        given(imageStore.storeFeedImages(any()))
+                .willReturn(List.of(FEED_IMAGE_PATH2));
+
+        //when
+        feedService.updateFeed(member.getId(), feed.getId(), getBasicUpdateRequest(), List.of(BASIC_FEED_IMAGE2));
+
+        //then
+        assertThat(feed.getImages().get(0).getImagePath()).isEqualTo(FEED_IMAGE_PATH2);
+        assertThat(feed.getContent()).isEqualTo(EDIT_FEED_CONTENT);
+    }
+
+    @Test
+    void editFeed_feedNotFound() throws Exception {
+        //given
+        Long notExistFeedId = 1L;
+
+        //when then
+        assertThatThrownBy(() -> feedService.updateFeed(member.getId(), notExistFeedId, getBasicUpdateRequest(), List.of(BASIC_FEED_IMAGE2)))
+            .isInstanceOf(FeedNotFoundException.class);
     }
 }

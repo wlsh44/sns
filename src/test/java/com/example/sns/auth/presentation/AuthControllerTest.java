@@ -1,47 +1,24 @@
 package com.example.sns.auth.presentation;
 
-import com.example.sns.auth.application.AuthService;
 import com.example.sns.auth.exception.OAuthException;
 import com.example.sns.auth.presentation.dto.TokenResponse;
+import com.example.sns.common.controller.MockControllerTest;
 import com.example.sns.common.exception.dto.ErrorResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.StatusResultMatchersExtensionsKt.isEqualTo;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-class AuthControllerTest {
-
-    @Autowired
-    MockMvc mockMvc;
-
-    @MockBean
-    AuthService authService;
-
-    @Autowired
-    ObjectMapper mapper;
+class AuthControllerTest extends MockControllerTest {
 
     @Test
     @DisplayName("OAuth 인증 화면으로 리다이렉트 해야 함")
