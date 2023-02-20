@@ -4,6 +4,7 @@ import com.example.sns.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Entity
@@ -40,7 +42,7 @@ public class Feed {
     }
 
     public static Feed createFeed(Member member, String content) {
-        return new Feed(member, content);
+        return new Feed(member, getEmptyStringIfContentNull(content));
     }
 
     public void updateFeedImage(List<FeedImage> feedImages) {
@@ -48,8 +50,11 @@ public class Feed {
     }
 
     public void editFeed(String content, List<FeedImage> feedImages) {
-        this.content = content;
+        this.content = getEmptyStringIfContentNull(content);
         this.images = feedImages;
     }
 
+    private static String getEmptyStringIfContentNull(String content) {
+        return Optional.ofNullable(content).orElse("");
+    }
 }
