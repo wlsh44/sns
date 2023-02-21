@@ -4,9 +4,11 @@ import com.example.sns.member.domain.Member;
 import com.example.sns.member.domain.MemberRepository;
 import com.example.sns.member.exception.MemberNotFoundException;
 import com.example.sns.social.application.dto.FollowRequest;
+import com.example.sns.social.application.dto.UnfollowRequest;
 import com.example.sns.social.domain.Follow;
 import com.example.sns.social.domain.FollowRepository;
 import com.example.sns.social.exception.AlreadyFollowException;
+import com.example.sns.social.exception.NotFollowingMemberException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,5 +41,17 @@ public class SocialService {
     private Member getMember(Long id) {
         return memberRepository.findById(id)
                 .orElseThrow(() -> new MemberNotFoundException(id));
+    }
+
+    @Transactional
+    public void unfollow(Long memberId, UnfollowRequest request) {
+        Member follower = getMember(memberId);
+        Member following = getMember(request.getFollowingId());
+
+        Follow followTable = followRepository.findByFollowerAndFollowing(follower, following)
+                .orElseThrow(NotFollowingMemberException::new);
+
+        follower.unfollow(followTable);
+        followRepository.delete(followTable);
     }
 }

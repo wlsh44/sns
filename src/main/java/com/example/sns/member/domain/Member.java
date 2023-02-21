@@ -4,9 +4,9 @@ import com.example.sns.auth.application.dto.OAuthUserInfoDto;
 import com.example.sns.common.entity.BaseTimeEntity;
 import com.example.sns.social.domain.Follow;
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
@@ -20,6 +20,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@ToString(exclude = "followings")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseTimeEntity {
 
@@ -53,9 +54,13 @@ public class Member extends BaseTimeEntity {
         return userInfo.getEmail().split("@")[0];
     }
 
-    public Follow follow(Member follower) {
-        Follow followTable = Follow.createFollowTable(this, follower);
+    public Follow follow(Member following) {
+        Follow followTable = Follow.createFollowTable(this, following);
         followings.add(followTable);
         return followTable;
+    }
+
+    public void unfollow(Follow followTable) {
+        followings.remove(followTable);
     }
 }
