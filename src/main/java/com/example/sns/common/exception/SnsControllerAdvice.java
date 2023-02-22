@@ -4,6 +4,7 @@ import com.example.sns.auth.exception.AuthException;
 import com.example.sns.common.exception.dto.ErrorResponse;
 import com.example.sns.imagestore.exception.ImageStoreException;
 import com.example.sns.member.exception.MemberException;
+import com.example.sns.social.exception.SocialException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,6 +25,14 @@ public class SnsControllerAdvice {
     @ExceptionHandler(MemberException.class)
     public ResponseEntity<ErrorResponse> memberException(MemberException e) {
         log.error("유저 에러 = {}", e.getErrorMsg());
+        return ResponseEntity
+                .status(e.getStatus())
+                .body(new ErrorResponse(e.getErrorMsg()));
+    }
+
+    @ExceptionHandler(SocialException.class)
+    public ResponseEntity<ErrorResponse> socialException(SocialException e) {
+        log.error("소셜 기능 에러 = {}", e.getErrorMsg());
         return ResponseEntity
                 .status(e.getStatus())
                 .body(new ErrorResponse(e.getErrorMsg()));

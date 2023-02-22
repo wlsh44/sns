@@ -13,4 +13,22 @@ public class MemberFixture {
     public static Member getBasicMember() {
         return Member.createUserFrom(new OAuthUserInfoDto(BASIC_NAME, BASIC_EMAIL, BASIC_SOCIAL_ID));
     }
+
+    public static final String FOLLOWER_NAME = "follower";
+    public static final String FOLLOWER_NICKNAME = "follower";
+    public static final String FOLLOWER_EMAIL = "follower@test.test";
+    public static final String FOLLOWER_SOCIAL_ID = "1234567891";
+
+    public static Member getFollower() {
+        return Member.createUserFrom(new OAuthUserInfoDto(FOLLOWER_NAME, FOLLOWER_EMAIL, FOLLOWER_SOCIAL_ID));
+    }
+
+    public static final String FOLLOWING_NAME = "following";
+    public static final String FOLLOWING_NICKNAME = "following";
+    public static final String FOLLOWING_EMAIL = "following@test.test";
+    public static final String FOLLOWING_SOCIAL_ID = "1234567892";
+
+    public static Member getFollowing() {
+        return Member.createUserFrom(new OAuthUserInfoDto(FOLLOWING_NAME, FOLLOWING_EMAIL, FOLLOWING_SOCIAL_ID));
+    }
 }

@@ -5,6 +5,7 @@ import com.example.sns.auth.config.AuthProperties;
 import com.example.sns.auth.infrastructure.JwtProvider;
 import com.example.sns.auth.presentation.AuthExtractor;
 import com.example.sns.feed.application.FeedService;
+import com.example.sns.social.application.SocialService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -36,4 +37,7 @@ public class MockControllerTest {
 
     @MockBean
     protected FeedService feedService;
+
+    @MockBean
+    protected SocialService socialService;
 }
