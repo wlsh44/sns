@@ -3,6 +3,7 @@ package com.example.sns.social.presentation;
 import com.example.sns.auth.presentation.Authenticated;
 import com.example.sns.social.application.SocialService;
 import com.example.sns.social.application.dto.FollowRequest;
+import com.example.sns.social.application.dto.UnfollowRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,12 @@ public class SocialController {
     @PostMapping("/follow")
     public ResponseEntity<Void> follow(@Authenticated Long memberId, @RequestBody FollowRequest request) {
         socialService.follow(memberId, request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/unfollow")
+    public ResponseEntity<Void> unfollow(@Authenticated Long memberId, @RequestBody UnfollowRequest request) {
+        socialService.unfollow(memberId, request);
         return ResponseEntity.ok().build();
     }
 }
