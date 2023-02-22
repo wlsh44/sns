@@ -18,6 +18,7 @@ public class FeedFixture {
     public static final MockMultipartFile BASIC_FEED_IMAGE1 = new MockMultipartFile("feedImages", FILE_NAME1, "image/jpeg", "image".getBytes());
     public static final MockMultipartFile BASIC_FEED_IMAGE2 = new MockMultipartFile("feedImages", FILE_NAME2, "image/jpeg", "image".getBytes());
     public static final MockMultipartFile BASIC_FEED_UPLOAD_REQUEST_MULTIPART = new MockMultipartFile("dto", "", "application/json", "{\"content\": \"feed content\"}".getBytes());
+    public static final MockMultipartFile BASIC_FEED_UPDATE_REQUEST_MULTIPART = new MockMultipartFile("dto", "", "application/json", "{\"content\": \"new feed content\"}".getBytes());
 
     public static FeedUploadRequest getBasicUploadRequest() {
         return new FeedUploadRequest(BASIC_FEED_CONTENT);

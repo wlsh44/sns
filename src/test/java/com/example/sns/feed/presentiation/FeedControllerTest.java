@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.example.sns.common.fixtures.FeedFixture.BASIC_FEED_IMAGE1;
 import static com.example.sns.common.fixtures.FeedFixture.BASIC_FEED_IMAGE2;
+import static com.example.sns.common.fixtures.FeedFixture.BASIC_FEED_UPDATE_REQUEST_MULTIPART;
 import static com.example.sns.common.fixtures.FeedFixture.BASIC_FEED_UPLOAD_REQUEST_MULTIPART;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -25,4 +26,12 @@ class FeedControllerTest extends MockControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @Test
+    void updateTest() throws Exception {
+        mockMvc.perform(multipart("/feeds/1")
+                        .file(BASIC_FEED_IMAGE1)
+                        .file(BASIC_FEED_UPDATE_REQUEST_MULTIPART))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
 }
