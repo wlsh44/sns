@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -33,8 +34,11 @@ public class Feed {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "feed")
+    @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FeedImage> images = new ArrayList<>();
+
+    @OneToMany(mappedBy = "feed", cascade = CascadeType.PERSIST)
+    private List<Comment> comments = new ArrayList<>();
 
     public Feed(Member member, String content) {
         this.content = content;
@@ -46,15 +50,25 @@ public class Feed {
     }
 
     public void updateFeedImage(List<FeedImage> feedImages) {
-        this.images = feedImages;
+        images.clear();
+        images.addAll(feedImages);
     }
 
     public void editFeed(String content, List<FeedImage> feedImages) {
         this.content = getEmptyStringIfContentNull(content);
-        this.images = feedImages;
+        updateFeedImage(feedImages);
+    }
+
+    public void deleteFeed() {
+        images.clear();
+        comments.clear();
     }
 
     private static String getEmptyStringIfContentNull(String content) {
         return Optional.ofNullable(content).orElse("");
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
     }
 }

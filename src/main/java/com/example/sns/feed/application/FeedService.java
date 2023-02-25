@@ -2,9 +2,9 @@ package com.example.sns.feed.application;
 
 import com.example.sns.feed.application.dto.FeedUpdateRequest;
 import com.example.sns.feed.application.dto.FeedUploadRequest;
+import com.example.sns.feed.domain.CommentRepository;
 import com.example.sns.feed.domain.Feed;
 import com.example.sns.feed.domain.FeedImage;
-import com.example.sns.feed.domain.FeedImageRepository;
 import com.example.sns.feed.domain.FeedRepository;
 import com.example.sns.feed.exception.FeedNotFoundException;
 import com.example.sns.imagestore.infrastructure.ImageStore;
@@ -26,8 +26,8 @@ public class FeedService {
 
     private final MemberRepository memberRepository;
     private final FeedRepository feedRepository;
-    private final FeedImageRepository feedImageRepository;
     private final ImageStore imageStore;
+    private final CommentRepository commentRepository;
 
     @Transactional
     public void uploadFeed(Long memberId, FeedUploadRequest request, List<MultipartFile> images) {
@@ -48,7 +48,6 @@ public class FeedService {
         List<String> imagePaths = imageStore.storeFeedImages(images);
         return imagePaths.stream()
                 .map(imagePath -> new FeedImage(imagePath, feed))
-                .map(feedImageRepository::save)
                 .collect(Collectors.toList());
     }
 
@@ -70,6 +69,8 @@ public class FeedService {
     public void deleteFeed(Long memberId, Long feedId) {
         Feed feed = feedRepository.findByIdAndMemberId(feedId, memberId)
                 .orElseThrow(() -> new FeedNotFoundException(feedId));
+        commentRepository.deleteAllInBatch(feed.getComments());
+        feed.deleteFeed();
         feedRepository.delete(feed);
     }
 }

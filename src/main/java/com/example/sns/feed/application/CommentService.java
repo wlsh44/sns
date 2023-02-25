@@ -28,7 +28,7 @@ public class CommentService {
         Feed feed = getFeed(request);
 
         Comment comment = Comment.createComment(member, feed, request.getContent());
-        commentRepository.save(comment);
+        feed.addComment(comment);
     }
 
     private Feed getFeed(NewCommentRequest request) {
