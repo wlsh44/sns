@@ -6,6 +6,7 @@ import com.example.sns.feed.application.dto.FeedUpdateRequest;
 import com.example.sns.feed.application.dto.FeedUploadRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +37,12 @@ public class FeedController {
                                            @RequestPart(value = "dto") FeedUpdateRequest request,
                                            @RequestPart List<MultipartFile> feedImages) {
         feedService.updateFeed(memberId, feedId, request, feedImages);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{feedId}")
+    public ResponseEntity<Void> deleteFeed(@Authenticated Long memberId, @PathVariable Long feedId) {
+        feedService.deleteFeed(memberId, feedId);
         return ResponseEntity.ok().build();
     }
 }
