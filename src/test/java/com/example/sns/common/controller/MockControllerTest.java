@@ -4,6 +4,7 @@ import com.example.sns.auth.application.AuthService;
 import com.example.sns.auth.config.AuthProperties;
 import com.example.sns.auth.infrastructure.JwtProvider;
 import com.example.sns.auth.presentation.AuthExtractor;
+import com.example.sns.feed.application.CommentService;
 import com.example.sns.feed.application.FeedService;
 import com.example.sns.social.application.SocialService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,4 +41,7 @@ public class MockControllerTest {
 
     @MockBean
     protected SocialService socialService;
+
+    @MockBean
+    protected CommentService commentService;
 }
