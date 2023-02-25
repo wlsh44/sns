@@ -1,9 +1,9 @@
 package com.example.sns.feed.application;
 
-import com.example.sns.feed.application.dto.FeedUpdateRequest;
+import com.example.sns.feed.domain.Comment;
+import com.example.sns.feed.domain.CommentRepository;
 import com.example.sns.feed.domain.Feed;
 import com.example.sns.feed.domain.FeedImage;
-import com.example.sns.feed.domain.FeedImageRepository;
 import com.example.sns.feed.domain.FeedRepository;
 import com.example.sns.feed.exception.FeedNotFoundException;
 import com.example.sns.imagestore.exception.ImageStoreException;
@@ -17,10 +17,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.example.sns.common.fixtures.CommentFixture.getBasicComment;
+import static com.example.sns.common.fixtures.CommentFixture.getBasicCommentRequest;
 import static com.example.sns.common.fixtures.FeedFixture.BASIC_FEED_CONTENT;
 import static com.example.sns.common.fixtures.FeedFixture.BASIC_FEED_IMAGE2;
 import static com.example.sns.common.fixtures.FeedFixture.EDIT_FEED_CONTENT;
@@ -54,7 +58,13 @@ class FeedServiceTest {
     FeedRepository feedRepository;
 
     @Autowired
-    FeedImageRepository feedImageRepository;
+    EntityManager em;
+
+    @Autowired
+    CommentRepository commentRepository;
+
+    @Autowired
+    CommentService commentService;
 
     Member member;
 
@@ -75,9 +85,8 @@ class FeedServiceTest {
         feedService.uploadFeed(member.getId(), getBasicUploadRequest(), getBasicFeedImages());
 
         //then
-        List<FeedImage> feedImages = feedImageRepository.findAll();
+        List<FeedImage> feedImages = getFeedImages();
         List<Feed> feeds = feedRepository.findAll();
-
         assertSoftly(softlyAssertions -> {
             softlyAssertions.assertThat(feedImages.size()).isEqualTo(imagePaths.size());
             softlyAssertions.assertThat(feedImages.get(0).getImagePath()).isEqualTo(FEED_IMAGE_PATH1);
@@ -143,14 +152,21 @@ class FeedServiceTest {
     @DisplayName("피드를 지우면 피드가 삭제되어야 함")
     void delete() throws Exception {
         //given
-        Feed feed = feedRepository.save(new Feed(member, BASIC_FEED_CONTENT));
+        Feed feed = new Feed(member, BASIC_FEED_CONTENT);
+        feed.updateFeedImage(List.of(new FeedImage(FEED_IMAGE_PATH1, feed)));
+        feed = feedRepository.save(feed);
+        commentService.createComment(member.getId(), getBasicCommentRequest(feed.getId()));
 
         //when
         feedService.deleteFeed(member.getId(), feed.getId());
 
         //then
         List<Feed> feedList = feedRepository.findAll();
+        List<Comment> comments = commentRepository.findAll();
+        List<FeedImage> feedImages = getFeedImages();
+        assertThat(comments.size()).isEqualTo(0);
         assertThat(feedList.size()).isEqualTo(0);
+        assertThat(feedImages.size()).isEqualTo(0);
     }
 
     @Test
@@ -174,5 +190,10 @@ class FeedServiceTest {
         //when then
         assertThatThrownBy(() -> feedService.deleteFeed(member.getId(), feed.getId()))
                 .isInstanceOf(FeedNotFoundException.class);
+    }
+
+    private List<FeedImage> getFeedImages() {
+        return em.createQuery("select fi from FeedImage fi", FeedImage.class)
+                .getResultList();
     }
 }
