@@ -14,6 +14,15 @@ public class MemberFixture {
         return Member.createUserFrom(new OAuthUserInfoDto(BASIC_NAME, BASIC_EMAIL, BASIC_SOCIAL_ID));
     }
 
+    public static final String BASIC_NAME2 = "name2";
+    public static final String BASIC_NICKNAME2 = "nickname2";
+    public static final String BASIC_EMAIL2 = "nickname2@test.test";
+    public static final String BASIC_SOCIAL_ID2 = "1234567891";
+
+    public static Member getBasicMember2() {
+        return Member.createUserFrom(new OAuthUserInfoDto(BASIC_NAME2, BASIC_EMAIL2, BASIC_SOCIAL_ID2));
+    }
+
     public static final String FOLLOWER_NAME = "follower";
     public static final String FOLLOWER_NICKNAME = "follower";
     public static final String FOLLOWER_EMAIL = "follower@test.test";

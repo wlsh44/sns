@@ -30,6 +30,7 @@ import static com.example.sns.common.fixtures.FeedFixture.getBasicFeedImages;
 import static com.example.sns.common.fixtures.FeedFixture.getBasicUpdateRequest;
 import static com.example.sns.common.fixtures.FeedFixture.getBasicUploadRequest;
 import static com.example.sns.common.fixtures.MemberFixture.getBasicMember;
+import static com.example.sns.common.fixtures.MemberFixture.getBasicMember2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -111,6 +112,7 @@ class FeedServiceTest {
     }
 
     @Test
+    @DisplayName("피드를 수정하면 수정한 데이터를 갖고 있어야 함")
     void editFeed() throws Exception {
         //given
         Feed feed = feedRepository.save(new Feed(member, BASIC_FEED_CONTENT));
@@ -127,6 +129,7 @@ class FeedServiceTest {
     }
 
     @Test
+    @DisplayName("없는 피드를 수정하려고 하면 예외가 발생해야 함")
     void editFeed_feedNotFound() throws Exception {
         //given
         Long notExistFeedId = 1L;
@@ -134,5 +137,42 @@ class FeedServiceTest {
         //when then
         assertThatThrownBy(() -> feedService.updateFeed(member.getId(), notExistFeedId, getBasicUpdateRequest(), List.of(BASIC_FEED_IMAGE2)))
             .isInstanceOf(FeedNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("피드를 지우면 피드가 삭제되어야 함")
+    void delete() throws Exception {
+        //given
+        Feed feed = feedRepository.save(new Feed(member, BASIC_FEED_CONTENT));
+
+        //when
+        feedService.deleteFeed(member.getId(), feed.getId());
+
+        //then
+        List<Feed> feedList = feedRepository.findAll();
+        assertThat(feedList.size()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("없는 피드를 삭제하려고 할 경우 예외가 발생해야 함")
+    void delete_feedNotFound() throws Exception {
+        //given
+        Long notExistFeedId = 9999L;
+
+        //when then
+        assertThatThrownBy(() -> feedService.deleteFeed(member.getId(), notExistFeedId))
+                .isInstanceOf(FeedNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("유저의 피드가 아닌 피드를 삭제할 경우 예외가 발생해야 함")
+    void delete_feedNotFound2() throws Exception {
+        //given
+        Member member2 = memberRepository.save(getBasicMember2());
+        Feed feed = feedRepository.save(new Feed(member2, BASIC_FEED_CONTENT));
+
+        //when then
+        assertThatThrownBy(() -> feedService.deleteFeed(member.getId(), feed.getId()))
+                .isInstanceOf(FeedNotFoundException.class);
     }
 }

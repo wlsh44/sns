@@ -65,4 +65,11 @@ public class FeedService {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException(memberId));
     }
+
+    @Transactional
+    public void deleteFeed(Long memberId, Long feedId) {
+        Feed feed = feedRepository.findByIdAndMemberId(feedId, memberId)
+                .orElseThrow(() -> new FeedNotFoundException(feedId));
+        feedRepository.delete(feed);
+    }
 }
