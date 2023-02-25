@@ -2,6 +2,8 @@ package com.example.sns.common.fixtures;
 
 import com.example.sns.feed.application.dto.FeedUpdateRequest;
 import com.example.sns.feed.application.dto.FeedUploadRequest;
+import com.example.sns.feed.domain.Feed;
+import com.example.sns.member.domain.Member;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,5 +31,9 @@ public class FeedFixture {
 
     public static List<MultipartFile> getBasicFeedImages() {
         return List.of(BASIC_FEED_IMAGE1, BASIC_FEED_IMAGE2);
+    }
+
+    public static Feed getBasicFeed(Member member) {
+        return Feed.createFeed(member, BASIC_FEED_CONTENT);
     }
 }
