@@ -43,3 +43,8 @@ out/
 *.iml
 out
 gen
+
+.DS_Store
+src/main/resources/static
+src/main/resources/application.yml
+data-dev.sql
