@@ -32,16 +32,12 @@ public class PostService {
     @Transactional
     public void uploadPost(Long memberId, PostUploadRequest request, List<MultipartFile> images) {
         Member member = getMember(memberId);
-        Post post = savePost(request, member);
+        Post post = Post.createFeed(member, request.getContent());
 
         List<PostImage> postImages = savePostImages(images, post);
+        postImages.forEach(post::addPostImage);
 
-        post.updateFeedImage(postImages);
-    }
-
-    private Post savePost(PostUploadRequest request, Member member) {
-        Post newPost = Post.createFeed(member, request.getContent());
-        return postRepository.save(newPost);
+        postRepository.save(post);
     }
 
     private List<PostImage> savePostImages(List<MultipartFile> images, Post post) {

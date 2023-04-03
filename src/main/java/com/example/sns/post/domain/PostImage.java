@@ -31,4 +31,8 @@ public class PostImage {
         this.imagePath = imagePath;
         this.post = post;
     }
+
+    public void mappingPost(Post post) {
+        this.post = post;
+    }
 }

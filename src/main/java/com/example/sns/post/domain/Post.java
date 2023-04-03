@@ -53,6 +53,11 @@ public class Post {
         images.addAll(postImages);
     }
 
+    public void addPostImage(PostImage postImage) {
+        images.add(postImage);
+        postImage.mappingPost(this);
+    }
+
     public void editFeed(String content, List<PostImage> postImages) {
         this.content = getEmptyStringIfContentNull(content);
         updateFeedImage(postImages);
