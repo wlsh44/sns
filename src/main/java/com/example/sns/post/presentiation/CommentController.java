@@ -1,8 +1,8 @@
-package com.example.sns.feed.presentiation;
+package com.example.sns.post.presentiation;
 
 import com.example.sns.auth.presentation.Authenticated;
-import com.example.sns.feed.application.CommentService;
-import com.example.sns.feed.application.dto.NewCommentRequest;
+import com.example.sns.post.application.CommentService;
+import com.example.sns.post.application.dto.NewCommentRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

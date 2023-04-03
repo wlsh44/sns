@@ -1,11 +1,11 @@
-package com.example.sns.feed.application;
+package com.example.sns.post.application;
 
-import com.example.sns.feed.application.dto.NewCommentRequest;
-import com.example.sns.feed.domain.Comment;
-import com.example.sns.feed.domain.CommentRepository;
-import com.example.sns.feed.domain.Feed;
-import com.example.sns.feed.domain.FeedRepository;
-import com.example.sns.feed.exception.FeedNotFoundException;
+import com.example.sns.post.application.dto.NewCommentRequest;
+import com.example.sns.post.domain.Comment;
+import com.example.sns.post.domain.CommentRepository;
+import com.example.sns.post.domain.Post;
+import com.example.sns.post.domain.PostRepository;
+import com.example.sns.post.exception.PostNotFoundException;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.domain.MemberRepository;
 import com.example.sns.member.exception.MemberNotFoundException;
@@ -19,21 +19,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentService {
 
     private final MemberRepository memberRepository;
-    private final FeedRepository feedRepository;
+    private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
     @Transactional
     public void createComment(Long memberId, NewCommentRequest request) {
         Member member = getMember(memberId);
-        Feed feed = getFeed(request);
+        Post post = getFeed(request);
 
-        Comment comment = Comment.createComment(member, feed, request.getContent());
-        feed.addComment(comment);
+        Comment comment = Comment.createComment(member, post, request.getContent());
+        post.addComment(comment);
     }
 
-    private Feed getFeed(NewCommentRequest request) {
-        return feedRepository.findById(request.getFeedId())
-                .orElseThrow(() -> new FeedNotFoundException(request.getFeedId()));
+    private Post getFeed(NewCommentRequest request) {
+        return postRepository.findById(request.getFeedId())
+                .orElseThrow(() -> new PostNotFoundException(request.getFeedId()));
     }
 
     private Member getMember(Long memberId) {

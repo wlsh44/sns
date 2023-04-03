@@ -1,8 +1,8 @@
 package com.example.sns.common.fixtures;
 
-import com.example.sns.feed.application.dto.FeedUpdateRequest;
-import com.example.sns.feed.application.dto.FeedUploadRequest;
-import com.example.sns.feed.domain.Feed;
+import com.example.sns.post.application.dto.PostUpdateRequest;
+import com.example.sns.post.application.dto.PostUploadRequest;
+import com.example.sns.post.domain.Post;
 import com.example.sns.member.domain.Member;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,18 +22,18 @@ public class FeedFixture {
     public static final MockMultipartFile BASIC_FEED_UPLOAD_REQUEST_MULTIPART = new MockMultipartFile("dto", "", "application/json", "{\"content\": \"feed content\"}".getBytes());
     public static final MockMultipartFile BASIC_FEED_UPDATE_REQUEST_MULTIPART = new MockMultipartFile("dto", "", "application/json", "{\"content\": \"new feed content\"}".getBytes());
 
-    public static FeedUploadRequest getBasicUploadRequest() {
-        return new FeedUploadRequest(BASIC_FEED_CONTENT);
+    public static PostUploadRequest getBasicUploadRequest() {
+        return new PostUploadRequest(BASIC_FEED_CONTENT);
     }
-    public static FeedUpdateRequest getBasicUpdateRequest() {
-        return new FeedUpdateRequest(EDIT_FEED_CONTENT);
+    public static PostUpdateRequest getBasicUpdateRequest() {
+        return new PostUpdateRequest(EDIT_FEED_CONTENT);
     }
 
     public static List<MultipartFile> getBasicFeedImages() {
         return List.of(BASIC_FEED_IMAGE1, BASIC_FEED_IMAGE2);
     }
 
-    public static Feed getBasicFeed(Member member) {
-        return Feed.createFeed(member, BASIC_FEED_CONTENT);
+    public static Post getBasicFeed(Member member) {
+        return Post.createFeed(member, BASIC_FEED_CONTENT);
     }
 }

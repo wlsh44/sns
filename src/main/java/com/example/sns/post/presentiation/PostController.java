@@ -1,9 +1,9 @@
-package com.example.sns.feed.presentiation;
+package com.example.sns.post.presentiation;
 
 import com.example.sns.auth.presentation.Authenticated;
-import com.example.sns.feed.application.FeedService;
-import com.example.sns.feed.application.dto.FeedUpdateRequest;
-import com.example.sns.feed.application.dto.FeedUploadRequest;
+import com.example.sns.post.application.PostService;
+import com.example.sns.post.application.dto.PostUpdateRequest;
+import com.example.sns.post.application.dto.PostUploadRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,30 +19,30 @@ import java.util.List;
 @RestController
 @RequestMapping("/feeds")
 @RequiredArgsConstructor
-public class FeedController {
+public class PostController {
 
-    private final FeedService feedService;
+    private final PostService postService;
 
     @PostMapping("")
-    public ResponseEntity<Void> uploadFeed(@Authenticated Long memberId,
-                                           @RequestPart(value = "dto") FeedUploadRequest request,
+    public ResponseEntity<Void> uploadPost(@Authenticated Long memberId,
+                                           @RequestPart(value = "dto") PostUploadRequest request,
                                            @RequestPart List<MultipartFile> feedImages) {
-        feedService.uploadFeed(memberId, request, feedImages);
+        postService.uploadPost(memberId, request, feedImages);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{feedId}")
-    public ResponseEntity<Void> updateFeed(@Authenticated Long memberId,
+    public ResponseEntity<Void> updatePost(@Authenticated Long memberId,
                                            @PathVariable Long feedId,
-                                           @RequestPart(value = "dto") FeedUpdateRequest request,
+                                           @RequestPart(value = "dto") PostUpdateRequest request,
                                            @RequestPart List<MultipartFile> feedImages) {
-        feedService.updateFeed(memberId, feedId, request, feedImages);
+        postService.updatePost(memberId, feedId, request, feedImages);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{feedId}")
-    public ResponseEntity<Void> deleteFeed(@Authenticated Long memberId, @PathVariable Long feedId) {
-        feedService.deleteFeed(memberId, feedId);
+    public ResponseEntity<Void> deletePost(@Authenticated Long memberId, @PathVariable Long feedId) {
+        postService.deletePost(memberId, feedId);
         return ResponseEntity.ok().build();
     }
 }

@@ -1,4 +1,4 @@
-package com.example.sns.feed.domain;
+package com.example.sns.post.domain;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class FeedImage {
+public class PostImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,10 +25,10 @@ public class FeedImage {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "feed_id")
-    private Feed feed;
+    private Post post;
 
-    public FeedImage(String imagePath, Feed feed) {
+    public PostImage(String imagePath, Post post) {
         this.imagePath = imagePath;
-        this.feed = feed;
+        this.post = post;
     }
 }

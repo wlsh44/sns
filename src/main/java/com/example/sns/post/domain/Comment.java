@@ -1,7 +1,7 @@
-package com.example.sns.feed.domain;
+package com.example.sns.post.domain;
 
 import com.example.sns.common.entity.BaseTimeEntity;
-import com.example.sns.feed.exception.EmptyCommentException;
+import com.example.sns.post.exception.EmptyCommentException;
 import com.example.sns.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -30,19 +30,19 @@ public class Comment extends BaseTimeEntity {
 
     @ManyToOne
     @JoinColumn(name = "feed_id")
-    private Feed feed;
+    private Post post;
 
     private String content;
 
-    public Comment(Member member, Feed feed, String content) {
+    public Comment(Member member, Post post, String content) {
         this.member = member;
-        this.feed = feed;
+        this.post = post;
         this.content = content;
     }
 
-    public static Comment createComment(Member member, Feed feed, String content) {
+    public static Comment createComment(Member member, Post post, String content) {
         validateContent(content);
-        return new Comment(member, feed, content);
+        return new Comment(member, post, content);
     }
 
     private static void validateContent(String content) {

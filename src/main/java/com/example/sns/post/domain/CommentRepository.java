@@ -1,4 +1,4 @@
-package com.example.sns.feed.domain;
+package com.example.sns.post.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
