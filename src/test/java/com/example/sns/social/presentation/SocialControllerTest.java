@@ -1,6 +1,6 @@
 package com.example.sns.social.presentation;
 
-import com.example.sns.common.controller.MockControllerTest;
+import com.example.sns.common.support.MockControllerTest;
 import com.example.sns.member.exception.MemberNotFoundException;
 import com.example.sns.social.application.dto.FollowRequest;
 import com.example.sns.social.application.dto.UnfollowRequest;
@@ -10,13 +10,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
-import java.rmi.AlreadyBoundException;
-
 import static com.example.sns.common.fixtures.SocialFixture.getFollowRequest;
 import static com.example.sns.common.fixtures.SocialFixture.getUnfollowRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;

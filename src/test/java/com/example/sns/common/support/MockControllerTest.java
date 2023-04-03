@@ -1,4 +1,4 @@
-package com.example.sns.common.controller;
+package com.example.sns.common.support;
 
 import com.example.sns.auth.application.AuthService;
 import com.example.sns.auth.config.AuthProperties;
