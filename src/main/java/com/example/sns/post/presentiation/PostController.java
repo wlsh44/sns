@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("/feeds")
+@RequestMapping("/posts")
 @RequiredArgsConstructor
 public class PostController {
 
@@ -31,18 +31,18 @@ public class PostController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/{feedId}")
+    @PostMapping("/{postId}")
     public ResponseEntity<Void> updatePost(@Authenticated Long memberId,
-                                           @PathVariable Long feedId,
+                                           @PathVariable Long postId,
                                            @RequestPart(value = "dto") PostUpdateRequest request,
                                            @RequestPart List<MultipartFile> feedImages) {
-        postService.updatePost(memberId, feedId, request, feedImages);
+        postService.updatePost(memberId, postId, request, feedImages);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{feedId}")
-    public ResponseEntity<Void> deletePost(@Authenticated Long memberId, @PathVariable Long feedId) {
-        postService.deletePost(memberId, feedId);
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> deletePost(@Authenticated Long memberId, @PathVariable Long postId) {
+        postService.deletePost(memberId, postId);
         return ResponseEntity.ok().build();
     }
 }

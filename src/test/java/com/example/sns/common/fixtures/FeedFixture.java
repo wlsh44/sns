@@ -34,6 +34,6 @@ public class FeedFixture {
     }
 
     public static Post getBasicFeed(Member member) {
-        return Post.createFeed(member, BASIC_FEED_CONTENT);
+        return Post.createPost(member, BASIC_FEED_CONTENT);
     }
 }

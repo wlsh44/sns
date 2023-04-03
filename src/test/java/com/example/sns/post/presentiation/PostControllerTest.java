@@ -24,7 +24,7 @@ class PostControllerTest extends MockControllerTest {
     @Test
     @DisplayName("피드 업로드를 성공하면 200 응답을 함")
     void uploadTest() throws Exception {
-        mockMvc.perform(multipart("/feeds")
+        mockMvc.perform(multipart("/posts")
                         .file(BASIC_FEED_IMAGE1)
                         .file(BASIC_FEED_IMAGE2)
                         .file(BASIC_FEED_UPLOAD_REQUEST_MULTIPART))
@@ -35,7 +35,7 @@ class PostControllerTest extends MockControllerTest {
     @Test
     @DisplayName("피드를 수정하면 200 응답을 함")
     void updateTest() throws Exception {
-        mockMvc.perform(multipart("/feeds/1")
+        mockMvc.perform(multipart("/posts/1")
                         .file(BASIC_FEED_IMAGE1)
                         .file(BASIC_FEED_UPDATE_REQUEST_MULTIPART))
                 .andDo(print())
@@ -45,7 +45,7 @@ class PostControllerTest extends MockControllerTest {
     @Test
     @DisplayName("피드 삭제에 성공하면 200 응답을 함")
     void deleteTest() throws Exception {
-        mockMvc.perform(delete("/feeds/1"))
+        mockMvc.perform(delete("/posts/1"))
                 .andExpect(status().isOk());
     }
 
@@ -58,7 +58,7 @@ class PostControllerTest extends MockControllerTest {
                 .when(postService)
                 .deletePost(anyLong(), anyLong());
 
-        mockMvc.perform(delete("/feeds/1"))
+        mockMvc.perform(delete("/posts/1"))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().json(mapper.writeValueAsString(expect)));
     }

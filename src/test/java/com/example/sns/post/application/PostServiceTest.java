@@ -123,7 +123,7 @@ class PostServiceTest {
     void editFeed() throws Exception {
         //given
         Post post = postRepository.save(new Post(member, BASIC_FEED_CONTENT));
-        post.updateFeedImage(List.of(new PostImage(FEED_IMAGE_PATH1, post)));
+        post.updatePostImage(List.of(new PostImage(FEED_IMAGE_PATH1, post)));
         given(imageStore.storeFeedImages(any()))
                 .willReturn(List.of(FEED_IMAGE_PATH2));
 
@@ -151,7 +151,7 @@ class PostServiceTest {
     void delete() throws Exception {
         //given
         Post post = new Post(member, BASIC_FEED_CONTENT);
-        post.updateFeedImage(List.of(new PostImage(FEED_IMAGE_PATH1, post)));
+        post.updatePostImage(List.of(new PostImage(FEED_IMAGE_PATH1, post)));
         post = postRepository.save(post);
         commentService.createComment(member.getId(), getBasicCommentRequest(post.getId()));
 
