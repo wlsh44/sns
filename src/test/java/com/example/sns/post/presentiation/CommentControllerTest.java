@@ -1,10 +1,10 @@
-package com.example.sns.feed.presentiation;
+package com.example.sns.post.presentiation;
 
 import com.example.sns.common.controller.MockControllerTest;
 import com.example.sns.common.exception.dto.ErrorResponse;
-import com.example.sns.feed.application.dto.NewCommentRequest;
-import com.example.sns.feed.exception.EmptyCommentException;
-import com.example.sns.feed.exception.FeedNotFoundException;
+import com.example.sns.post.application.dto.NewCommentRequest;
+import com.example.sns.post.exception.EmptyCommentException;
+import com.example.sns.post.exception.PostNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -14,8 +14,6 @@ import static com.example.sns.common.fixtures.CommentFixture.getEmptyContentComm
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.not;
-import static org.assertj.core.api.InstanceOfAssertFactories.map;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -42,9 +40,9 @@ class CommentControllerTest extends MockControllerTest {
     void createTest_feedNotFound() throws Exception {
         //given
         Long notExistFeedId = 1L;
-        ErrorResponse expect = new ErrorResponse(String.format(FeedNotFoundException.ERROR_MSG, notExistFeedId));
+        ErrorResponse expect = new ErrorResponse(String.format(PostNotFoundException.ERROR_MSG, notExistFeedId));
         NewCommentRequest request = getBasicCommentRequest(notExistFeedId);
-        doThrow(new FeedNotFoundException(notExistFeedId))
+        doThrow(new PostNotFoundException(notExistFeedId))
                 .when(commentService)
                 .createComment(any(), any());
 

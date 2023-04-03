@@ -4,8 +4,8 @@ import com.example.sns.auth.application.AuthService;
 import com.example.sns.auth.config.AuthProperties;
 import com.example.sns.auth.infrastructure.JwtProvider;
 import com.example.sns.auth.presentation.AuthExtractor;
-import com.example.sns.feed.application.CommentService;
-import com.example.sns.feed.application.FeedService;
+import com.example.sns.post.application.CommentService;
+import com.example.sns.post.application.PostService;
 import com.example.sns.social.application.SocialService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class MockControllerTest {
     protected AuthService authService;
 
     @MockBean
-    protected FeedService feedService;
+    protected PostService postService;
 
     @MockBean
     protected SocialService socialService;

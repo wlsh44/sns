@@ -1,4 +1,4 @@
-package com.example.sns.feed.exception;
+package com.example.sns.post.exception;
 
 import org.springframework.http.HttpStatus;
 

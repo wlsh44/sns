@@ -1,11 +1,11 @@
-package com.example.sns.feed.application;
+package com.example.sns.post.application;
 
-import com.example.sns.feed.domain.Comment;
-import com.example.sns.feed.domain.CommentRepository;
-import com.example.sns.feed.domain.Feed;
-import com.example.sns.feed.domain.FeedImage;
-import com.example.sns.feed.domain.FeedRepository;
-import com.example.sns.feed.exception.FeedNotFoundException;
+import com.example.sns.post.domain.Comment;
+import com.example.sns.post.domain.CommentRepository;
+import com.example.sns.post.domain.Post;
+import com.example.sns.post.domain.PostImage;
+import com.example.sns.post.domain.PostRepository;
+import com.example.sns.post.exception.PostNotFoundException;
 import com.example.sns.imagestore.exception.ImageStoreException;
 import com.example.sns.imagestore.infrastructure.ImageStore;
 import com.example.sns.member.domain.Member;
@@ -17,13 +17,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static com.example.sns.common.fixtures.CommentFixture.getBasicComment;
 import static com.example.sns.common.fixtures.CommentFixture.getBasicCommentRequest;
 import static com.example.sns.common.fixtures.FeedFixture.BASIC_FEED_CONTENT;
 import static com.example.sns.common.fixtures.FeedFixture.BASIC_FEED_IMAGE2;
@@ -43,10 +41,10 @@ import static org.mockito.BDDMockito.given;
 
 @Transactional
 @SpringBootTest
-class FeedServiceTest {
+class PostServiceTest {
 
     @Autowired
-    FeedService feedService;
+    PostService postService;
 
     @MockBean
     ImageStore imageStore;
@@ -55,7 +53,7 @@ class FeedServiceTest {
     MemberRepository memberRepository;
 
     @Autowired
-    FeedRepository feedRepository;
+    PostRepository postRepository;
 
     @Autowired
     EntityManager em;
@@ -82,18 +80,18 @@ class FeedServiceTest {
                 .willReturn(imagePaths);
 
         //when
-        feedService.uploadFeed(member.getId(), getBasicUploadRequest(), getBasicFeedImages());
+        postService.uploadPost(member.getId(), getBasicUploadRequest(), getBasicFeedImages());
 
         //then
-        List<FeedImage> feedImages = getFeedImages();
-        List<Feed> feeds = feedRepository.findAll();
+        List<PostImage> postImages = getFeedImages();
+        List<Post> posts = postRepository.findAll();
         assertSoftly(softlyAssertions -> {
-            softlyAssertions.assertThat(feedImages.size()).isEqualTo(imagePaths.size());
-            softlyAssertions.assertThat(feedImages.get(0).getImagePath()).isEqualTo(FEED_IMAGE_PATH1);
-            softlyAssertions.assertThat(feedImages.get(1).getImagePath()).isEqualTo(FEED_IMAGE_PATH2);
+            softlyAssertions.assertThat(postImages.size()).isEqualTo(imagePaths.size());
+            softlyAssertions.assertThat(postImages.get(0).getImagePath()).isEqualTo(FEED_IMAGE_PATH1);
+            softlyAssertions.assertThat(postImages.get(1).getImagePath()).isEqualTo(FEED_IMAGE_PATH2);
 
-            softlyAssertions.assertThat(feeds.size()).isEqualTo(1);
-            softlyAssertions.assertThat(feeds.get(0).getContent()).isEqualTo(BASIC_FEED_CONTENT);
+            softlyAssertions.assertThat(posts.size()).isEqualTo(1);
+            softlyAssertions.assertThat(posts.get(0).getContent()).isEqualTo(BASIC_FEED_CONTENT);
         });
     }
 
@@ -104,7 +102,7 @@ class FeedServiceTest {
         Long notExistMemberId = 9999L;
 
         //when then
-        assertThatThrownBy(() -> feedService.uploadFeed(notExistMemberId, getBasicUploadRequest(), getBasicFeedImages()))
+        assertThatThrownBy(() -> postService.uploadPost(notExistMemberId, getBasicUploadRequest(), getBasicFeedImages()))
                 .isInstanceOf(MemberNotFoundException.class);
     }
 
@@ -116,7 +114,7 @@ class FeedServiceTest {
                 .willThrow(new ImageStoreException(new Throwable()));
 
         //when then
-        assertThatThrownBy(() -> feedService.uploadFeed(member.getId(), getBasicUploadRequest(), getBasicFeedImages()))
+        assertThatThrownBy(() -> postService.uploadPost(member.getId(), getBasicUploadRequest(), getBasicFeedImages()))
                 .isInstanceOf(ImageStoreException.class);
     }
 
@@ -124,17 +122,17 @@ class FeedServiceTest {
     @DisplayName("피드를 수정하면 수정한 데이터를 갖고 있어야 함")
     void editFeed() throws Exception {
         //given
-        Feed feed = feedRepository.save(new Feed(member, BASIC_FEED_CONTENT));
-        feed.updateFeedImage(List.of(new FeedImage(FEED_IMAGE_PATH1, feed)));
+        Post post = postRepository.save(new Post(member, BASIC_FEED_CONTENT));
+        post.updateFeedImage(List.of(new PostImage(FEED_IMAGE_PATH1, post)));
         given(imageStore.storeFeedImages(any()))
                 .willReturn(List.of(FEED_IMAGE_PATH2));
 
         //when
-        feedService.updateFeed(member.getId(), feed.getId(), getBasicUpdateRequest(), List.of(BASIC_FEED_IMAGE2));
+        postService.updatePost(member.getId(), post.getId(), getBasicUpdateRequest(), List.of(BASIC_FEED_IMAGE2));
 
         //then
-        assertThat(feed.getImages().get(0).getImagePath()).isEqualTo(FEED_IMAGE_PATH2);
-        assertThat(feed.getContent()).isEqualTo(EDIT_FEED_CONTENT);
+        assertThat(post.getImages().get(0).getImagePath()).isEqualTo(FEED_IMAGE_PATH2);
+        assertThat(post.getContent()).isEqualTo(EDIT_FEED_CONTENT);
     }
 
     @Test
@@ -144,29 +142,29 @@ class FeedServiceTest {
         Long notExistFeedId = 1L;
 
         //when then
-        assertThatThrownBy(() -> feedService.updateFeed(member.getId(), notExistFeedId, getBasicUpdateRequest(), List.of(BASIC_FEED_IMAGE2)))
-            .isInstanceOf(FeedNotFoundException.class);
+        assertThatThrownBy(() -> postService.updatePost(member.getId(), notExistFeedId, getBasicUpdateRequest(), List.of(BASIC_FEED_IMAGE2)))
+            .isInstanceOf(PostNotFoundException.class);
     }
 
     @Test
     @DisplayName("피드를 지우면 피드가 삭제되어야 함")
     void delete() throws Exception {
         //given
-        Feed feed = new Feed(member, BASIC_FEED_CONTENT);
-        feed.updateFeedImage(List.of(new FeedImage(FEED_IMAGE_PATH1, feed)));
-        feed = feedRepository.save(feed);
-        commentService.createComment(member.getId(), getBasicCommentRequest(feed.getId()));
+        Post post = new Post(member, BASIC_FEED_CONTENT);
+        post.updateFeedImage(List.of(new PostImage(FEED_IMAGE_PATH1, post)));
+        post = postRepository.save(post);
+        commentService.createComment(member.getId(), getBasicCommentRequest(post.getId()));
 
         //when
-        feedService.deleteFeed(member.getId(), feed.getId());
+        postService.deletePost(member.getId(), post.getId());
 
         //then
-        List<Feed> feedList = feedRepository.findAll();
+        List<Post> postList = postRepository.findAll();
         List<Comment> comments = commentRepository.findAll();
-        List<FeedImage> feedImages = getFeedImages();
+        List<PostImage> postImages = getFeedImages();
         assertThat(comments.size()).isEqualTo(0);
-        assertThat(feedList.size()).isEqualTo(0);
-        assertThat(feedImages.size()).isEqualTo(0);
+        assertThat(postList.size()).isEqualTo(0);
+        assertThat(postImages.size()).isEqualTo(0);
     }
 
     @Test
@@ -176,8 +174,8 @@ class FeedServiceTest {
         Long notExistFeedId = 9999L;
 
         //when then
-        assertThatThrownBy(() -> feedService.deleteFeed(member.getId(), notExistFeedId))
-                .isInstanceOf(FeedNotFoundException.class);
+        assertThatThrownBy(() -> postService.deletePost(member.getId(), notExistFeedId))
+                .isInstanceOf(PostNotFoundException.class);
     }
 
     @Test
@@ -185,15 +183,15 @@ class FeedServiceTest {
     void delete_feedNotFound2() throws Exception {
         //given
         Member member2 = memberRepository.save(getBasicMember2());
-        Feed feed = feedRepository.save(new Feed(member2, BASIC_FEED_CONTENT));
+        Post post = postRepository.save(new Post(member2, BASIC_FEED_CONTENT));
 
         //when then
-        assertThatThrownBy(() -> feedService.deleteFeed(member.getId(), feed.getId()))
-                .isInstanceOf(FeedNotFoundException.class);
+        assertThatThrownBy(() -> postService.deletePost(member.getId(), post.getId()))
+                .isInstanceOf(PostNotFoundException.class);
     }
 
-    private List<FeedImage> getFeedImages() {
-        return em.createQuery("select fi from FeedImage fi", FeedImage.class)
+    private List<PostImage> getFeedImages() {
+        return em.createQuery("select fi from PostImage fi", PostImage.class)
                 .getResultList();
     }
 }

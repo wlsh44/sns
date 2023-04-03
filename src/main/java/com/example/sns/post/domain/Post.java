@@ -1,10 +1,9 @@
-package com.example.sns.feed.domain;
+package com.example.sns.post.domain;
 
 import com.example.sns.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -22,7 +21,7 @@ import java.util.Optional;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Feed {
+public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,28 +34,28 @@ public class Feed {
     private Member member;
 
     @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FeedImage> images = new ArrayList<>();
+    private List<PostImage> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "feed", cascade = CascadeType.PERSIST)
     private List<Comment> comments = new ArrayList<>();
 
-    public Feed(Member member, String content) {
+    public Post(Member member, String content) {
         this.content = content;
         this.member = member;
     }
 
-    public static Feed createFeed(Member member, String content) {
-        return new Feed(member, getEmptyStringIfContentNull(content));
+    public static Post createFeed(Member member, String content) {
+        return new Post(member, getEmptyStringIfContentNull(content));
     }
 
-    public void updateFeedImage(List<FeedImage> feedImages) {
+    public void updateFeedImage(List<PostImage> postImages) {
         images.clear();
-        images.addAll(feedImages);
+        images.addAll(postImages);
     }
 
-    public void editFeed(String content, List<FeedImage> feedImages) {
+    public void editFeed(String content, List<PostImage> postImages) {
         this.content = getEmptyStringIfContentNull(content);
-        updateFeedImage(feedImages);
+        updateFeedImage(postImages);
     }
 
     public void deleteFeed() {

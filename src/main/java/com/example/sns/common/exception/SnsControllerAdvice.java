@@ -2,8 +2,8 @@ package com.example.sns.common.exception;
 
 import com.example.sns.auth.exception.AuthException;
 import com.example.sns.common.exception.dto.ErrorResponse;
-import com.example.sns.feed.exception.CommentException;
-import com.example.sns.feed.exception.FeedException;
+import com.example.sns.post.exception.CommentException;
+import com.example.sns.post.exception.PostException;
 import com.example.sns.imagestore.exception.ImageStoreException;
 import com.example.sns.member.exception.MemberException;
 import com.example.sns.social.exception.SocialException;
@@ -48,8 +48,8 @@ public class SnsControllerAdvice {
                 .body(new ErrorResponse(e.getErrorMsg()));
     }
 
-    @ExceptionHandler(FeedException.class)
-    public ResponseEntity<ErrorResponse> feedException(FeedException e) {
+    @ExceptionHandler(PostException.class)
+    public ResponseEntity<ErrorResponse> feedException(PostException e) {
         log.error("피드 에러 = {}", e.getErrorMsg());
         return ResponseEntity
                 .status(e.getStatus())

@@ -1,8 +1,8 @@
 package com.example.sns.common.fixtures;
 
-import com.example.sns.feed.application.dto.NewCommentRequest;
-import com.example.sns.feed.domain.Comment;
-import com.example.sns.feed.domain.Feed;
+import com.example.sns.post.application.dto.NewCommentRequest;
+import com.example.sns.post.domain.Comment;
+import com.example.sns.post.domain.Post;
 import com.example.sns.member.domain.Member;
 
 public class CommentFixture {
@@ -17,7 +17,7 @@ public class CommentFixture {
         return new NewCommentRequest(feedId, "");
     }
 
-    public static Comment getBasicComment(Member member, Feed feed) {
-        return Comment.createComment(member, feed, BASIC_COMMENT_CONTENT);
+    public static Comment getBasicComment(Member member, Post post) {
+        return Comment.createComment(member, post, BASIC_COMMENT_CONTENT);
     }
 }
