@@ -17,7 +17,7 @@ public class CommentFixture {
         return new NewCommentRequest(feedId, "");
     }
 
-    public static Comment getBasicComment(Member member, Post post) {
-        return Comment.createComment(member, post, BASIC_COMMENT_CONTENT);
+    public static Comment getBasicComment(Member member) {
+        return Comment.createComment(member, BASIC_COMMENT_CONTENT);
     }
 }
