@@ -27,7 +27,7 @@ public class CommentService {
         Member member = getMember(memberId);
         Post post = getFeed(request);
 
-        Comment comment = Comment.createComment(member, post, request.getContent());
+        Comment comment = Comment.createComment(member, request.getContent());
         post.addComment(comment);
     }
 

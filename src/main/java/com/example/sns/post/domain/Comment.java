@@ -34,20 +34,23 @@ public class Comment extends BaseTimeEntity {
 
     private String content;
 
-    public Comment(Member member, Post post, String content) {
+    public Comment(Member member, String content) {
         validateContent(content);
         this.member = member;
-        this.post = post;
         this.content = content;
     }
 
-    public static Comment createComment(Member member, Post post, String content) {
-        return new Comment(member, post, content);
+    public static Comment createComment(Member member, String content) {
+        return new Comment(member, content);
     }
 
     private void validateContent(String content) {
         if (!StringUtils.hasText(content)) {
             throw new EmptyCommentException();
         }
+    }
+
+    public void mappingPost(Post post) {
+        this.post = post;
     }
 }
