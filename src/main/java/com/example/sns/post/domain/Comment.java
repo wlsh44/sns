@@ -29,7 +29,7 @@ public class Comment extends BaseTimeEntity {
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "feed_id")
+    @JoinColumn(name = "post_id")
     private Post post;
 
     private String content;

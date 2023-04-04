@@ -25,13 +25,13 @@ public class CommentService {
     @Transactional
     public void createComment(Long memberId, NewCommentRequest request) {
         Member member = getMember(memberId);
-        Post post = getFeed(request);
+        Post post = getPost(request);
 
         Comment comment = Comment.createComment(member, request.getContent());
         post.addComment(comment);
     }
 
-    private Post getFeed(NewCommentRequest request) {
+    private Post getPost(NewCommentRequest request) {
         return postRepository.findById(request.getFeedId())
                 .orElseThrow(() -> new PostNotFoundException(request.getFeedId()));
     }
