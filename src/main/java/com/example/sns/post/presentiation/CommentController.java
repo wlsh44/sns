@@ -8,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,8 +20,8 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("")
-    public ResponseEntity<Void> create(@Authenticated Long memberId, @RequestBody NewCommentRequest request) {
-        commentService.createComment(memberId, request);
+    public ResponseEntity<Void> create(@Authenticated Long memberId, @RequestParam Long postId, NewCommentRequest request) {
+        commentService.createComment(memberId, postId, request);
         return ResponseEntity.ok().build();
     }
 
