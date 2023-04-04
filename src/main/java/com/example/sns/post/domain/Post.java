@@ -31,7 +31,7 @@ public class Post {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member member;
+    private Member author;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostImage> images = new ArrayList<>();
@@ -39,9 +39,9 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
     private List<Comment> comments = new ArrayList<>();
 
-    public Post(Member member, String content) {
+    public Post(Member author, String content) {
         this.content = content;
-        this.member = member;
+        this.author = author;
     }
 
     public static Post createPost(Member member, String content) {

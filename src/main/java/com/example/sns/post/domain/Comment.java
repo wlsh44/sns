@@ -3,7 +3,7 @@ package com.example.sns.post.domain;
 import com.example.sns.common.entity.BaseTimeEntity;
 import com.example.sns.post.exception.EmptyCommentException;
 import com.example.sns.member.domain.Member;
-import com.example.sns.post.exception.NotCommentOwnerException;
+import com.example.sns.post.exception.NotCommentAuthorException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +27,7 @@ public class Comment extends BaseTimeEntity {
 
     @ManyToOne
     @JoinColumn(name = "member_id")
-    private Member member;
+    private Member author;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
@@ -35,9 +35,9 @@ public class Comment extends BaseTimeEntity {
 
     private String content;
 
-    public Comment(Member member, String content) {
+    public Comment(Member author, String content) {
         validateContent(content);
-        this.member = member;
+        this.author = author;
         this.content = content;
     }
 
@@ -56,9 +56,9 @@ public class Comment extends BaseTimeEntity {
         this.post = post;
     }
 
-    public void validateIsOwner(Long memberId) {
-        if (!member.getId().equals(memberId)) {
-            throw new NotCommentOwnerException();
+    public void validateIsAuthor(Long memberId) {
+        if (!author.getId().equals(memberId)) {
+            throw new NotCommentAuthorException();
         }
     }
 }

@@ -2,7 +2,7 @@ package com.example.sns.post.domain;
 
 import com.example.sns.member.domain.Member;
 import com.example.sns.post.exception.EmptyCommentException;
-import com.example.sns.post.exception.NotCommentOwnerException;
+import com.example.sns.post.exception.NotCommentAuthorException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -57,7 +56,7 @@ class CommentTest {
         given(member.getId()).willReturn(memberId);
 
         //when then
-        assertThatNoException().isThrownBy(() -> comment.validateIsOwner(memberId));
+        assertThatNoException().isThrownBy(() -> comment.validateIsAuthor(memberId));
     }
 
     @Test
@@ -69,7 +68,7 @@ class CommentTest {
         given(member.getId()).willReturn(1L);
 
         //when then
-        assertThatThrownBy(() -> comment.validateIsOwner(notOwnerId))
-                .isInstanceOf(NotCommentOwnerException.class);
+        assertThatThrownBy(() -> comment.validateIsAuthor(notOwnerId))
+                .isInstanceOf(NotCommentAuthorException.class);
     }
 }
