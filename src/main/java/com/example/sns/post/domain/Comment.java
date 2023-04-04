@@ -45,7 +45,8 @@ public class Comment extends BaseTimeEntity {
     }
 
     private void validateContent(String content) {
-        if (!StringUtils.hasText(content)) {
+        String strippedContent = content.strip();
+        if (!StringUtils.hasText(strippedContent)) {
             throw new EmptyCommentException();
         }
     }
