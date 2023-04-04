@@ -5,6 +5,8 @@ import com.example.sns.post.application.CommentService;
 import com.example.sns.post.application.dto.NewCommentRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,12 @@ public class CommentController {
     @PostMapping("")
     public ResponseEntity<Void> create(@Authenticated Long memberId, @RequestBody NewCommentRequest request) {
         commentService.createComment(memberId, request);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<Void> delete(@Authenticated Long memberId, @PathVariable Long commentId) {
+        commentService.deleteComment(memberId, commentId);
         return ResponseEntity.ok().build();
     }
 }
