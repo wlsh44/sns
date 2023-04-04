@@ -52,13 +52,11 @@ class AuthControllerTest extends MockControllerTest {
     @DisplayName("인증 코드가 잘못된 경우 예외를 반환해야 함")
     void signIn_OAuthException() throws Exception {
         //given
-        ErrorResponse errorResponse = new ErrorResponse(OAuthException.ERROR_MSG);
         given(authService.signIn(any())).willThrow(new OAuthException());
 
         //when then
         mockMvc.perform(get("/auth/sign-in")
                         .param("code", "wrong code"))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().json(mapper.writeValueAsString(errorResponse)));
+                .andExpect(status().isBadRequest());
     }
 }

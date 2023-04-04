@@ -8,4 +8,8 @@ import lombok.Getter;
 public class ErrorResponse {
 
     private final String errorMsg;
+
+    public ErrorResponse() {
+        this.errorMsg = null;
+    }
 }

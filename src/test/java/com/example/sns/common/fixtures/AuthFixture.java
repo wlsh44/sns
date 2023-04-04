@@ -12,4 +12,6 @@ public class AuthFixture {
     * iat: 1516239022
     * */
     public static final String BASIC_ID_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Im5hbWUiLCJlbWFpbCI6Im5pY2tuYW1lQHRlc3QudGVzdCIsImlhdCI6MTUxNjIzOTAyMn0.OkoURx8GLATFXzuqjg9FU2-ID7fPNDVUjvTCwNxC9Es";
+
+    public static final String ACCESS_TOKEN = "accessToken";
 }

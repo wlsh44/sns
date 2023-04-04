@@ -26,8 +26,8 @@ public class PostController {
     @PostMapping("")
     public ResponseEntity<Void> uploadPost(@Authenticated Long memberId,
                                            @RequestPart(value = "dto") PostUploadRequest request,
-                                           @RequestPart List<MultipartFile> feedImages) {
-        postService.uploadPost(memberId, request, feedImages);
+                                           @RequestPart List<MultipartFile> postImages) {
+        postService.uploadPost(memberId, request, postImages);
         return ResponseEntity.ok().build();
     }
 
@@ -35,8 +35,8 @@ public class PostController {
     public ResponseEntity<Void> updatePost(@Authenticated Long memberId,
                                            @PathVariable Long postId,
                                            @RequestPart(value = "dto") PostUpdateRequest request,
-                                           @RequestPart List<MultipartFile> feedImages) {
-        postService.updatePost(memberId, postId, request, feedImages);
+                                           @RequestPart List<MultipartFile> postImages) {
+        postService.updatePost(memberId, postId, request, postImages);
         return ResponseEntity.ok().build();
     }
 
