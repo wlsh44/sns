@@ -1,5 +1,6 @@
 package com.example.sns.post.application;
 
+import com.example.sns.common.support.ServiceTest;
 import com.example.sns.post.domain.Comment;
 import com.example.sns.post.domain.CommentRepository;
 import com.example.sns.post.domain.Post;
@@ -11,15 +12,11 @@ import com.example.sns.imagestore.infrastructure.ImageStore;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.exception.MemberNotFoundException;
 import com.example.sns.member.domain.MemberRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 import static com.example.sns.common.fixtures.CommentFixture.getBasicCommentRequest;
@@ -31,7 +28,6 @@ import static com.example.sns.common.fixtures.FeedFixture.FEED_IMAGE_PATH2;
 import static com.example.sns.common.fixtures.FeedFixture.getBasicFeedImages;
 import static com.example.sns.common.fixtures.FeedFixture.getBasicUpdateRequest;
 import static com.example.sns.common.fixtures.FeedFixture.getBasicUploadRequest;
-import static com.example.sns.common.fixtures.MemberFixture.getBasicMember;
 import static com.example.sns.common.fixtures.MemberFixture.getBasicMember2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -39,9 +35,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-@Transactional
-@SpringBootTest
-class PostServiceTest {
+class PostServiceTest extends ServiceTest {
 
     @Autowired
     PostService postService;
@@ -50,26 +44,13 @@ class PostServiceTest {
     ImageStore imageStore;
 
     @Autowired
-    MemberRepository memberRepository;
-
-    @Autowired
     PostRepository postRepository;
-
-    @Autowired
-    EntityManager em;
 
     @Autowired
     CommentRepository commentRepository;
 
     @Autowired
     CommentService commentService;
-
-    Member member;
-
-    @BeforeEach
-    void init() {
-        member = memberRepository.save(getBasicMember());
-    }
 
     @Test
     @DisplayName("피드 업로드에 성공해야 함")
@@ -123,7 +104,7 @@ class PostServiceTest {
     void editFeed() throws Exception {
         //given
         Post post = postRepository.save(new Post(member, BASIC_FEED_CONTENT));
-        post.updateFeedImage(List.of(new PostImage(FEED_IMAGE_PATH1, post)));
+        post.updatePostImage(List.of(new PostImage(FEED_IMAGE_PATH1, post)));
         given(imageStore.storeFeedImages(any()))
                 .willReturn(List.of(FEED_IMAGE_PATH2));
 
@@ -151,7 +132,7 @@ class PostServiceTest {
     void delete() throws Exception {
         //given
         Post post = new Post(member, BASIC_FEED_CONTENT);
-        post.updateFeedImage(List.of(new PostImage(FEED_IMAGE_PATH1, post)));
+        post.updatePostImage(List.of(new PostImage(FEED_IMAGE_PATH1, post)));
         post = postRepository.save(post);
         commentService.createComment(member.getId(), getBasicCommentRequest(post.getId()));
 

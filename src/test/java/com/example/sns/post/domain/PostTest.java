@@ -30,7 +30,7 @@ class PostTest {
         //given
 
         //when
-        Post post = Post.createFeed(member, BASIC_FEED_CONTENT);
+        Post post = Post.createPost(member, BASIC_FEED_CONTENT);
 
         //then
         assertThat(post.getContent()).isEqualTo(BASIC_FEED_CONTENT);
@@ -42,7 +42,7 @@ class PostTest {
         //given
 
         //when
-        Post post = Post.createFeed(member, null);
+        Post post = Post.createPost(member, null);
 
         //then
         assertThat(post.getContent()).isEqualTo("");
@@ -51,14 +51,14 @@ class PostTest {
     @Test
     void editFeed() throws Exception {
         //given
-        Post post = Post.createFeed(member, BASIC_FEED_CONTENT);
+        Post post = Post.createPost(member, BASIC_FEED_CONTENT);
         PostImage postImage = new PostImage(FEED_IMAGE_PATH1, post);
-        post.updateFeedImage(List.of(postImage));
+        post.updatePostImage(List.of(postImage));
 
         List<PostImage> newPostImages = List.of(new PostImage(FEED_IMAGE_PATH2, post));
 
         //when
-        post.editFeed(EDIT_FEED_CONTENT, newPostImages);
+        post.editPost(EDIT_FEED_CONTENT, newPostImages);
 
         //then
         assertThat(post.getContent()).isEqualTo(EDIT_FEED_CONTENT);

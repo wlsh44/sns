@@ -33,10 +33,10 @@ public class Post {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostImage> images = new ArrayList<>();
 
-    @OneToMany(mappedBy = "feed", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
     private List<Comment> comments = new ArrayList<>();
 
     public Post(Member member, String content) {
@@ -44,21 +44,26 @@ public class Post {
         this.member = member;
     }
 
-    public static Post createFeed(Member member, String content) {
+    public static Post createPost(Member member, String content) {
         return new Post(member, getEmptyStringIfContentNull(content));
     }
 
-    public void updateFeedImage(List<PostImage> postImages) {
+    public void updatePostImage(List<PostImage> postImages) {
         images.clear();
         images.addAll(postImages);
     }
 
-    public void editFeed(String content, List<PostImage> postImages) {
-        this.content = getEmptyStringIfContentNull(content);
-        updateFeedImage(postImages);
+    public void addPostImage(PostImage postImage) {
+        images.add(postImage);
+        postImage.mappingPost(this);
     }
 
-    public void deleteFeed() {
+    public void editPost(String content, List<PostImage> postImages) {
+        this.content = getEmptyStringIfContentNull(content);
+        updatePostImage(postImages);
+    }
+
+    public void deletePost() {
         images.clear();
         comments.clear();
     }

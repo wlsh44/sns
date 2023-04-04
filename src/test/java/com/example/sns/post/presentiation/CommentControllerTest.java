@@ -1,6 +1,6 @@
 package com.example.sns.post.presentiation;
 
-import com.example.sns.common.controller.MockControllerTest;
+import com.example.sns.common.support.MockControllerTest;
 import com.example.sns.common.exception.dto.ErrorResponse;
 import com.example.sns.post.application.dto.NewCommentRequest;
 import com.example.sns.post.exception.EmptyCommentException;

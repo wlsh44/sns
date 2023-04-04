@@ -32,16 +32,12 @@ public class PostService {
     @Transactional
     public void uploadPost(Long memberId, PostUploadRequest request, List<MultipartFile> images) {
         Member member = getMember(memberId);
-        Post post = savePost(request, member);
+        Post post = Post.createPost(member, request.getContent());
 
         List<PostImage> postImages = savePostImages(images, post);
+        postImages.forEach(post::addPostImage);
 
-        post.updateFeedImage(postImages);
-    }
-
-    private Post savePost(PostUploadRequest request, Member member) {
-        Post newPost = Post.createFeed(member, request.getContent());
-        return postRepository.save(newPost);
+        postRepository.save(post);
     }
 
     private List<PostImage> savePostImages(List<MultipartFile> images, Post post) {
@@ -57,7 +53,7 @@ public class PostService {
                 .orElseThrow(() -> new PostNotFoundException(feedId));
 
         List<PostImage> postImages = savePostImages(images, post);
-        post.editFeed(request.getContent(), postImages);
+        post.editPost(request.getContent(), postImages);
     }
 
     private Member getMember(Long memberId) {
@@ -70,7 +66,7 @@ public class PostService {
         Post post = postRepository.findByIdAndMemberId(feedId, memberId)
                 .orElseThrow(() -> new PostNotFoundException(feedId));
         commentRepository.deleteAllInBatch(post.getComments());
-        post.deleteFeed();
+        post.deletePost();
         postRepository.delete(post);
     }
 }

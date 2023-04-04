@@ -24,11 +24,15 @@ public class PostImage {
     private String imagePath;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "feed_id")
+    @JoinColumn(name = "post_id")
     private Post post;
 
     public PostImage(String imagePath, Post post) {
         this.imagePath = imagePath;
+        this.post = post;
+    }
+
+    public void mappingPost(Post post) {
         this.post = post;
     }
 }
