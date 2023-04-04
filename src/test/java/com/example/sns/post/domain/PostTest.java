@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.example.sns.common.fixtures.FeedFixture.BASIC_FEED_CONTENT;
-import static com.example.sns.common.fixtures.FeedFixture.EDIT_FEED_CONTENT;
-import static com.example.sns.common.fixtures.FeedFixture.FEED_IMAGE_PATH1;
-import static com.example.sns.common.fixtures.FeedFixture.FEED_IMAGE_PATH2;
+import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_CONTENT;
+import static com.example.sns.common.fixtures.PostFixture.EDIT_POST_CONTENT;
+import static com.example.sns.common.fixtures.PostFixture.POST_IMAGE_PATH1;
+import static com.example.sns.common.fixtures.PostFixture.POST_IMAGE_PATH2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
@@ -30,10 +30,10 @@ class PostTest {
         //given
 
         //when
-        Post post = Post.createPost(member, BASIC_FEED_CONTENT);
+        Post post = Post.createPost(member, BASIC_POST_CONTENT);
 
         //then
-        assertThat(post.getContent()).isEqualTo(BASIC_FEED_CONTENT);
+        assertThat(post.getContent()).isEqualTo(BASIC_POST_CONTENT);
     }
 
     @Test
@@ -51,17 +51,17 @@ class PostTest {
     @Test
     void editFeed() throws Exception {
         //given
-        Post post = Post.createPost(member, BASIC_FEED_CONTENT);
-        PostImage postImage = new PostImage(FEED_IMAGE_PATH1, post);
+        Post post = Post.createPost(member, BASIC_POST_CONTENT);
+        PostImage postImage = new PostImage(POST_IMAGE_PATH1, post);
         post.updatePostImage(List.of(postImage));
 
-        List<PostImage> newPostImages = List.of(new PostImage(FEED_IMAGE_PATH2, post));
+        List<PostImage> newPostImages = List.of(new PostImage(POST_IMAGE_PATH2, post));
 
         //when
-        post.editPost(EDIT_FEED_CONTENT, newPostImages);
+        post.editPost(EDIT_POST_CONTENT, newPostImages);
 
         //then
-        assertThat(post.getContent()).isEqualTo(EDIT_FEED_CONTENT);
+        assertThat(post.getContent()).isEqualTo(EDIT_POST_CONTENT);
         assertThat(post.getImages()).isEqualTo(newPostImages);
     }
 }

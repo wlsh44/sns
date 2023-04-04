@@ -7,10 +7,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 
-import static com.example.sns.common.fixtures.FeedFixture.BASIC_FEED_IMAGE1;
-import static com.example.sns.common.fixtures.FeedFixture.BASIC_FEED_IMAGE2;
-import static com.example.sns.common.fixtures.FeedFixture.BASIC_FEED_UPDATE_REQUEST_MULTIPART;
-import static com.example.sns.common.fixtures.FeedFixture.BASIC_FEED_UPLOAD_REQUEST_MULTIPART;
+import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_IMAGE1;
+import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_IMAGE2;
+import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_UPDATE_REQUEST_MULTIPART;
+import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_UPLOAD_REQUEST_MULTIPART;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -25,9 +25,9 @@ class PostControllerTest extends MockControllerTest {
     @DisplayName("피드 업로드를 성공하면 200 응답을 함")
     void uploadTest() throws Exception {
         mockMvc.perform(multipart("/posts")
-                        .file(BASIC_FEED_IMAGE1)
-                        .file(BASIC_FEED_IMAGE2)
-                        .file(BASIC_FEED_UPLOAD_REQUEST_MULTIPART))
+                        .file(BASIC_POST_IMAGE1)
+                        .file(BASIC_POST_IMAGE2)
+                        .file(BASIC_POST_UPLOAD_REQUEST_MULTIPART))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -36,8 +36,8 @@ class PostControllerTest extends MockControllerTest {
     @DisplayName("피드를 수정하면 200 응답을 함")
     void updateTest() throws Exception {
         mockMvc.perform(multipart("/posts/1")
-                        .file(BASIC_FEED_IMAGE1)
-                        .file(BASIC_FEED_UPDATE_REQUEST_MULTIPART))
+                        .file(BASIC_POST_IMAGE1)
+                        .file(BASIC_POST_UPDATE_REQUEST_MULTIPART))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
