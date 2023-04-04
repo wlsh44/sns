@@ -1,7 +1,7 @@
 package com.example.sns.post.presentiation;
 
-import com.example.sns.common.support.MockControllerTest;
 import com.example.sns.common.exception.dto.ErrorResponse;
+import com.example.sns.common.support.MockControllerTest;
 import com.example.sns.post.application.dto.NewCommentRequest;
 import com.example.sns.post.exception.CommentNotFoundException;
 import com.example.sns.post.exception.EmptyCommentException;
@@ -9,13 +9,12 @@ import com.example.sns.post.exception.NotCommentAuthorException;
 import com.example.sns.post.exception.PostNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
+import static com.example.sns.common.fixtures.AuthFixture.ACCESS_TOKEN;
 import static com.example.sns.common.fixtures.CommentFixture.getBasicCommentRequest;
 import static com.example.sns.common.fixtures.CommentFixture.getEmptyContentCommentRequest;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assertions.not;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
@@ -34,11 +33,12 @@ class CommentControllerTest extends MockControllerTest {
 
         //when then
         mockMvc.perform(post("/comments")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
     }
-    
+
     @Test
     @DisplayName("없는 피드에 댓글을 달 경우 400 예외를 응답해야 함")
     void createTest_feedNotFound() throws Exception {
@@ -52,6 +52,7 @@ class CommentControllerTest extends MockControllerTest {
 
         //when then
         mockMvc.perform(post("/comments")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
@@ -70,6 +71,7 @@ class CommentControllerTest extends MockControllerTest {
 
         //when then
         mockMvc.perform(post("/comments")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
@@ -84,7 +86,8 @@ class CommentControllerTest extends MockControllerTest {
                 .deleteComment(any(), any());
 
         //when then
-        mockMvc.perform(delete("/comments/1"))
+        mockMvc.perform(delete("/comments/1")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN))
                 .andExpect(status().isOk());
     }
 
@@ -96,7 +99,8 @@ class CommentControllerTest extends MockControllerTest {
                 .deleteComment(any(), any());
 
         //when then
-        mockMvc.perform(delete("/comments/1"))
+        mockMvc.perform(delete("/comments/1")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN))
                 .andExpect(status().isBadRequest());
     }
 
@@ -108,7 +112,8 @@ class CommentControllerTest extends MockControllerTest {
                 .deleteComment(any(), any());
 
         //when then
-        mockMvc.perform(delete("/comments/1"))
+        mockMvc.perform(delete("/comments/1")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN))
                 .andExpect(status().isBadRequest());
     }
 }

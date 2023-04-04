@@ -8,8 +8,10 @@ import com.example.sns.social.exception.AlreadyFollowException;
 import com.example.sns.social.exception.NotFollowingMemberException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
+import static com.example.sns.common.fixtures.AuthFixture.ACCESS_TOKEN;
 import static com.example.sns.common.fixtures.SocialFixture.getFollowRequest;
 import static com.example.sns.common.fixtures.SocialFixture.getUnfollowRequest;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,6 +33,7 @@ class SocialControllerTest extends MockControllerTest {
 
         //when then
         mockMvc.perform(post("/social/follow")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
@@ -49,6 +52,7 @@ class SocialControllerTest extends MockControllerTest {
 
         //when then
         mockMvc.perform(post("/social/follow")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());
@@ -67,6 +71,7 @@ class SocialControllerTest extends MockControllerTest {
 
         //when then
         mockMvc.perform(post("/social/follow")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());
@@ -80,6 +85,7 @@ class SocialControllerTest extends MockControllerTest {
 
         //when then
         mockMvc.perform(post("/social/unfollow")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
@@ -98,6 +104,7 @@ class SocialControllerTest extends MockControllerTest {
 
         //when then
         mockMvc.perform(post("/social/unfollow")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());
@@ -116,6 +123,7 @@ class SocialControllerTest extends MockControllerTest {
 
         //when then
         mockMvc.perform(post("/social/unfollow")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());
