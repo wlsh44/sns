@@ -3,6 +3,7 @@ package com.example.sns.post.domain;
 import com.example.sns.common.entity.BaseTimeEntity;
 import com.example.sns.post.exception.EmptyCommentException;
 import com.example.sns.member.domain.Member;
+import com.example.sns.post.exception.NotCommentOwnerException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -53,5 +54,11 @@ public class Comment extends BaseTimeEntity {
 
     public void mappingPost(Post post) {
         this.post = post;
+    }
+
+    public void validateIsOwner(Long memberId) {
+        if (!member.getId().equals(memberId)) {
+            throw new NotCommentOwnerException();
+        }
     }
 }
