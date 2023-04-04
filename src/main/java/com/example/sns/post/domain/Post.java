@@ -74,5 +74,6 @@ public class Post {
 
     public void addComment(Comment comment) {
         comments.add(comment);
+        comment.mappingPost(this);
     }
 }

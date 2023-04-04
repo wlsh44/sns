@@ -29,25 +29,29 @@ public class Comment extends BaseTimeEntity {
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "feed_id")
+    @JoinColumn(name = "post_id")
     private Post post;
 
     private String content;
 
-    public Comment(Member member, Post post, String content) {
+    public Comment(Member member, String content) {
+        validateContent(content);
         this.member = member;
-        this.post = post;
         this.content = content;
     }
 
-    public static Comment createComment(Member member, Post post, String content) {
-        validateContent(content);
-        return new Comment(member, post, content);
+    public static Comment createComment(Member member, String content) {
+        return new Comment(member, content);
     }
 
-    private static void validateContent(String content) {
-        if (!StringUtils.hasText(content)) {
+    private void validateContent(String content) {
+        String strippedContent = content.strip();
+        if (!StringUtils.hasText(strippedContent)) {
             throw new EmptyCommentException();
         }
+    }
+
+    public void mappingPost(Post post) {
+        this.post = post;
     }
 }
