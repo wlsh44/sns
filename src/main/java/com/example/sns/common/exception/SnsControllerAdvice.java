@@ -1,6 +1,5 @@
 package com.example.sns.common.exception;
 
-import com.example.sns.auth.exception.AuthException;
 import com.example.sns.auth.exception.ExpiredTokenException;
 import com.example.sns.common.exception.dto.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class SnsControllerAdvice {
 
     @ExceptionHandler(ExpiredTokenException.class)
-    public ResponseEntity<ErrorResponse> authException(AuthException e) {
+    public ResponseEntity<ErrorResponse> authException(ExpiredTokenException e) {
         log.error("인증 에러 = {}", e.getErrorMsg());
         return ResponseEntity
                 .status(e.getStatus())
