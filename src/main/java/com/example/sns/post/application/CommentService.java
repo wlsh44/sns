@@ -24,17 +24,17 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public void createComment(Long memberId, NewCommentRequest request) {
+    public void createComment(Long memberId, Long postId, NewCommentRequest request) {
         Member member = getMember(memberId);
-        Post post = getPost(request);
+        Post post = getPost(postId);
 
         Comment comment = Comment.createComment(member, request.getContent());
         post.addComment(comment);
     }
 
-    private Post getPost(NewCommentRequest request) {
-        return postRepository.findById(request.getFeedId())
-                .orElseThrow(() -> new PostNotFoundException(request.getFeedId()));
+    private Post getPost(Long postId) {
+        return postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException(postId));
     }
 
     private Member getMember(Long memberId) {

@@ -31,6 +31,7 @@ class CommentControllerTest extends MockControllerTest {
 
         //when then
         mockMvc.perform(post("/comments")
+                        .param("postId", "1")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
@@ -45,10 +46,11 @@ class CommentControllerTest extends MockControllerTest {
         NewCommentRequest request = getBasicCommentRequest(notExistFeedId);
         doThrow(new PostNotFoundException(notExistFeedId))
                 .when(commentService)
-                .createComment(any(), any());
+                .createComment(any(), any(), any());
 
         //when then
         mockMvc.perform(post("/comments")
+                        .param("postId", "1")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
@@ -62,7 +64,7 @@ class CommentControllerTest extends MockControllerTest {
         NewCommentRequest request = getEmptyContentCommentRequest(1L);
         doThrow(new EmptyCommentException())
                 .when(commentService)
-                .createComment(any(), any());
+                .createComment(any(), any(), any());
 
         //when then
         mockMvc.perform(post("/comments")

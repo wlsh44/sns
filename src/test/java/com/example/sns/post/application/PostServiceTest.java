@@ -136,7 +136,7 @@ class PostServiceTest extends ServiceTest {
         Post post = new Post(member, BASIC_POST_CONTENT);
         post.updatePostImage(List.of(new PostImage(POST_IMAGE_PATH1, post)));
         post = postRepository.save(post);
-        commentService.createComment(member.getId(), getBasicCommentRequest(post.getId()));
+        commentService.createComment(member.getId(), post.getId(), getBasicCommentRequest(post.getId()));
 
         //when
         postService.deletePost(member.getId(), post.getId());
