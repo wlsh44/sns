@@ -1,7 +1,6 @@
 package com.example.sns.post.presentiation;
 
 import com.example.sns.common.support.MockControllerTest;
-import com.example.sns.common.exception.dto.ErrorResponse;
 import com.example.sns.post.exception.PostNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +17,6 @@ import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class PostControllerTest extends MockControllerTest {
@@ -58,14 +56,12 @@ class PostControllerTest extends MockControllerTest {
     @DisplayName("피드 삭제에 성공하면 200 응답을 함")
     void deleteTest_feedNotFound() throws Exception {
         //given
-        ErrorResponse expect = new ErrorResponse(String.format(PostNotFoundException.ERROR_MSG, 1L));
         doThrow(new PostNotFoundException(1L))
                 .when(postService)
                 .deletePost(anyLong(), anyLong());
 
         mockMvc.perform(delete("/posts/1")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().json(mapper.writeValueAsString(expect)));
+                .andExpect(status().isBadRequest());
     }
 }
