@@ -49,7 +49,7 @@ public class PostService {
 
     @Transactional
     public void updatePost(Long memberId, Long feedId, PostUpdateRequest request, List<MultipartFile> images) {
-        Post post = postRepository.findByIdAndMemberId(feedId, memberId)
+        Post post = postRepository.findByIdAndAuthorId(feedId, memberId)
                 .orElseThrow(() -> new PostNotFoundException(feedId));
 
         List<PostImage> postImages = savePostImages(images, post);
@@ -63,7 +63,7 @@ public class PostService {
 
     @Transactional
     public void deletePost(Long memberId, Long feedId) {
-        Post post = postRepository.findByIdAndMemberId(feedId, memberId)
+        Post post = postRepository.findByIdAndAuthorId(feedId, memberId)
                 .orElseThrow(() -> new PostNotFoundException(feedId));
         commentRepository.deleteAllInBatch(post.getComments());
         post.deletePost();

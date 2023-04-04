@@ -5,6 +5,7 @@ import com.example.sns.post.domain.Comment;
 import com.example.sns.post.domain.CommentRepository;
 import com.example.sns.post.domain.Post;
 import com.example.sns.post.domain.PostRepository;
+import com.example.sns.post.exception.CommentNotFoundException;
 import com.example.sns.post.exception.PostNotFoundException;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.domain.MemberRepository;
@@ -39,5 +40,14 @@ public class CommentService {
     private Member getMember(Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException(memberId));
+    }
+
+    @Transactional
+    public void deleteComment(Long memberId, Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new CommentNotFoundException(commentId));
+        comment.validateIsAuthor(memberId);
+
+        commentRepository.delete(comment);
     }
 }
