@@ -1,6 +1,5 @@
-package com.example.sns.social.domain;
+package com.example.sns.member.domain;
 
-import com.example.sns.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

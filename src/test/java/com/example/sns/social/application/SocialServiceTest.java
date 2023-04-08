@@ -5,8 +5,8 @@ import com.example.sns.member.domain.MemberRepository;
 import com.example.sns.member.exception.MemberNotFoundException;
 import com.example.sns.social.application.dto.FollowRequest;
 import com.example.sns.social.application.dto.UnfollowRequest;
-import com.example.sns.social.domain.Follow;
-import com.example.sns.social.domain.FollowRepository;
+import com.example.sns.member.domain.Follow;
+import com.example.sns.member.domain.FollowRepository;
 import com.example.sns.social.exception.AlreadyFollowException;
 import com.example.sns.social.exception.NotFollowingMemberException;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +23,6 @@ import static com.example.sns.common.fixtures.MemberFixture.getFollower;
 import static com.example.sns.common.fixtures.MemberFixture.getFollowing;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest

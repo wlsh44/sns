@@ -2,7 +2,6 @@ package com.example.sns.member.domain;
 
 import com.example.sns.auth.application.dto.OAuthUserInfoDto;
 import com.example.sns.common.entity.BaseTimeEntity;
-import com.example.sns.social.domain.Follow;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
