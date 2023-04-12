@@ -1,11 +1,11 @@
-package com.example.sns.social.presentation;
+package com.example.sns.follow.presentation;
 
 import com.example.sns.common.support.MockControllerTest;
 import com.example.sns.member.exception.MemberNotFoundException;
-import com.example.sns.social.application.dto.FollowRequest;
-import com.example.sns.social.application.dto.UnfollowRequest;
-import com.example.sns.social.exception.AlreadyFollowException;
-import com.example.sns.social.exception.NotFollowingMemberException;
+import com.example.sns.follow.application.dto.FollowRequest;
+import com.example.sns.follow.application.dto.UnfollowRequest;
+import com.example.sns.follow.exception.AlreadyFollowException;
+import com.example.sns.follow.exception.NotFollowingMemberException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class SocialControllerTest extends MockControllerTest {
+class FollowControllerTest extends MockControllerTest {
 
     @Test
     @DisplayName("팔로우를 성공하면 200 응답코드를 리턴함")
@@ -48,7 +48,7 @@ class SocialControllerTest extends MockControllerTest {
         given(jwtProvider.parseMemberId(any()))
                 .willReturn(memberId);
         doThrow(new MemberNotFoundException(memberId))
-                .when(socialService).follow(eq(memberId), any(FollowRequest.class));
+                .when(followService).follow(eq(memberId), any(FollowRequest.class));
 
         //when then
         mockMvc.perform(post("/social/follow")
@@ -67,7 +67,7 @@ class SocialControllerTest extends MockControllerTest {
         given(jwtProvider.parseMemberId(any()))
                 .willReturn(memberId);
         doThrow(new AlreadyFollowException())
-                .when(socialService).follow(eq(memberId), any(FollowRequest.class));
+                .when(followService).follow(eq(memberId), any(FollowRequest.class));
 
         //when then
         mockMvc.perform(post("/social/follow")
@@ -100,7 +100,7 @@ class SocialControllerTest extends MockControllerTest {
         given(jwtProvider.parseMemberId(any()))
                 .willReturn(memberId);
         doThrow(new MemberNotFoundException(memberId))
-                .when(socialService).unfollow(eq(memberId), any(UnfollowRequest.class));
+                .when(followService).unfollow(eq(memberId), any(UnfollowRequest.class));
 
         //when then
         mockMvc.perform(post("/social/unfollow")
@@ -119,7 +119,7 @@ class SocialControllerTest extends MockControllerTest {
         given(jwtProvider.parseMemberId(any()))
                 .willReturn(memberId);
         doThrow(new NotFollowingMemberException())
-                .when(socialService).unfollow(eq(memberId), any(UnfollowRequest.class));
+                .when(followService).unfollow(eq(memberId), any(UnfollowRequest.class));
 
         //when then
         mockMvc.perform(post("/social/unfollow")

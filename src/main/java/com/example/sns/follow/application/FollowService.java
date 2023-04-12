@@ -1,14 +1,14 @@
-package com.example.sns.social.application;
+package com.example.sns.follow.application;
 
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.domain.MemberRepository;
 import com.example.sns.member.exception.MemberNotFoundException;
-import com.example.sns.social.application.dto.FollowRequest;
-import com.example.sns.social.application.dto.UnfollowRequest;
-import com.example.sns.member.domain.Follow;
-import com.example.sns.member.domain.FollowRepository;
-import com.example.sns.social.exception.AlreadyFollowException;
-import com.example.sns.social.exception.NotFollowingMemberException;
+import com.example.sns.follow.application.dto.FollowRequest;
+import com.example.sns.follow.application.dto.UnfollowRequest;
+import com.example.sns.follow.domain.Follow;
+import com.example.sns.follow.domain.FollowRepository;
+import com.example.sns.follow.exception.AlreadyFollowException;
+import com.example.sns.follow.exception.NotFollowingMemberException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class SocialService {
+public class FollowService {
 
     private final FollowRepository followRepository;
     private final MemberRepository memberRepository;

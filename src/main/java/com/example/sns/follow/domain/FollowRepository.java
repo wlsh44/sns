@@ -1,5 +1,6 @@
-package com.example.sns.member.domain;
+package com.example.sns.follow.domain;
 
+import com.example.sns.member.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,14 +1,14 @@
-package com.example.sns.social.application;
+package com.example.sns.follow.application;
 
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.domain.MemberRepository;
 import com.example.sns.member.exception.MemberNotFoundException;
-import com.example.sns.social.application.dto.FollowRequest;
-import com.example.sns.social.application.dto.UnfollowRequest;
-import com.example.sns.member.domain.Follow;
-import com.example.sns.member.domain.FollowRepository;
-import com.example.sns.social.exception.AlreadyFollowException;
-import com.example.sns.social.exception.NotFollowingMemberException;
+import com.example.sns.follow.application.dto.FollowRequest;
+import com.example.sns.follow.application.dto.UnfollowRequest;
+import com.example.sns.follow.domain.Follow;
+import com.example.sns.follow.domain.FollowRepository;
+import com.example.sns.follow.exception.AlreadyFollowException;
+import com.example.sns.follow.exception.NotFollowingMemberException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,10 +26,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Transactional
 @SpringBootTest
-class SocialServiceTest {
+class FollowServiceTest {
 
     @Autowired
-    SocialService socialService;
+    FollowService followService;
 
     @Autowired
     MemberRepository memberRepository;
@@ -54,7 +54,7 @@ class SocialServiceTest {
         FollowRequest request = new FollowRequest(following.getId());
 
         //when
-        socialService.follow(member.getId(), request);
+        followService.follow(member.getId(), request);
 
         //then
         Follow follow = followRepository.findAll().get(0);
@@ -72,7 +72,7 @@ class SocialServiceTest {
 
 
         //when then
-        assertThatThrownBy(() -> socialService.follow(member.getId(), request))
+        assertThatThrownBy(() -> followService.follow(member.getId(), request))
             .isInstanceOf(MemberNotFoundException.class);
     }
 
@@ -82,10 +82,10 @@ class SocialServiceTest {
         Member following = getFollowing();
         following = memberRepository.save(following);
         FollowRequest request = new FollowRequest(following.getId());
-        socialService.follow(member.getId(), request);
+        followService.follow(member.getId(), request);
 
         //when
-        assertThatThrownBy(() -> socialService.follow(member.getId(), request))
+        assertThatThrownBy(() -> followService.follow(member.getId(), request))
                 .isInstanceOf(AlreadyFollowException.class);
     }
 
@@ -95,11 +95,11 @@ class SocialServiceTest {
         //given
         Member following = getFollowing();
         following = memberRepository.save(following);
-        socialService.follow(member.getId(), new FollowRequest(following.getId()));
+        followService.follow(member.getId(), new FollowRequest(following.getId()));
         UnfollowRequest request = new UnfollowRequest(following.getId());
 
         //when
-        socialService.unfollow(member.getId(), request);
+        followService.unfollow(member.getId(), request);
 
         //then
         List<Follow> follow = followRepository.findAll();
@@ -117,7 +117,7 @@ class SocialServiceTest {
 
 
         //when then
-        assertThatThrownBy(() -> socialService.unfollow(member.getId(), request))
+        assertThatThrownBy(() -> followService.unfollow(member.getId(), request))
                 .isInstanceOf(MemberNotFoundException.class);
     }
 
@@ -129,7 +129,7 @@ class SocialServiceTest {
         UnfollowRequest request = new UnfollowRequest(basicMember.getId());
 
         //when
-        assertThatThrownBy(() -> socialService.unfollow(member.getId(), request))
+        assertThatThrownBy(() -> followService.unfollow(member.getId(), request))
                 .isInstanceOf(NotFollowingMemberException.class);
     }
 }
