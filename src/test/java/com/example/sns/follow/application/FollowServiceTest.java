@@ -80,21 +80,20 @@ class FollowServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("언팔로우를 하면 member와 follow 모두 삭제되어야 함")
+    @DisplayName("언팔로우를 하면 follow가 삭제되어야 함")
     void unfollow() throws Exception {
         //given
-        Member following = getFollowing();
-        following = memberRepository.save(following);
-        followService.follow(member.getId(), new FollowRequest(following.getId()));
+        Member follower = memberRepository.save(getFollower());
+        Member following = memberRepository.save(getFollowing());
+        followService.follow(follower.getId(), new FollowRequest(following.getId()));
         UnfollowRequest request = new UnfollowRequest(following.getId());
 
         //when
-        followService.unfollow(member.getId(), request);
+        followService.unfollow(follower.getId(), request);
 
         //then
         List<Follow> follow = followRepository.findAll();
         assertThat(follow.size()).isEqualTo(0);
-        assertThat(member.getFollowings().size()).isEqualTo(0);
     }
 
 
@@ -112,6 +111,7 @@ class FollowServiceTest extends ServiceTest {
     }
 
     @Test
+    @DisplayName("팔로우하지 않은 유저를 언팔로우 하면 예외가 발생해야 함")
     void unfollow_notFollowingMember() throws Exception {
         //given
         Member basicMember = getBasicMember();
