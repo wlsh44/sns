@@ -26,16 +26,7 @@ public class FollowService {
         Member follower = getMember(memberId);
         Member following = getMember(request.getFollowingId());
 
-        validateAlreadyFollow(follower, following);
-
-        Follow followTable = follower.follow(following);
-        followRepository.save(followTable);
-    }
-
-    private void validateAlreadyFollow(Member follower, Member following) {
-        if (followRepository.existsByFollowerAndFollowing(follower, following)) {
-            throw new AlreadyFollowException();
-        }
+        follower.follow(following);
     }
 
     private Member getMember(Long id) {

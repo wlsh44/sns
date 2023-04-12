@@ -37,4 +37,8 @@ public class Follow {
     public static Follow createFollowTable(Member follower, Member following) {
         return new Follow(follower, following);
     }
+
+    public boolean isFollowing(Member follower, Member following) {
+        return this.follower.equals(follower) && this.following.equals(following);
+    }
 }

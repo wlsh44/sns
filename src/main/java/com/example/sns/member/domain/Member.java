@@ -3,7 +3,9 @@ package com.example.sns.member.domain;
 import com.example.sns.auth.application.dto.OAuthUserInfoDto;
 import com.example.sns.common.entity.BaseTimeEntity;
 import com.example.sns.follow.domain.Follow;
+import com.example.sns.follow.exception.AlreadyFollowException;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -21,6 +23,7 @@ import java.util.List;
 @Entity
 @Getter
 @ToString(exclude = "followings")
+@EqualsAndHashCode(of = "id", callSuper = false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseTimeEntity {
 
@@ -54,10 +57,18 @@ public class Member extends BaseTimeEntity {
         return userInfo.getEmail().split("@")[0];
     }
 
-    public Follow follow(Member following) {
+    public void follow(Member following) {
+        validateAlreadyFollow(following);
         Follow followTable = Follow.createFollowTable(this, following);
         followings.add(followTable);
-        return followTable;
+    }
+
+    private void validateAlreadyFollow(Member following) {
+        boolean isFollowing = followings.stream()
+                .anyMatch(follow -> follow.isFollowing(this, following));
+        if (isFollowing) {
+            throw new AlreadyFollowException();
+        }
     }
 
     public void unfollow(Follow followTable) {
