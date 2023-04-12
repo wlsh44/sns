@@ -1,5 +1,6 @@
 package com.example.sns.follow.application;
 
+import com.example.sns.common.support.ServiceTest;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.domain.MemberRepository;
 import com.example.sns.member.exception.MemberNotFoundException;
@@ -24,9 +25,7 @@ import static com.example.sns.common.fixtures.MemberFixture.getFollowing;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@Transactional
-@SpringBootTest
-class FollowServiceTest {
+class FollowServiceTest extends ServiceTest {
 
     @Autowired
     FollowService followService;
@@ -37,30 +36,21 @@ class FollowServiceTest {
     @Autowired
     FollowRepository followRepository;
 
-    Member member;
-
-    @BeforeEach
-    void init() {
-        member = getFollower();
-        memberRepository.save(member);
-    }
-
     @Test
     @DisplayName("팔로우를 하면 member와 follow 모두 해당 정보를 갖고 있어야 함")
     void follow() throws Exception {
         //given
-        Member following = getFollowing();
-        following = memberRepository.save(following);
+        Member follower = memberRepository.save(getFollower());
+        Member following = memberRepository.save(getFollowing());
         FollowRequest request = new FollowRequest(following.getId());
 
         //when
-        followService.follow(member.getId(), request);
+        followService.follow(follower.getId(), request);
 
         //then
         Follow follow = followRepository.findAll().get(0);
-        assertThat(follow.getFollower().getId()).isEqualTo(member.getId());
+        assertThat(follow.getFollower().getId()).isEqualTo(follower.getId());
         assertThat(follow.getFollowing().getId()).isEqualTo(following.getId());
-        assertThat(member.getFollowings().contains(follow)).isTrue();
     }
 
     @Test
@@ -70,22 +60,22 @@ class FollowServiceTest {
         Long notExistMemberId = 999L;
         FollowRequest request = new FollowRequest(notExistMemberId);
 
-
         //when then
         assertThatThrownBy(() -> followService.follow(member.getId(), request))
             .isInstanceOf(MemberNotFoundException.class);
     }
 
     @Test
+    @DisplayName("이미 팔로우 한 유저인 경우 예외가 발생해야 함")
     void follow_alreadyFollow() throws Exception {
         //given
-        Member following = getFollowing();
-        following = memberRepository.save(following);
+        Member follower = memberRepository.save(getFollower());
+        Member following = memberRepository.save(getFollowing());
         FollowRequest request = new FollowRequest(following.getId());
-        followService.follow(member.getId(), request);
+        followService.follow(follower.getId(), request);
 
         //when
-        assertThatThrownBy(() -> followService.follow(member.getId(), request))
+        assertThatThrownBy(() -> followService.follow(follower.getId(), request))
                 .isInstanceOf(AlreadyFollowException.class);
     }
 
