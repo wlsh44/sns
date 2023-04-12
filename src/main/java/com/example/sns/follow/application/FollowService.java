@@ -22,9 +22,9 @@ public class FollowService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void follow(Long memberId, FollowRequest request) {
+    public void follow(Long memberId, Long followingId) {
         Member follower = getMember(memberId);
-        Member following = getMember(request.getFollowingId());
+        Member following = getMember(followingId);
 
         follower.follow(following);
     }
@@ -35,9 +35,9 @@ public class FollowService {
     }
 
     @Transactional
-    public void unfollow(Long memberId, UnfollowRequest request) {
+    public void unfollow(Long memberId, Long followingId) {
         Member follower = getMember(memberId);
-        Member following = getMember(request.getFollowingId());
+        Member following = getMember(followingId);
 
         follower.unfollow(following);
     }

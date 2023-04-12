@@ -4,18 +4,14 @@ import com.example.sns.common.support.ServiceTest;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.domain.MemberRepository;
 import com.example.sns.member.exception.MemberNotFoundException;
-import com.example.sns.follow.application.dto.FollowRequest;
 import com.example.sns.follow.application.dto.UnfollowRequest;
 import com.example.sns.follow.domain.Follow;
 import com.example.sns.follow.domain.FollowRepository;
 import com.example.sns.follow.exception.AlreadyFollowException;
 import com.example.sns.follow.exception.NotFollowingMemberException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -42,10 +38,9 @@ class FollowServiceTest extends ServiceTest {
         //given
         Member follower = memberRepository.save(getFollower());
         Member following = memberRepository.save(getFollowing());
-        FollowRequest request = new FollowRequest(following.getId());
 
         //when
-        followService.follow(follower.getId(), request);
+        followService.follow(follower.getId(), following.getId());
 
         //then
         Follow follow = followRepository.findAll().get(0);
@@ -58,10 +53,9 @@ class FollowServiceTest extends ServiceTest {
     void follow_memberNotFound() throws Exception {
         //given
         Long notExistMemberId = 999L;
-        FollowRequest request = new FollowRequest(notExistMemberId);
 
         //when then
-        assertThatThrownBy(() -> followService.follow(member.getId(), request))
+        assertThatThrownBy(() -> followService.follow(member.getId(), notExistMemberId))
             .isInstanceOf(MemberNotFoundException.class);
     }
 
@@ -71,11 +65,10 @@ class FollowServiceTest extends ServiceTest {
         //given
         Member follower = memberRepository.save(getFollower());
         Member following = memberRepository.save(getFollowing());
-        FollowRequest request = new FollowRequest(following.getId());
-        followService.follow(follower.getId(), request);
+        followService.follow(follower.getId(), following.getId());
 
         //when
-        assertThatThrownBy(() -> followService.follow(follower.getId(), request))
+        assertThatThrownBy(() -> followService.follow(follower.getId(), following.getId()))
                 .isInstanceOf(AlreadyFollowException.class);
     }
 
@@ -85,11 +78,11 @@ class FollowServiceTest extends ServiceTest {
         //given
         Member follower = memberRepository.save(getFollower());
         Member following = memberRepository.save(getFollowing());
-        followService.follow(follower.getId(), new FollowRequest(following.getId()));
+        followService.follow(follower.getId(), following.getId());
         UnfollowRequest request = new UnfollowRequest(following.getId());
 
         //when
-        followService.unfollow(follower.getId(), request);
+        followService.unfollow(follower.getId(), following.getId());
 
         //then
         List<Follow> follow = followRepository.findAll();
@@ -102,11 +95,9 @@ class FollowServiceTest extends ServiceTest {
     void unfollow_memberNotFound() throws Exception {
         //given
         Long notExistMemberId = 999L;
-        UnfollowRequest request = new UnfollowRequest(notExistMemberId);
-
 
         //when then
-        assertThatThrownBy(() -> followService.unfollow(member.getId(), request))
+        assertThatThrownBy(() -> followService.unfollow(member.getId(), notExistMemberId))
                 .isInstanceOf(MemberNotFoundException.class);
     }
 
@@ -114,12 +105,10 @@ class FollowServiceTest extends ServiceTest {
     @DisplayName("팔로우하지 않은 유저를 언팔로우 하면 예외가 발생해야 함")
     void unfollow_notFollowingMember() throws Exception {
         //given
-        Member basicMember = getBasicMember();
-        basicMember = memberRepository.save(basicMember);
-        UnfollowRequest request = new UnfollowRequest(basicMember.getId());
+        Member basicMember = memberRepository.save(getBasicMember());
 
         //when
-        assertThatThrownBy(() -> followService.unfollow(member.getId(), request))
+        assertThatThrownBy(() -> followService.unfollow(member.getId(), basicMember.getId()))
                 .isInstanceOf(NotFollowingMemberException.class);
     }
 }
