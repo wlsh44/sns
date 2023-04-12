@@ -37,7 +37,7 @@ public class Member extends BaseTimeEntity {
 
     private String biography;
 
-    @OneToMany(mappedBy = "following", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL)
     private List<Follow> followings = new ArrayList<>();
 
     private Member(String socialId, String userName, String nickName, String email) {
