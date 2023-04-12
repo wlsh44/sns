@@ -1,4 +1,4 @@
-package com.example.sns.social.exception;
+package com.example.sns.follow.exception;
 
 import com.example.sns.common.exception.SnsException;
 import org.springframework.http.HttpStatus;

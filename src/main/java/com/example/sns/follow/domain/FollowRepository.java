@@ -1,4 +1,4 @@
-package com.example.sns.social.domain;
+package com.example.sns.follow.domain;
 
 import com.example.sns.member.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;

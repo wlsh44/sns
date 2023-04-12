@@ -1,4 +1,4 @@
-package com.example.sns.social.domain;
+package com.example.sns.follow.domain;
 
 import com.example.sns.member.domain.Member;
 import lombok.AccessLevel;
@@ -36,5 +36,9 @@ public class Follow {
 
     public static Follow createFollowTable(Member follower, Member following) {
         return new Follow(follower, following);
+    }
+
+    public boolean isFollowing(Member follower, Member following) {
+        return this.follower.equals(follower) && this.following.equals(following);
     }
 }

@@ -6,7 +6,7 @@ import com.example.sns.auth.infrastructure.JwtProvider;
 import com.example.sns.auth.presentation.AuthExtractor;
 import com.example.sns.post.application.CommentService;
 import com.example.sns.post.application.PostService;
-import com.example.sns.social.application.SocialService;
+import com.example.sns.follow.application.FollowService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -41,7 +41,7 @@ public class MockControllerTest {
     protected PostService postService;
 
     @MockBean
-    protected SocialService socialService;
+    protected FollowService followService;
 
     @MockBean
     protected CommentService commentService;

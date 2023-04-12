@@ -1,4 +1,4 @@
-package com.example.sns.social.application.dto;
+package com.example.sns.follow.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

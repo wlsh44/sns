@@ -1,7 +1,7 @@
 package com.example.sns.common.fixtures;
 
-import com.example.sns.social.application.dto.FollowRequest;
-import com.example.sns.social.application.dto.UnfollowRequest;
+import com.example.sns.follow.application.dto.FollowRequest;
+import com.example.sns.follow.application.dto.UnfollowRequest;
 
 public class SocialFixture {
 

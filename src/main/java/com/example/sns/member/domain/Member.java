@@ -2,8 +2,11 @@ package com.example.sns.member.domain;
 
 import com.example.sns.auth.application.dto.OAuthUserInfoDto;
 import com.example.sns.common.entity.BaseTimeEntity;
-import com.example.sns.social.domain.Follow;
+import com.example.sns.follow.domain.Follow;
+import com.example.sns.follow.exception.AlreadyFollowException;
+import com.example.sns.follow.exception.NotFollowingMemberException;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -21,6 +24,7 @@ import java.util.List;
 @Entity
 @Getter
 @ToString(exclude = "followings")
+@EqualsAndHashCode(of = "id", callSuper = false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseTimeEntity {
 
@@ -37,8 +41,8 @@ public class Member extends BaseTimeEntity {
 
     private String biography;
 
-    @OneToMany(mappedBy = "following", cascade = CascadeType.ALL)
-    private List<Follow> followings = new ArrayList<>();
+    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<Follow> followings = new ArrayList<>();
 
     private Member(String socialId, String userName, String nickName, String email) {
         this.socialId = socialId;
@@ -54,13 +58,28 @@ public class Member extends BaseTimeEntity {
         return userInfo.getEmail().split("@")[0];
     }
 
-    public Follow follow(Member following) {
+    public void follow(Member following) {
+        validateAlreadyFollow(following);
         Follow followTable = Follow.createFollowTable(this, following);
         followings.add(followTable);
-        return followTable;
     }
 
-    public void unfollow(Follow followTable) {
-        followings.remove(followTable);
+    private void validateAlreadyFollow(Member following) {
+        boolean isFollowing = followings.stream()
+                .anyMatch(follow -> follow.isFollowing(this, following));
+        if (isFollowing) {
+            throw new AlreadyFollowException();
+        }
+    }
+
+    public void unfollow(Member following) {
+        followings.remove(getFollow(following));
+    }
+
+    private Follow getFollow(Member following) {
+        return followings.stream()
+                .filter(follow -> follow.isFollowing(this, following))
+                .findAny()
+                .orElseThrow(NotFollowingMemberException::new);
     }
 }
