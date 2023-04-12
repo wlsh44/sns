@@ -39,10 +39,6 @@ public class FollowService {
         Member follower = getMember(memberId);
         Member following = getMember(request.getFollowingId());
 
-        Follow followTable = followRepository.findByFollowerAndFollowing(follower, following)
-                .orElseThrow(NotFollowingMemberException::new);
-
-        follower.unfollow(followTable);
-        followRepository.delete(followTable);
+        follower.unfollow(following);
     }
 }

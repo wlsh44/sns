@@ -4,6 +4,7 @@ import com.example.sns.auth.application.dto.OAuthUserInfoDto;
 import com.example.sns.common.entity.BaseTimeEntity;
 import com.example.sns.follow.domain.Follow;
 import com.example.sns.follow.exception.AlreadyFollowException;
+import com.example.sns.follow.exception.NotFollowingMemberException;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -40,8 +41,8 @@ public class Member extends BaseTimeEntity {
 
     private String biography;
 
-    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL)
-    private List<Follow> followings = new ArrayList<>();
+    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<Follow> followings = new ArrayList<>();
 
     private Member(String socialId, String userName, String nickName, String email) {
         this.socialId = socialId;
@@ -71,7 +72,14 @@ public class Member extends BaseTimeEntity {
         }
     }
 
-    public void unfollow(Follow followTable) {
-        followings.remove(followTable);
+    public void unfollow(Member following) {
+        followings.remove(getFollow(following));
+    }
+
+    private Follow getFollow(Member following) {
+        return followings.stream()
+                .filter(follow -> follow.isFollowing(this, following))
+                .findAny()
+                .orElseThrow(NotFollowingMemberException::new);
     }
 }
