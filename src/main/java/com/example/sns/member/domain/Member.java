@@ -44,6 +44,9 @@ public class Member extends BaseTimeEntity {
     @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Follow> followings = new ArrayList<>();
 
+    @OneToMany(mappedBy = "following")
+    private final List<Follow> followers = new ArrayList<>();
+
     private Member(String socialId, String userName, String nickName, String email) {
         this.socialId = socialId;
         this.info = new MemberInfo(userName, nickName, email);
@@ -62,6 +65,7 @@ public class Member extends BaseTimeEntity {
         validateAlreadyFollow(following);
         Follow followTable = Follow.createFollowTable(this, following);
         followings.add(followTable);
+        following.getFollowers().add(followTable);
     }
 
     private void validateAlreadyFollow(Member following) {
