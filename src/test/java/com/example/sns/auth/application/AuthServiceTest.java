@@ -58,7 +58,7 @@ class AuthServiceTest {
         assertSoftly(softAssertions -> {
             softAssertions.assertThat(member.getId()).isEqualTo(result);
             softAssertions.assertThat(member.getInfo().getName()).isEqualTo(BASIC_NAME);
-            softAssertions.assertThat(member.getInfo().getNickName()).isEqualTo(BASIC_NICKNAME);
+            softAssertions.assertThat(member.getInfo().getNickname()).isEqualTo(BASIC_NICKNAME);
             softAssertions.assertThat(member.getInfo().getEmail()).isEqualTo(BASIC_EMAIL);
         });
     }
@@ -83,7 +83,7 @@ class AuthServiceTest {
         assertSoftly(softAssertions -> {
             softAssertions.assertThat(member.getId()).isEqualTo(result);
             softAssertions.assertThat(member.getInfo().getName()).isEqualTo(BASIC_NAME);
-            softAssertions.assertThat(member.getInfo().getNickName()).isEqualTo(BASIC_NICKNAME);
+            softAssertions.assertThat(member.getInfo().getNickname()).isEqualTo(BASIC_NICKNAME);
             softAssertions.assertThat(member.getInfo().getEmail()).isEqualTo(BASIC_EMAIL);
         });
     }

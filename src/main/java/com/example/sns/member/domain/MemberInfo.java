@@ -15,7 +15,7 @@ public class MemberInfo {
 
     private String name;
 
-    private String nickName;
+    private String nickname;
 
     private String email;
 }
