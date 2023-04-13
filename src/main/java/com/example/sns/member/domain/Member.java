@@ -68,10 +68,18 @@ public class Member extends BaseTimeEntity {
         following.getFollowers().add(followTable);
     }
 
+    public boolean isFollower(Member member) {
+        return followers.stream()
+                .anyMatch(follow -> follow.isFollowing(member, this));
+    }
+
+    public boolean isFollowing(Member member) {
+        return followings.stream()
+                .anyMatch(follow -> follow.isFollowing(this, member));
+    }
+
     private void validateAlreadyFollow(Member following) {
-        boolean isFollowing = followings.stream()
-                .anyMatch(follow -> follow.isFollowing(this, following));
-        if (isFollowing) {
+        if (isFollowing(following)) {
             throw new AlreadyFollowException();
         }
     }
