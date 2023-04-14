@@ -48,3 +48,4 @@ gen
 src/main/resources/static
 src/main/resources/application.yml
 data-dev.sql
+.run/
