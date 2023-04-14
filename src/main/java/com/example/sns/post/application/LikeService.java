@@ -33,6 +33,14 @@ public class LikeService {
         post.addLike(member);
     }
 
+    @Transactional
+    public void cancelLike(Long memberId, Long postId) {
+        Member member = getMember(memberId);
+        Post post = getPost(postId);
+
+        post.removeLike(member);
+    }
+
     private Post getPost(Long postId) {
         return postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(postId));
