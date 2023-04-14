@@ -1,5 +1,6 @@
 package com.example.sns.post.domain;
 
+import com.example.sns.common.entity.BaseTimeEntity;
 import com.example.sns.member.domain.Member;
 import com.example.sns.post.exception.AlreadyLikedPostException;
 import com.example.sns.post.exception.NotLikedPostException;
@@ -88,12 +89,12 @@ public class Post extends BaseTimeEntity {
     }
 
     private void validateAlreadyLike(Member member) {
-        if (isAlreadyLiked(member)) {
+        if (isLikedBy(member)) {
             throw new AlreadyLikedPostException();
         }
     }
 
-    private boolean isAlreadyLiked(Member member) {
+    public boolean isLikedBy(Member member) {
         return likes.stream().anyMatch(like -> like.hasMember(member));
     }
 

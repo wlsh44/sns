@@ -1,5 +1,6 @@
 package com.example.sns.post.application;
 
+import com.example.sns.post.application.dto.PostResponse;
 import com.example.sns.post.application.dto.PostUpdateRequest;
 import com.example.sns.post.application.dto.PostUploadRequest;
 import com.example.sns.post.domain.CommentRepository;
@@ -68,5 +69,17 @@ public class PostService {
         commentRepository.deleteAllInBatch(post.getComments());
         post.deletePost();
         postRepository.delete(post);
+    }
+
+    public PostResponse getPost(Long memberId, Long postId) {
+        Member member = getMember(memberId);
+        Post post = getPost(postId);
+
+        return PostResponse.from(post, member);
+    }
+
+    private Post getPost(Long postId) {
+        return postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException(postId));
     }
 }
