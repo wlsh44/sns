@@ -31,7 +31,7 @@ class MemberControllerTest extends MockControllerTest {
                 .willReturn(response);
 
         //when then
-        mockMvc.perform(get("/members")
+        mockMvc.perform(get("/members/profile")
                         .param("username", "username")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN))
                 .andDo(print())
@@ -47,7 +47,7 @@ class MemberControllerTest extends MockControllerTest {
                 .willThrow(new MemberNotFoundException(1L));
 
         //when then
-        mockMvc.perform(get("/members")
+        mockMvc.perform(get("/members/profile")
                         .param("username", "username")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN))
                 .andDo(print())

@@ -17,7 +17,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping
+    @GetMapping("/profile")
     public ResponseEntity<MemberProfileResponse> getProfile(@Authenticated Long memberId, @RequestParam String username) {
         MemberProfileResponse response = memberService.getProfile(memberId, username);
 

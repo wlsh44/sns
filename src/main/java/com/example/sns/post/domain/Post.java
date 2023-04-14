@@ -1,6 +1,8 @@
 package com.example.sns.post.domain;
 
 import com.example.sns.member.domain.Member;
+import com.example.sns.post.exception.AlreadyLikedPostException;
+import com.example.sns.post.exception.NotLikedPostException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,6 +41,9 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
     private List<Comment> comments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<Like> likes = new ArrayList<>();
+
     public Post(Member author, String content) {
         this.content = content;
         this.author = author;
@@ -75,5 +80,31 @@ public class Post {
     public void addComment(Comment comment) {
         comments.add(comment);
         comment.mappingPost(this);
+    }
+
+    public void addLike(Member member) {
+        validateAlreadyLike(member);
+        likes.add(new Like(this, member));
+    }
+
+    private void validateAlreadyLike(Member member) {
+        if (isAlreadyLiked(member)) {
+            throw new AlreadyLikedPostException();
+        }
+    }
+
+    private boolean isAlreadyLiked(Member member) {
+        return likes.stream().anyMatch(like -> like.hasMember(member));
+    }
+
+    public void removeLike(Member member) {
+        likes.remove(getLike(member));
+    }
+
+    private Like getLike(Member member) {
+        return likes.stream()
+                .filter(like -> like.hasMember(member))
+                .findAny()
+                .orElseThrow(NotLikedPostException::new);
     }
 }
