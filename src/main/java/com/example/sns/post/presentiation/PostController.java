@@ -2,11 +2,13 @@ package com.example.sns.post.presentiation;
 
 import com.example.sns.auth.presentation.Authenticated;
 import com.example.sns.post.application.PostService;
+import com.example.sns.post.application.dto.PostResponse;
 import com.example.sns.post.application.dto.PostUpdateRequest;
 import com.example.sns.post.application.dto.PostUploadRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,5 +46,11 @@ public class PostController {
     public ResponseEntity<Void> deletePost(@Authenticated Long memberId, @PathVariable Long postId) {
         postService.deletePost(memberId, postId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{postId}")
+    public ResponseEntity<PostResponse> findPost(@Authenticated Long memberId, @PathVariable Long postId) {
+        PostResponse response = postService.findPost(memberId, postId);
+        return ResponseEntity.ok(response);
     }
 }
