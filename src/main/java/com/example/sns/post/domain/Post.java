@@ -1,7 +1,9 @@
 package com.example.sns.post.domain;
 
+import com.example.sns.common.entity.BaseTimeEntity;
 import com.example.sns.member.domain.Member;
 import com.example.sns.post.exception.AlreadyLikedPostException;
+import com.example.sns.post.exception.NotAuthorException;
 import com.example.sns.post.exception.NotLikedPostException;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -23,7 +25,7 @@ import java.util.Optional;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Post {
+public class Post extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -88,12 +90,12 @@ public class Post {
     }
 
     private void validateAlreadyLike(Member member) {
-        if (isAlreadyLiked(member)) {
+        if (isLikedBy(member)) {
             throw new AlreadyLikedPostException();
         }
     }
 
-    private boolean isAlreadyLiked(Member member) {
+    public boolean isLikedBy(Member member) {
         return likes.stream().anyMatch(like -> like.hasMember(member));
     }
 
@@ -106,5 +108,11 @@ public class Post {
                 .filter(like -> like.hasMember(member))
                 .findAny()
                 .orElseThrow(NotLikedPostException::new);
+    }
+
+    public void validateIsOwner(Long memberId) {
+        if (!author.getId().equals(memberId)) {
+            throw new NotAuthorException();
+        }
     }
 }

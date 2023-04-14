@@ -1,5 +1,6 @@
 package com.example.sns.post.application;
 
+import com.example.sns.post.application.dto.PostResponse;
 import com.example.sns.post.application.dto.PostUpdateRequest;
 import com.example.sns.post.application.dto.PostUploadRequest;
 import com.example.sns.post.domain.CommentRepository;
@@ -48,12 +49,28 @@ public class PostService {
     }
 
     @Transactional
-    public void updatePost(Long memberId, Long feedId, PostUpdateRequest request, List<MultipartFile> images) {
-        Post post = postRepository.findByIdAndAuthorId(feedId, memberId)
-                .orElseThrow(() -> new PostNotFoundException(feedId));
+    public void updatePost(Long memberId, Long postId, PostUpdateRequest request, List<MultipartFile> images) {
+        Post post = getPost(postId);
+        post.validateIsOwner(memberId);
 
         List<PostImage> postImages = savePostImages(images, post);
         post.editPost(request.getContent(), postImages);
+    }
+
+    @Transactional
+    public void deletePost(Long memberId, Long postId) {
+        Post post = getPost(postId);
+        post.validateIsOwner(memberId);
+        commentRepository.deleteAllInBatch(post.getComments());
+        post.deletePost();
+        postRepository.delete(post);
+    }
+
+    public PostResponse findPost(Long memberId, Long postId) {
+        Member member = getMember(memberId);
+        Post post = getPost(postId);
+
+        return PostResponse.from(post, member);
     }
 
     private Member getMember(Long memberId) {
@@ -61,12 +78,8 @@ public class PostService {
                 .orElseThrow(() -> new MemberNotFoundException(memberId));
     }
 
-    @Transactional
-    public void deletePost(Long memberId, Long feedId) {
-        Post post = postRepository.findByIdAndAuthorId(feedId, memberId)
-                .orElseThrow(() -> new PostNotFoundException(feedId));
-        commentRepository.deleteAllInBatch(post.getComments());
-        post.deletePost();
-        postRepository.delete(post);
+    private Post getPost(Long postId) {
+        return postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException(postId));
     }
 }
