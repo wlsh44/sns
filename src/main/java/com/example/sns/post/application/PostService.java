@@ -49,33 +49,33 @@ public class PostService {
     }
 
     @Transactional
-    public void updatePost(Long memberId, Long feedId, PostUpdateRequest request, List<MultipartFile> images) {
-        Post post = postRepository.findByIdAndAuthorId(feedId, memberId)
-                .orElseThrow(() -> new PostNotFoundException(feedId));
+    public void updatePost(Long memberId, Long postId, PostUpdateRequest request, List<MultipartFile> images) {
+        Post post = getPost(postId);
+        post.validateIsOwner(memberId);
 
         List<PostImage> postImages = savePostImages(images, post);
         post.editPost(request.getContent(), postImages);
     }
 
-    private Member getMember(Long memberId) {
-        return memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(memberId));
-    }
-
     @Transactional
-    public void deletePost(Long memberId, Long feedId) {
-        Post post = postRepository.findByIdAndAuthorId(feedId, memberId)
-                .orElseThrow(() -> new PostNotFoundException(feedId));
+    public void deletePost(Long memberId, Long postId) {
+        Post post = getPost(postId);
+        post.validateIsOwner(memberId);
         commentRepository.deleteAllInBatch(post.getComments());
         post.deletePost();
         postRepository.delete(post);
     }
 
-    public PostResponse getPost(Long memberId, Long postId) {
+    public PostResponse findPost(Long memberId, Long postId) {
         Member member = getMember(memberId);
         Post post = getPost(postId);
 
         return PostResponse.from(post, member);
+    }
+
+    private Member getMember(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException(memberId));
     }
 
     private Post getPost(Long postId) {
