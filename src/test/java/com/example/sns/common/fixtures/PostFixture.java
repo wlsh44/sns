@@ -14,6 +14,7 @@ public class PostFixture {
     public static final String POST_IMAGE_PATH1 = "imagePath1";
     public static final String POST_IMAGE_PATH2 = "imagePath2";
     public static final String BASIC_POST_CONTENT = "post content";
+    public static final String BASIC_POST_CONTENT2 = "post content2";
     public static final String EDIT_POST_CONTENT = "new post content";
     public static final String FILE_NAME1 = "test1.jpeg";
     public static final String FILE_NAME2 = "test2.jpeg";
@@ -35,5 +36,9 @@ public class PostFixture {
 
     public static Post getBasicPost(Member member) {
         return Post.createPost(member, BASIC_POST_CONTENT);
+    }
+
+    public static Post getBasicPost2(Member member) {
+        return Post.createPost(member, BASIC_POST_CONTENT2);
     }
 }
