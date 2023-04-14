@@ -50,7 +50,7 @@ class LikeServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("좋아요를 누를 때 유저가 없는 경우 예외가 발생해야 함")
+    @DisplayName("유저가 없는 경우 좋아요를 누를 때 예외가 발생해야 함")
     void likeTest_memberNotFound() throws Exception {
         //given
         Long notExistId = 999L;
@@ -63,7 +63,7 @@ class LikeServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("좋아요를 누를 때 포스트가 없는 경우 예외가 발생해야 함")
+    @DisplayName("포스트가 없는 경우 좋아요를 누를 때 예외가 발생해야 함")
     void likeTest_postNotFound() throws Exception {
         //given
         Long notExistId = 999L;
@@ -75,7 +75,7 @@ class LikeServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("좋아요를 누를 때 이미 좋아요를 누른 게시글일 경우 예외가 발생해야 함")
+    @DisplayName("이미 좋아요를 누른 게시글일 경우 좋아요를 누를 때 예외가 발생해야 함")
     void likeTest_alreadyLikedPost() throws Exception {
         //given
         Member member = memberRepository.save(getBasicMember());
@@ -104,7 +104,7 @@ class LikeServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("좋아요 취소를 할 떄 유저가 없는 경우 예외가 발생해야 함")
+    @DisplayName("유저가 없는 경우 좋아요 취소를 할 떄 예외가 발생해야 함")
     void cancelLikeTest_memberNotFound() throws Exception {
         //given
         Long notExistId = 999L;
@@ -117,7 +117,7 @@ class LikeServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("좋아요 취소를 할 떄 포스트가 없는 경우 예외가 발생해야 함")
+    @DisplayName("포스트가 없는 경우 좋아요 취소를 할 떄 예외가 발생해야 함")
     void cancelLikeTest_postNotFound() throws Exception {
         //given
         Long notExistId = 999L;
@@ -129,7 +129,7 @@ class LikeServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("좋아요 취소를 할 떄 좋아요를 누르지 않은 게시글일 경우 예외가 발생해야 함")
+    @DisplayName("좋아요를 누르지 않은 게시글일 경우 좋아요 취소를 할 떄 예외가 발생해야 함")
     void cancelLikeTest_alreadyLikedPost() throws Exception {
         //given
         Member member = memberRepository.save(getBasicMember());
