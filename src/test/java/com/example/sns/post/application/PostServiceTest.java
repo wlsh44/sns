@@ -1,6 +1,7 @@
 package com.example.sns.post.application;
 
 import com.example.sns.common.support.ServiceTest;
+import com.example.sns.post.application.dto.PostResponse;
 import com.example.sns.post.domain.Comment;
 import com.example.sns.post.domain.CommentRepository;
 import com.example.sns.post.domain.Post;
@@ -20,11 +21,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.List;
 
 import static com.example.sns.common.fixtures.CommentFixture.getBasicCommentRequest;
+import static com.example.sns.common.fixtures.MemberFixture.getBasicMember;
 import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_CONTENT;
 import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_IMAGE2;
 import static com.example.sns.common.fixtures.PostFixture.EDIT_POST_CONTENT;
 import static com.example.sns.common.fixtures.PostFixture.POST_IMAGE_PATH1;
 import static com.example.sns.common.fixtures.PostFixture.POST_IMAGE_PATH2;
+import static com.example.sns.common.fixtures.PostFixture.getBasicPost;
 import static com.example.sns.common.fixtures.PostFixture.getBasicPostImages;
 import static com.example.sns.common.fixtures.PostFixture.getBasicUpdateRequest;
 import static com.example.sns.common.fixtures.PostFixture.getBasicUploadRequest;
@@ -32,6 +35,7 @@ import static com.example.sns.common.fixtures.MemberFixture.getBasicMember2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -39,6 +43,9 @@ class PostServiceTest extends ServiceTest {
 
     @Autowired
     PostService postService;
+
+    @Autowired
+    LikeService likeService;
 
     @MockBean
     ImageStore imageStore;
@@ -176,5 +183,52 @@ class PostServiceTest extends ServiceTest {
     private List<PostImage> getFeedImages() {
         return em.createQuery("select fi from PostImage fi", PostImage.class)
                 .getResultList();
+    }
+
+    @Test
+    @DisplayName("특정 게시글을 조회해야 함")
+    void getPost() throws Exception {
+        //given
+        Member author = memberRepository.save(getBasicMember());
+        Post post = postRepository.save(getBasicPost(author));
+        Member member = memberRepository.save(getBasicMember2());
+        likeService.like(member.getId(), post.getId());
+
+        //when
+        PostResponse response = postService.getPost(member.getId(), post.getId());
+
+        //then
+        assertAll(
+                () -> assertThat(response.getNickname()).isEqualTo(author.getInfo().getNickname()),
+                () -> assertThat(response.getLikeCnt()).isEqualTo(1),
+                () -> assertThat(response.getContent()).isEqualTo(post.getContent()),
+                () -> assertThat(response.getId()).isEqualTo(post.getId()),
+                () -> assertThat(response.getCreatedAt()).isEqualTo(post.getCreatedAt().toLocalDate())
+        );
+    }
+
+    @Test
+    @DisplayName("유저가 없는 경우 조회를 하면 예외가 발생해야 함")
+    void getPost_memberNotFound() throws Exception {
+        //given
+        Long notExistId = 999L;
+        Member author = memberRepository.save(getBasicMember());
+        Post post = postRepository.save(getBasicPost(author));
+
+        //when
+        assertThatThrownBy(() -> postService.getPost(notExistId, post.getId()))
+                .isInstanceOf(MemberNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("게시글이 없는 경우 조회를 하면 예외가 발생해야 함")
+    void getPost_postNotFound() throws Exception {
+        //given
+        Long notExistId = 999L;
+        Member author = memberRepository.save(getBasicMember());
+
+        //when
+        assertThatThrownBy(() -> postService.getPost(author.getId(), notExistId))
+                .isInstanceOf(PostNotFoundException.class);
     }
 }
