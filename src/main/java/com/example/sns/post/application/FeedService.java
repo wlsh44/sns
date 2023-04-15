@@ -7,6 +7,7 @@ import com.example.sns.post.domain.Feed;
 import com.example.sns.post.domain.Post;
 import com.example.sns.post.domain.PostRepository;
 import com.example.sns.post.presentiation.dto.MyFeedResponse;
+import com.example.sns.post.presentiation.dto.RecentFeedResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -28,6 +29,12 @@ public class FeedService {
         Feed feed = new Feed(myFeedSlice.getContent());
 
         return MyFeedResponse.from(feed, member, myFeedSlice.hasNext(), myFeedSlice.getNumber());
+    }
+
+    public RecentFeedResponse findRecentFeed(Pageable pageable) {
+        Slice<Post> recentFeedSlice = postRepository.findRecentFeed(pageable);
+
+        return RecentFeedResponse.from(recentFeedSlice.getContent(), recentFeedSlice.hasNext(), recentFeedSlice.getNumber());
     }
 
     private Member getMember(Long memberId) {
