@@ -61,5 +61,7 @@ class FeedServiceTest extends ServiceTest {
         //then
         List<PostResponse> feed = response.getFeed();
         assertThat(feed).hasSize(2);
+        assertThat(response.isLast()).isTrue();
+        assertThat(response.getOffset()).isEqualTo(0);
     }
 }
