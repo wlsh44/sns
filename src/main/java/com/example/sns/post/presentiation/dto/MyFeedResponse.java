@@ -13,11 +13,13 @@ import java.util.List;
 public class MyFeedResponse {
 
     private final List<PostResponse> feed;
+    private final boolean last;
+    private final int offset;
 
-    public static MyFeedResponse from(Feed feed, Member member) {
+    public static MyFeedResponse from(Feed feed, Member member, boolean hasNext, int offset) {
         List<PostResponse> postResponseList = feed.getPosts().stream()
                 .map(post -> PostResponse.from(post, member))
                 .toList();
-        return new MyFeedResponse(postResponseList);
+        return new MyFeedResponse(postResponseList, !hasNext, offset);
     }
 }

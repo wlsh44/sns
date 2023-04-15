@@ -4,10 +4,12 @@ import com.example.sns.member.domain.Member;
 import com.example.sns.member.domain.MemberRepository;
 import com.example.sns.member.exception.MemberNotFoundException;
 import com.example.sns.post.domain.Feed;
+import com.example.sns.post.domain.Post;
 import com.example.sns.post.domain.PostRepository;
 import com.example.sns.post.presentiation.dto.MyFeedResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,9 +23,11 @@ public class FeedService {
 
     public MyFeedResponse findMyFeed(Long memberId, Pageable pageable) {
         Member member = getMember(memberId);
-        Feed feed = new Feed(postRepository.findMyFeed(memberId, pageable));
+        Slice<Post> myFeedSlice = postRepository.findMyFeed(memberId, pageable);
 
-        return MyFeedResponse.from(feed, member);
+        Feed feed = new Feed(myFeedSlice.getContent());
+
+        return MyFeedResponse.from(feed, member, myFeedSlice.hasNext(), myFeedSlice.getNumber());
     }
 
     private Member getMember(Long memberId) {
