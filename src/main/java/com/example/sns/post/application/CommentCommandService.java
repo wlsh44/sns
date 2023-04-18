@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class CommentService {
+public class CommentCommandService {
 
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
@@ -32,6 +32,15 @@ public class CommentService {
         post.addComment(comment);
     }
 
+    @Transactional
+    public void deleteComment(Long memberId, Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new CommentNotFoundException(commentId));
+        comment.validateIsAuthor(memberId);
+
+        commentRepository.delete(comment);
+    }
+
     private Post getPost(Long postId) {
         return postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(postId));
@@ -40,14 +49,5 @@ public class CommentService {
     private Member getMember(Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException(memberId));
-    }
-
-    @Transactional
-    public void deleteComment(Long memberId, Long commentId) {
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new CommentNotFoundException(commentId));
-        comment.validateIsAuthor(memberId);
-
-        commentRepository.delete(comment);
     }
 }

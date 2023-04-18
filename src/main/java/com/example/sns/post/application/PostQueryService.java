@@ -3,7 +3,7 @@ package com.example.sns.post.application;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.domain.MemberRepository;
 import com.example.sns.member.exception.MemberNotFoundException;
-import com.example.sns.post.application.dto.PostResponse;
+import com.example.sns.post.presentiation.dto.PostResponse;
 import com.example.sns.post.domain.Post;
 import com.example.sns.post.domain.PostRepository;
 import com.example.sns.post.exception.PostNotFoundException;

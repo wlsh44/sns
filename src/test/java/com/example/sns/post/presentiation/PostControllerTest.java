@@ -2,7 +2,7 @@ package com.example.sns.post.presentiation;
 
 import com.example.sns.common.support.MockControllerTest;
 import com.example.sns.member.exception.MemberNotFoundException;
-import com.example.sns.post.application.dto.PostResponse;
+import com.example.sns.post.presentiation.dto.PostResponse;
 import com.example.sns.post.exception.PostNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.example.sns.common.fixtures.AuthFixture.ACCESS_TOKEN;
@@ -80,7 +81,7 @@ class PostControllerTest extends MockControllerTest {
     @DisplayName("게시글 조회에 성공하면 데이터와 200 응답을 함")
     void findPostTest() throws Exception {
         //given
-        PostResponse response = new PostResponse(1L, 1L, BASIC_NICKNAME, BASIC_PROFILE, List.of("url"), 0, BASIC_POST_CONTENT, LocalDate.now(), false);
+        PostResponse response = new PostResponse(1L, 1L, BASIC_NICKNAME, BASIC_PROFILE, List.of("url"), 0, BASIC_POST_CONTENT, LocalDateTime.now(), false);
         given(postQueryService.findPost(any(), any()))
                 .willReturn(response);
 

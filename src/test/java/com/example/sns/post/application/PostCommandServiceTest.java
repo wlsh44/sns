@@ -55,7 +55,7 @@ class PostCommandServiceTest extends ServiceTest {
     CommentRepository commentRepository;
 
     @Autowired
-    CommentService commentService;
+    CommentCommandService commentCommandService;
 
     @Test
     @DisplayName("게시글 업로드에 성공해야 함")
@@ -141,7 +141,7 @@ class PostCommandServiceTest extends ServiceTest {
         Post post = Post.createPost(member, BASIC_POST_CONTENT);
         post.updatePostImage(List.of(new PostImage(POST_IMAGE_PATH1, post)));
         post = postRepository.save(post);
-        commentService.createComment(member.getId(), post.getId(), getBasicCommentRequest(post.getId()));
+        commentCommandService.createComment(member.getId(), post.getId(), getBasicCommentRequest(post.getId()));
 
         //when
         postCommandService.deletePost(member.getId(), post.getId());

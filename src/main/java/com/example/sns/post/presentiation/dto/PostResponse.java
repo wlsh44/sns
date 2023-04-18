@@ -1,4 +1,4 @@
-package com.example.sns.post.application.dto;
+package com.example.sns.post.presentiation.dto;
 
 import com.example.sns.member.domain.Member;
 import com.example.sns.post.domain.Author;
@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -24,8 +24,8 @@ public class PostResponse {
     private final int likeCnt;
     private final String content;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private final LocalDate createdAt;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private final LocalDateTime createdAt;
 
     @JsonProperty(namespace = "isLike")
     private final boolean like;
@@ -40,7 +40,7 @@ public class PostResponse {
                 getImageUrls(post.getImages()),
                 post.getLikes().size(),
                 post.getContent(),
-                post.getCreatedAt().toLocalDate(),
+                post.getCreatedAt(),
                 post.isLikedBy(member)
         );
     }

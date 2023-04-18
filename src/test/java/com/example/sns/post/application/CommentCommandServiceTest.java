@@ -16,17 +16,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static com.example.sns.common.fixtures.CommentFixture.BASIC_COMMENT_CONTENT;
+import static com.example.sns.common.fixtures.CommentFixture.BASIC_COMMENT_CONTENT1;
 import static com.example.sns.common.fixtures.CommentFixture.getBasicCommentRequest;
 import static com.example.sns.common.fixtures.CommentFixture.getEmptyContentCommentRequest;
 import static com.example.sns.common.fixtures.PostFixture.getBasicPost;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class CommentServiceTest extends ServiceTest {
+class CommentCommandServiceTest extends ServiceTest {
 
     @Autowired
-    CommentService commentService;
+    CommentCommandService commentCommandService;
 
     @Autowired
     PostRepository postRepository;
@@ -44,11 +44,11 @@ class CommentServiceTest extends ServiceTest {
         NewCommentRequest request = getBasicCommentRequest(post.getId());
 
         //when
-        commentService.createComment(member.getId(), post.getId(), request);
+        commentCommandService.createComment(member.getId(), post.getId(), request);
 
         //then
         Comment comment = commentRepository.findAll().get(0);
-        assertThat(comment.getContent()).isEqualTo(BASIC_COMMENT_CONTENT);
+        assertThat(comment.getContent()).isEqualTo(BASIC_COMMENT_CONTENT1);
         assertThat(comment.getPost().getId()).isEqualTo(post.getId());
         assertThat(comment.getAuthor().getId()).isEqualTo(member.getId());
     }
@@ -61,7 +61,7 @@ class CommentServiceTest extends ServiceTest {
         NewCommentRequest request = getEmptyContentCommentRequest(post.getId());
 
         //when then
-        assertThatThrownBy(() -> commentService.createComment(member.getId(), post.getId(), request))
+        assertThatThrownBy(() -> commentCommandService.createComment(member.getId(), post.getId(), request))
             .isInstanceOf(EmptyCommentException.class);
     }
 
@@ -74,7 +74,7 @@ class CommentServiceTest extends ServiceTest {
         NewCommentRequest request = getBasicCommentRequest(notExistFeedId);
 
         //when then
-        assertThatThrownBy(() -> commentService.createComment(member.getId(), notExistFeedId, request))
+        assertThatThrownBy(() -> commentCommandService.createComment(member.getId(), notExistFeedId, request))
                 .isInstanceOf(PostNotFoundException.class);
     }
 
@@ -83,10 +83,10 @@ class CommentServiceTest extends ServiceTest {
     void deleteCommentTest() throws Exception {
         //given
         post = postRepository.save(getBasicPost(member));
-        commentService.createComment(member.getId(), post.getId(), getBasicCommentRequest(post.getId()));
+        commentCommandService.createComment(member.getId(), post.getId(), getBasicCommentRequest(post.getId()));
 
         //when
-        commentService.deleteComment(member.getId(), 1L);
+        commentCommandService.deleteComment(member.getId(), 1L);
 
         //then
         List<Comment> comments = commentRepository.findAll();
@@ -99,10 +99,10 @@ class CommentServiceTest extends ServiceTest {
         //given
         post = postRepository.save(getBasicPost(member));
         Long notExistId = 999L;
-        commentService.createComment(member.getId(), post.getId(), getBasicCommentRequest(post.getId()));
+        commentCommandService.createComment(member.getId(), post.getId(), getBasicCommentRequest(post.getId()));
 
         //when then
-        assertThatThrownBy(() -> commentService.deleteComment(member.getId(), notExistId))
+        assertThatThrownBy(() -> commentCommandService.deleteComment(member.getId(), notExistId))
                 .isInstanceOf(CommentNotFoundException.class);
     }
 
@@ -112,10 +112,10 @@ class CommentServiceTest extends ServiceTest {
         //given
         post = postRepository.save(getBasicPost(member));
         Long notAuthorId = 999L;
-        commentService.createComment(member.getId(), post.getId(), getBasicCommentRequest(post.getId()));
+        commentCommandService.createComment(member.getId(), post.getId(), getBasicCommentRequest(post.getId()));
 
         //when then
-        assertThatThrownBy(() -> commentService.deleteComment(notAuthorId, 1L))
+        assertThatThrownBy(() -> commentCommandService.deleteComment(notAuthorId, 1L))
                 .isInstanceOf(NotCommentAuthorException.class);
     }
 }

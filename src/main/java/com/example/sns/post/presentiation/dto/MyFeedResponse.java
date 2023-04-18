@@ -1,7 +1,6 @@
 package com.example.sns.post.presentiation.dto;
 
 import com.example.sns.member.domain.Member;
-import com.example.sns.post.application.dto.PostResponse;
 import com.example.sns.post.domain.Feed;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

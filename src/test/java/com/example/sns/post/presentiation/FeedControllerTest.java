@@ -1,7 +1,7 @@
 package com.example.sns.post.presentiation;
 
 import com.example.sns.common.support.MockControllerTest;
-import com.example.sns.post.application.dto.PostResponse;
+import com.example.sns.post.presentiation.dto.PostResponse;
 import com.example.sns.post.presentiation.dto.MyFeedResponse;
 import com.example.sns.post.presentiation.dto.RecentFeedPostResponse;
 import com.example.sns.post.presentiation.dto.RecentFeedResponse;
@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.example.sns.common.fixtures.AuthFixture.ACCESS_TOKEN;
@@ -19,7 +20,6 @@ import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_CONTENT;
 import static com.example.sns.common.fixtures.PostFixture.POST_IMAGE_PATH1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -32,7 +32,7 @@ class FeedControllerTest extends MockControllerTest {
     @DisplayName("내 피드 조회에 성공하면 데이터와 200 응답을 함")
     void findMyFeedTest() throws Exception {
         //given
-        MyFeedResponse response = new MyFeedResponse(List.of(new PostResponse(1L, 1L, BASIC_NICKNAME, BASIC_PROFILE, List.of("url"), 0, BASIC_POST_CONTENT, LocalDate.now(), false)), false, 0);
+        MyFeedResponse response = new MyFeedResponse(List.of(new PostResponse(1L, 1L, BASIC_NICKNAME, BASIC_PROFILE, List.of("url"), 0, BASIC_POST_CONTENT, LocalDateTime.now(), false)), false, 0);
         given(feedService.findMyFeed(any(), any()))
                 .willReturn(response);
 
