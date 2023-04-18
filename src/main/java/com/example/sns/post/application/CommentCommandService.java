@@ -32,6 +32,15 @@ public class CommentCommandService {
         post.addComment(comment);
     }
 
+    @Transactional
+    public void deleteComment(Long memberId, Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new CommentNotFoundException(commentId));
+        comment.validateIsAuthor(memberId);
+
+        commentRepository.delete(comment);
+    }
+
     private Post getPost(Long postId) {
         return postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(postId));
@@ -40,14 +49,5 @@ public class CommentCommandService {
     private Member getMember(Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException(memberId));
-    }
-
-    @Transactional
-    public void deleteComment(Long memberId, Long commentId) {
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new CommentNotFoundException(commentId));
-        comment.validateIsAuthor(memberId);
-
-        commentRepository.delete(comment);
     }
 }
