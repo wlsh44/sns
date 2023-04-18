@@ -10,7 +10,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("select p from Post p " +
             "join Follow f on f.following.id = p.author.member.id " +
-            "where f.follower.id = :memberId")
+            "where f.follower.id = :memberId order by p.createdAt desc")
     Slice<Post> findMyFeed(@Param("memberId") Long memberId, Pageable pageable);
 
     @Query("select p from Post p order by p.createdAt desc")
