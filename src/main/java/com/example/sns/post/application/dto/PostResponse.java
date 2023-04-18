@@ -34,7 +34,7 @@ public class PostResponse {
         Author author = post.getAuthor();
         return new PostResponse(
                 post.getId(),
-                author.getAuthorId(),
+                author.getId(),
                 author.getNickname(),
                 author.getProfile(),
                 getImageUrls(post.getImages()),

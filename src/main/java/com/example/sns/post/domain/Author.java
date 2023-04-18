@@ -20,7 +20,7 @@ public class Author {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public Long getAuthorId() {
+    public Long getId() {
         return member.getId();
     }
 
@@ -32,9 +32,7 @@ public class Author {
         return member.getInfo().getNickname();
     }
 
-    void validateIsAuthor(Long memberId) {
-        if (!member.getId().equals(memberId)) {
-            throw new NotAuthorException();
-        }
+    boolean isAuthor(Long memberId) {
+        return member.getId().equals(memberId);
     }
 }

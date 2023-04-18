@@ -57,6 +57,8 @@ public class Comment extends BaseTimeEntity {
     }
 
     public void validateIsAuthor(Long memberId) {
-        author.validateIsAuthor(memberId);
+        if (!author.isAuthor(memberId)) {
+            throw new NotCommentAuthorException();
+        }
     }
 }
