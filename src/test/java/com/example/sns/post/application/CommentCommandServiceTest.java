@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static com.example.sns.common.fixtures.CommentFixture.BASIC_COMMENT_CONTENT;
+import static com.example.sns.common.fixtures.CommentFixture.BASIC_COMMENT_CONTENT1;
 import static com.example.sns.common.fixtures.CommentFixture.getBasicCommentRequest;
 import static com.example.sns.common.fixtures.CommentFixture.getEmptyContentCommentRequest;
 import static com.example.sns.common.fixtures.PostFixture.getBasicPost;
@@ -48,7 +48,7 @@ class CommentCommandServiceTest extends ServiceTest {
 
         //then
         Comment comment = commentRepository.findAll().get(0);
-        assertThat(comment.getContent()).isEqualTo(BASIC_COMMENT_CONTENT);
+        assertThat(comment.getContent()).isEqualTo(BASIC_COMMENT_CONTENT1);
         assertThat(comment.getPost().getId()).isEqualTo(post.getId());
         assertThat(comment.getAuthor().getId()).isEqualTo(member.getId());
     }
