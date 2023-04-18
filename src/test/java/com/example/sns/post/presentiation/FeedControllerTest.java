@@ -14,6 +14,7 @@ import java.util.List;
 
 import static com.example.sns.common.fixtures.AuthFixture.ACCESS_TOKEN;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_NICKNAME;
+import static com.example.sns.common.fixtures.MemberFixture.BASIC_PROFILE;
 import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_CONTENT;
 import static com.example.sns.common.fixtures.PostFixture.POST_IMAGE_PATH1;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,7 +32,7 @@ class FeedControllerTest extends MockControllerTest {
     @DisplayName("내 피드 조회에 성공하면 데이터와 200 응답을 함")
     void findMyFeedTest() throws Exception {
         //given
-        MyFeedResponse response = new MyFeedResponse(List.of(new PostResponse(1L, BASIC_NICKNAME, List.of("url"), 0, BASIC_POST_CONTENT, LocalDate.now(), false)), false, 0);
+        MyFeedResponse response = new MyFeedResponse(List.of(new PostResponse(1L, 1L, BASIC_NICKNAME, BASIC_PROFILE, List.of("url"), 0, BASIC_POST_CONTENT, LocalDate.now(), false)), false, 0);
         given(feedService.findMyFeed(any(), any()))
                 .willReturn(response);
 
