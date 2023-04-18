@@ -81,7 +81,7 @@ class PostControllerTest extends MockControllerTest {
     void findPostTest() throws Exception {
         //given
         PostResponse response = new PostResponse(1L, 1L, BASIC_NICKNAME, BASIC_PROFILE, List.of("url"), 0, BASIC_POST_CONTENT, LocalDate.now(), false);
-        given(postService.findPost(any(), any()))
+        given(postQueryService.findPost(any(), any()))
                 .willReturn(response);
 
         mockMvc.perform(get("/posts/1")
@@ -94,7 +94,7 @@ class PostControllerTest extends MockControllerTest {
     @DisplayName("유저가 없을 때 게시글 조회를 하는 경우 400 응답을 함")
     void findPostTest_memberNotFound() throws Exception {
         //given
-        given(postService.findPost(any(), any()))
+        given(postQueryService.findPost(any(), any()))
                 .willThrow(new MemberNotFoundException(1L));
 
         mockMvc.perform(get("/posts/1")
@@ -106,7 +106,7 @@ class PostControllerTest extends MockControllerTest {
     @DisplayName("게시글이 없을 때 없을 때 게시글 조회를 하는 경우 400 응답을 함")
     void findPostTest_postNotFound() throws Exception {
         //given
-        given(postService.findPost(any(), any()))
+        given(postQueryService.findPost(any(), any()))
                 .willThrow(new PostNotFoundException(1L));
 
         mockMvc.perform(get("/posts/1")

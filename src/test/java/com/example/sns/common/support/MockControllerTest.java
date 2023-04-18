@@ -8,6 +8,7 @@ import com.example.sns.member.application.MemberService;
 import com.example.sns.post.application.CommentService;
 import com.example.sns.post.application.FeedService;
 import com.example.sns.post.application.LikeService;
+import com.example.sns.post.application.PostQueryService;
 import com.example.sns.post.application.PostService;
 import com.example.sns.follow.application.FollowService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,6 +43,9 @@ public class MockControllerTest {
 
     @MockBean
     protected PostService postService;
+
+    @MockBean
+    protected PostQueryService postQueryService;
 
     @MockBean
     protected FollowService followService;
