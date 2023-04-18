@@ -45,18 +45,11 @@ class FeedServiceTest extends ServiceTest {
     FollowRepository followRepository;
 
     @Test
-    @DisplayName("팔로우한 유저의 피드를 조회해야 함")
+    @DisplayName("팔로우한 유저의 최신 게시글이 담긴 피드를 조회해야 함")
     void findMyFeedTest() throws Exception {
         //given
         Member follower = memberRepository.save(getFollower());
-        Member notFollowingMember = memberRepository.save(getBasicMember());
-        Member following1 = memberRepository.save(getBasicMember2());
-        Member following2 = memberRepository.save(getFollowing());
-        postRepository.save(getBasicPost(notFollowingMember));
-        postRepository.save(getBasicPost(following1));
-        postRepository.save(getBasicPost2(following2));
-        followRepository.save(Follow.createFollowTable(follower, following1));
-        followRepository.save(Follow.createFollowTable(follower, following2));
+        MyFeedResponse expect = initOtherDataAndGetExpect(follower);
         int offset = 0;
         Pageable pageable = PageRequest.of(offset, 5);
 
@@ -64,12 +57,39 @@ class FeedServiceTest extends ServiceTest {
         MyFeedResponse response = feedService.findMyFeed(follower.getId(), pageable);
 
         //then
-        List<PostResponse> feed = response.getFeed();
-        assertAll(
-                () -> assertThat(feed).hasSize(2),
-                () -> assertThat(response.isLast()).isTrue(),
-                () -> assertThat(response.getOffset()).isEqualTo(offset)
-        );
+        assertThat(response).usingRecursiveComparison()
+                .isEqualTo(expect);
+    }
+
+    private MyFeedResponse initOtherDataAndGetExpect(Member follower) {
+        Member notFollowingMember = memberRepository.save(getBasicMember());
+        Member following1 = memberRepository.save(getBasicMember2());
+        Member following2 = memberRepository.save(getFollowing());
+        followRepository.save(Follow.createFollowTable(follower, following1));
+        followRepository.save(Follow.createFollowTable(follower, following2));
+        postRepository.save(getBasicPost(notFollowingMember));
+        Post following1Post = postRepository.save(getBasicPost(following1));
+        Post following2Post = postRepository.save(getBasicPost2(following2));
+        return new MyFeedResponse(
+                List.of(
+                        getPostResponse(following2, following2Post),
+                        getPostResponse(following1, following1Post)
+                ),
+                true,
+                0);
+    }
+
+    private PostResponse getPostResponse(Member following2, Post following2Post) {
+        return new PostResponse(
+                following2Post.getId(),
+                following2.getId(),
+                following2.getInfo().getNickname(),
+                following2.getProfileUrl(),
+                List.of(),
+                0,
+                following2Post.getContent(),
+                following2Post.getCreatedAt().toLocalDate(),
+                false);
     }
 
     @Test
