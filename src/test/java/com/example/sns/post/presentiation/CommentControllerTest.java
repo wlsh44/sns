@@ -30,7 +30,7 @@ class CommentControllerTest extends MockControllerTest {
         NewCommentRequest request = getBasicCommentRequest(1L);
 
         //when then
-        mockMvc.perform(post("/comments")
+        mockMvc.perform(post("/posts/1/comments")
                         .param("postId", "1")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -49,7 +49,7 @@ class CommentControllerTest extends MockControllerTest {
                 .createComment(any(), any(), any());
 
         //when then
-        mockMvc.perform(post("/comments")
+        mockMvc.perform(post("/posts/1/comments")
                         .param("postId", "1")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -67,7 +67,7 @@ class CommentControllerTest extends MockControllerTest {
                 .createComment(any(), any(), any());
 
         //when then
-        mockMvc.perform(post("/comments")
+        mockMvc.perform(post("/posts/1/comments")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
@@ -82,7 +82,7 @@ class CommentControllerTest extends MockControllerTest {
                 .deleteComment(any(), any());
 
         //when then
-        mockMvc.perform(delete("/comments/1")
+        mockMvc.perform(delete("/posts/1/comments/1")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN))
                 .andExpect(status().isOk());
     }
@@ -95,7 +95,7 @@ class CommentControllerTest extends MockControllerTest {
                 .deleteComment(any(), any());
 
         //when then
-        mockMvc.perform(delete("/comments/1")
+        mockMvc.perform(delete("/posts/1/comments/1")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN))
                 .andExpect(status().isBadRequest());
     }
@@ -108,7 +108,7 @@ class CommentControllerTest extends MockControllerTest {
                 .deleteComment(any(), any());
 
         //when then
-        mockMvc.perform(delete("/comments/1")
+        mockMvc.perform(delete("/posts/1/comments/1")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN))
                 .andExpect(status().isBadRequest());
     }

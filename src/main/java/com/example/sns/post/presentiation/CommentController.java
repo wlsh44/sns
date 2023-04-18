@@ -13,20 +13,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/comments")
+@RequestMapping("/posts")
 @RequiredArgsConstructor
 public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("")
-    public ResponseEntity<Void> create(@Authenticated Long memberId, @RequestParam Long postId, NewCommentRequest request) {
+    @PostMapping("/{postId}/comments")
+    public ResponseEntity<Void> create(@Authenticated Long memberId, @PathVariable Long postId, NewCommentRequest request) {
         commentService.createComment(memberId, postId, request);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{commentId}")
-    public ResponseEntity<Void> delete(@Authenticated Long memberId, @PathVariable Long commentId) {
+    @DeleteMapping("/{postId}/comments/{commentId}")
+    public ResponseEntity<Void> delete(@Authenticated Long memberId, @PathVariable Long postId, @PathVariable Long commentId) {
         commentService.deleteComment(memberId, commentId);
         return ResponseEntity.ok().build();
     }
