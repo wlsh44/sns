@@ -45,7 +45,7 @@ class CommentControllerTest extends MockControllerTest {
         Long notExistFeedId = 1L;
         NewCommentRequest request = getBasicCommentRequest(notExistFeedId);
         doThrow(new PostNotFoundException(notExistFeedId))
-                .when(commentService)
+                .when(commentCommandService)
                 .createComment(any(), any(), any());
 
         //when then
@@ -63,7 +63,7 @@ class CommentControllerTest extends MockControllerTest {
         //given
         NewCommentRequest request = getEmptyContentCommentRequest(1L);
         doThrow(new EmptyCommentException())
-                .when(commentService)
+                .when(commentCommandService)
                 .createComment(any(), any(), any());
 
         //when then
@@ -78,7 +78,7 @@ class CommentControllerTest extends MockControllerTest {
     @DisplayName("댓글 삭제에 성공할 경우 200을 응답해야 함")
     void deleteTest() throws Exception {
         //given
-        doNothing().when(commentService)
+        doNothing().when(commentCommandService)
                 .deleteComment(any(), any());
 
         //when then
@@ -91,7 +91,7 @@ class CommentControllerTest extends MockControllerTest {
     @DisplayName("댓글이 없을 경우 400을 응답해야 함")
     void deleteTest_commentNotFound() throws Exception {
         //given
-        doThrow(new CommentNotFoundException(1L)).when(commentService)
+        doThrow(new CommentNotFoundException(1L)).when(commentCommandService)
                 .deleteComment(any(), any());
 
         //when then
@@ -104,7 +104,7 @@ class CommentControllerTest extends MockControllerTest {
     @DisplayName("댓글 작성자가 아닐 경우 400을 응답해야 함")
     void deleteTest_notAuthor() throws Exception {
         //given
-        doThrow(new NotCommentAuthorException()).when(commentService)
+        doThrow(new NotCommentAuthorException()).when(commentCommandService)
                 .deleteComment(any(), any());
 
         //when then

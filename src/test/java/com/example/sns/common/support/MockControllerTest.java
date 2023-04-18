@@ -5,7 +5,7 @@ import com.example.sns.auth.config.AuthProperties;
 import com.example.sns.auth.infrastructure.JwtProvider;
 import com.example.sns.auth.presentation.AuthExtractor;
 import com.example.sns.member.application.MemberService;
-import com.example.sns.post.application.CommentService;
+import com.example.sns.post.application.CommentCommandService;
 import com.example.sns.post.application.FeedService;
 import com.example.sns.post.application.LikeService;
 import com.example.sns.post.application.PostQueryService;
@@ -51,7 +51,7 @@ public class MockControllerTest {
     protected FollowService followService;
 
     @MockBean
-    protected CommentService commentService;
+    protected CommentCommandService commentCommandService;
 
     @MockBean
     protected MemberService memberService;

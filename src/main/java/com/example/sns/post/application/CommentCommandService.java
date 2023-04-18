@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class CommentService {
+public class CommentCommandService {
 
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
