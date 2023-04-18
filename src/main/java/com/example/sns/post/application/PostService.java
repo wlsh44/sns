@@ -66,11 +66,11 @@ public class PostService {
         postRepository.delete(post);
     }
 
-    public PostResponse findPost(Long memberId, Long postId) {
-        Member member = getMember(memberId);
-        Post post = getPost(postId);
-
-        return PostResponse.from(post, member);
+    private Post getPostWithValidatingAuthor(Long postId, Long memberId) {
+        Post post =  postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException(postId));
+        post.validateIsOwner(memberId);
+        return post;
     }
 
     private Member getMember(Long memberId) {

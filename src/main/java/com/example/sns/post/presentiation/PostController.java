@@ -1,6 +1,7 @@
 package com.example.sns.post.presentiation;
 
 import com.example.sns.auth.presentation.Authenticated;
+import com.example.sns.post.application.PostQueryService;
 import com.example.sns.post.application.PostService;
 import com.example.sns.post.application.dto.PostResponse;
 import com.example.sns.post.application.dto.PostUpdateRequest;
@@ -24,6 +25,7 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final PostQueryService postQueryService;
 
     @PostMapping("")
     public ResponseEntity<Void> uploadPost(@Authenticated Long memberId,
@@ -50,7 +52,7 @@ public class PostController {
 
     @GetMapping("/{postId}")
     public ResponseEntity<PostResponse> findPost(@Authenticated Long memberId, @PathVariable Long postId) {
-        PostResponse response = postService.findPost(memberId, postId);
+        PostResponse response = postQueryService.findPost(memberId, postId);
         return ResponseEntity.ok(response);
     }
 }
