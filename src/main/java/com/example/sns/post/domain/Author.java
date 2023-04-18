@@ -1,7 +1,6 @@
 package com.example.sns.post.domain;
 
 import com.example.sns.member.domain.Member;
-import com.example.sns.post.exception.NotAuthorException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

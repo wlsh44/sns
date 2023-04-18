@@ -6,7 +6,7 @@ import com.example.sns.post.domain.CommentRepository;
 import com.example.sns.post.domain.Post;
 import com.example.sns.post.domain.PostImage;
 import com.example.sns.post.domain.PostRepository;
-import com.example.sns.post.exception.NotAuthorException;
+import com.example.sns.post.exception.NotPostAuthorException;
 import com.example.sns.post.exception.PostNotFoundException;
 import com.example.sns.imagestore.exception.ImageStoreException;
 import com.example.sns.imagestore.infrastructure.ImageStore;
@@ -175,7 +175,7 @@ class PostCommandServiceTest extends ServiceTest {
 
         //when then
         assertThatThrownBy(() -> postCommandService.deletePost(member.getId(), post.getId()))
-                .isInstanceOf(NotAuthorException.class);
+                .isInstanceOf(NotPostAuthorException.class);
     }
 
     private List<PostImage> getPostImages() {

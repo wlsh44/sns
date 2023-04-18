@@ -3,7 +3,7 @@ package com.example.sns.post.domain;
 import com.example.sns.common.entity.BaseTimeEntity;
 import com.example.sns.member.domain.Member;
 import com.example.sns.post.exception.AlreadyLikedPostException;
-import com.example.sns.post.exception.NotAuthorException;
+import com.example.sns.post.exception.NotPostAuthorException;
 import com.example.sns.post.exception.NotLikedPostException;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -107,9 +107,9 @@ public class Post extends BaseTimeEntity {
                 .orElseThrow(NotLikedPostException::new);
     }
 
-    public void validateIsOwner(Long memberId) {
+    public void validateIsAuthor(Long memberId) {
         if (!author.isAuthor(memberId)) {
-            throw new NotAuthorException();
+            throw new NotPostAuthorException();
         }
     }
 }

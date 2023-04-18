@@ -66,7 +66,7 @@ public class PostCommandService {
     private Post getPostWithValidatingAuthor(Long postId, Long memberId) {
         Post post =  postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(postId));
-        post.validateIsOwner(memberId);
+        post.validateIsAuthor(memberId);
         return post;
     }
 
