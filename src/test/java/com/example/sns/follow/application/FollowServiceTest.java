@@ -4,7 +4,6 @@ import com.example.sns.common.support.ServiceTest;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.domain.MemberRepository;
 import com.example.sns.member.exception.MemberNotFoundException;
-import com.example.sns.follow.application.dto.UnfollowRequest;
 import com.example.sns.follow.domain.Follow;
 import com.example.sns.follow.domain.FollowRepository;
 import com.example.sns.follow.exception.AlreadyFollowException;
@@ -79,7 +78,6 @@ class FollowServiceTest extends ServiceTest {
         Member follower = memberRepository.save(getFollower());
         Member following = memberRepository.save(getFollowing());
         followService.follow(follower.getId(), following.getId());
-        UnfollowRequest request = new UnfollowRequest(following.getId());
 
         //when
         followService.unfollow(follower.getId(), following.getId());
