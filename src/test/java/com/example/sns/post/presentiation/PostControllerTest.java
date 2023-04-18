@@ -14,6 +14,7 @@ import java.util.List;
 
 import static com.example.sns.common.fixtures.AuthFixture.ACCESS_TOKEN;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_NICKNAME;
+import static com.example.sns.common.fixtures.MemberFixture.BASIC_PROFILE;
 import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_CONTENT;
 import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_IMAGE1;
 import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_IMAGE2;
@@ -67,7 +68,7 @@ class PostControllerTest extends MockControllerTest {
     void deleteTest_feedNotFound() throws Exception {
         //given
         doThrow(new PostNotFoundException(1L))
-                .when(postService)
+                .when(postCommandService)
                 .deletePost(anyLong(), anyLong());
 
         mockMvc.perform(delete("/posts/1")
@@ -79,8 +80,8 @@ class PostControllerTest extends MockControllerTest {
     @DisplayName("게시글 조회에 성공하면 데이터와 200 응답을 함")
     void findPostTest() throws Exception {
         //given
-        PostResponse response = new PostResponse(1L, BASIC_NICKNAME, List.of("url"), 0, BASIC_POST_CONTENT, LocalDate.now(), false);
-        given(postService.findPost(any(), any()))
+        PostResponse response = new PostResponse(1L, 1L, BASIC_NICKNAME, BASIC_PROFILE, List.of("url"), 0, BASIC_POST_CONTENT, LocalDate.now(), false);
+        given(postQueryService.findPost(any(), any()))
                 .willReturn(response);
 
         mockMvc.perform(get("/posts/1")
@@ -93,7 +94,7 @@ class PostControllerTest extends MockControllerTest {
     @DisplayName("유저가 없을 때 게시글 조회를 하는 경우 400 응답을 함")
     void findPostTest_memberNotFound() throws Exception {
         //given
-        given(postService.findPost(any(), any()))
+        given(postQueryService.findPost(any(), any()))
                 .willThrow(new MemberNotFoundException(1L));
 
         mockMvc.perform(get("/posts/1")
@@ -105,7 +106,7 @@ class PostControllerTest extends MockControllerTest {
     @DisplayName("게시글이 없을 때 없을 때 게시글 조회를 하는 경우 400 응답을 함")
     void findPostTest_postNotFound() throws Exception {
         //given
-        given(postService.findPost(any(), any()))
+        given(postQueryService.findPost(any(), any()))
                 .willThrow(new PostNotFoundException(1L));
 
         mockMvc.perform(get("/posts/1")

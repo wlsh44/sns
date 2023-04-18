@@ -3,20 +3,18 @@ package com.example.sns.post.domain;
 import com.example.sns.common.entity.BaseTimeEntity;
 import com.example.sns.member.domain.Member;
 import com.example.sns.post.exception.AlreadyLikedPostException;
-import com.example.sns.post.exception.NotAuthorException;
+import com.example.sns.post.exception.NotPostAuthorException;
 import com.example.sns.post.exception.NotLikedPostException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +31,8 @@ public class Post extends BaseTimeEntity {
 
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member author;
+    @Embedded
+    private Author author;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostImage> images = new ArrayList<>();
@@ -46,13 +43,13 @@ public class Post extends BaseTimeEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Like> likes = new ArrayList<>();
 
-    public Post(Member author, String content) {
+    public Post(Author author, String content) {
         this.content = content;
         this.author = author;
     }
 
     public static Post createPost(Member member, String content) {
-        return new Post(member, getEmptyStringIfContentNull(content));
+        return new Post(new Author(member), getEmptyStringIfContentNull(content));
     }
 
     public void updatePostImage(List<PostImage> postImages) {
@@ -110,9 +107,9 @@ public class Post extends BaseTimeEntity {
                 .orElseThrow(NotLikedPostException::new);
     }
 
-    public void validateIsOwner(Long memberId) {
-        if (!author.getId().equals(memberId)) {
-            throw new NotAuthorException();
+    public void validateIsAuthor(Long memberId) {
+        if (!author.isAuthor(memberId)) {
+            throw new NotPostAuthorException();
         }
     }
 }

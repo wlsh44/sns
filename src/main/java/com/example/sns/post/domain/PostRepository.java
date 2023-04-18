@@ -6,13 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
-
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("select p from Post p " +
-            "join Follow f on f.following.id = p.author.id " +
-            "where f.follower.id = :memberId")
+            "join Follow f on f.following.id = p.author.member.id " +
+            "where f.follower.id = :memberId order by p.createdAt desc")
     Slice<Post> findMyFeed(@Param("memberId") Long memberId, Pageable pageable);
 
     @Query("select p from Post p order by p.createdAt desc")

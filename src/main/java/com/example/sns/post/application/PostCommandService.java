@@ -1,6 +1,5 @@
 package com.example.sns.post.application;
 
-import com.example.sns.post.application.dto.PostResponse;
 import com.example.sns.post.application.dto.PostUpdateRequest;
 import com.example.sns.post.application.dto.PostUploadRequest;
 import com.example.sns.post.domain.CommentRepository;
@@ -23,7 +22,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class PostService {
+public class PostCommandService {
 
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
@@ -50,8 +49,7 @@ public class PostService {
 
     @Transactional
     public void updatePost(Long memberId, Long postId, PostUpdateRequest request, List<MultipartFile> images) {
-        Post post = getPost(postId);
-        post.validateIsOwner(memberId);
+        Post post = getPostWithValidatingAuthor(postId, memberId);
 
         List<PostImage> postImages = savePostImages(images, post);
         post.editPost(request.getContent(), postImages);
@@ -59,27 +57,21 @@ public class PostService {
 
     @Transactional
     public void deletePost(Long memberId, Long postId) {
-        Post post = getPost(postId);
-        post.validateIsOwner(memberId);
+        Post post = getPostWithValidatingAuthor(postId, memberId);
         commentRepository.deleteAllInBatch(post.getComments());
         post.deletePost();
         postRepository.delete(post);
     }
 
-    public PostResponse findPost(Long memberId, Long postId) {
-        Member member = getMember(memberId);
-        Post post = getPost(postId);
-
-        return PostResponse.from(post, member);
+    private Post getPostWithValidatingAuthor(Long postId, Long memberId) {
+        Post post =  postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException(postId));
+        post.validateIsAuthor(memberId);
+        return post;
     }
 
     private Member getMember(Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException(memberId));
-    }
-
-    private Post getPost(Long postId) {
-        return postRepository.findById(postId)
-                .orElseThrow(() -> new PostNotFoundException(postId));
     }
 }
