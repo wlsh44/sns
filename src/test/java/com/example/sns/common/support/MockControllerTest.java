@@ -6,6 +6,7 @@ import com.example.sns.auth.infrastructure.JwtProvider;
 import com.example.sns.auth.presentation.AuthExtractor;
 import com.example.sns.member.application.MemberService;
 import com.example.sns.post.application.CommentCommandService;
+import com.example.sns.post.application.CommentQueryService;
 import com.example.sns.post.application.FeedService;
 import com.example.sns.post.application.LikeService;
 import com.example.sns.post.application.PostQueryService;
@@ -52,6 +53,9 @@ public class MockControllerTest {
 
     @MockBean
     protected CommentCommandService commentCommandService;
+
+    @MockBean
+    protected CommentQueryService commentQueryService;
 
     @MockBean
     protected MemberService memberService;

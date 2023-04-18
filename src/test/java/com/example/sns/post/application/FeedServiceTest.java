@@ -5,7 +5,7 @@ import com.example.sns.follow.domain.Follow;
 import com.example.sns.follow.domain.FollowRepository;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.domain.MemberRepository;
-import com.example.sns.post.application.dto.PostResponse;
+import com.example.sns.post.presentiation.dto.PostResponse;
 import com.example.sns.post.domain.Post;
 import com.example.sns.post.domain.PostImage;
 import com.example.sns.post.domain.PostRepository;

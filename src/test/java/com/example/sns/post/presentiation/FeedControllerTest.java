@@ -1,7 +1,7 @@
 package com.example.sns.post.presentiation;
 
 import com.example.sns.common.support.MockControllerTest;
-import com.example.sns.post.application.dto.PostResponse;
+import com.example.sns.post.presentiation.dto.PostResponse;
 import com.example.sns.post.presentiation.dto.MyFeedResponse;
 import com.example.sns.post.presentiation.dto.RecentFeedPostResponse;
 import com.example.sns.post.presentiation.dto.RecentFeedResponse;
@@ -19,7 +19,6 @@ import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_CONTENT;
 import static com.example.sns.common.fixtures.PostFixture.POST_IMAGE_PATH1;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

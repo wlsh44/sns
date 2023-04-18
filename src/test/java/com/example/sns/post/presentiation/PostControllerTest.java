@@ -2,7 +2,7 @@ package com.example.sns.post.presentiation;
 
 import com.example.sns.common.support.MockControllerTest;
 import com.example.sns.member.exception.MemberNotFoundException;
-import com.example.sns.post.application.dto.PostResponse;
+import com.example.sns.post.presentiation.dto.PostResponse;
 import com.example.sns.post.exception.PostNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -3,7 +3,7 @@ package com.example.sns.post.presentiation;
 import com.example.sns.auth.presentation.Authenticated;
 import com.example.sns.post.application.PostQueryService;
 import com.example.sns.post.application.PostCommandService;
-import com.example.sns.post.application.dto.PostResponse;
+import com.example.sns.post.presentiation.dto.PostResponse;
 import com.example.sns.post.application.dto.PostUpdateRequest;
 import com.example.sns.post.application.dto.PostUploadRequest;
 import lombok.RequiredArgsConstructor;

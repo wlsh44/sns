@@ -1,4 +1,4 @@
-package com.example.sns.post.application.dto;
+package com.example.sns.post.presentiation.dto;
 
 import com.example.sns.member.domain.Member;
 import com.example.sns.post.domain.Author;
