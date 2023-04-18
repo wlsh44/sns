@@ -14,8 +14,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static com.example.sns.common.fixtures.MemberFixture.BASIC_NICKNAME;
+import static com.example.sns.common.fixtures.MemberFixture.BASIC_PROFILE;
 import static com.example.sns.common.fixtures.MemberFixture.getBasicMember;
 import static com.example.sns.common.fixtures.MemberFixture.getBasicMember2;
+import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_CONTENT;
 import static com.example.sns.common.fixtures.PostFixture.getBasicPost;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -49,20 +56,17 @@ class PostQueryServiceTest extends ServiceTest {
         //given
         Member author = memberRepository.save(getBasicMember());
         Post post = postRepository.save(getBasicPost(author));
+        LocalDateTime createdAt = post.getCreatedAt();
         Member member = memberRepository.save(getBasicMember2());
         likeService.like(member.getId(), post.getId());
+        PostResponse expect = new PostResponse(post.getId(), author.getId(), BASIC_NICKNAME, author.getProfileUrl(), List.of(), 1, BASIC_POST_CONTENT, createdAt.toLocalDate(), true);
 
         //when
         PostResponse response = postQueryService.findPost(member.getId(), post.getId());
 
         //then
-        assertAll(
-                () -> assertThat(response.getAuthorNickname()).isEqualTo(author.getInfo().getNickname()),
-                () -> assertThat(response.getLikeCnt()).isEqualTo(1),
-                () -> assertThat(response.getContent()).isEqualTo(post.getContent()),
-                () -> assertThat(response.getId()).isEqualTo(post.getId()),
-                () -> assertThat(response.getCreatedAt()).isEqualTo(post.getCreatedAt().toLocalDate())
-        );
+        assertThat(response).usingRecursiveComparison()
+                .isEqualTo(expect);
     }
 
     @Test
