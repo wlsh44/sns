@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class PostService {
+public class PostCommandService {
 
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;

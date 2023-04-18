@@ -2,7 +2,7 @@ package com.example.sns.post.presentiation;
 
 import com.example.sns.auth.presentation.Authenticated;
 import com.example.sns.post.application.PostQueryService;
-import com.example.sns.post.application.PostService;
+import com.example.sns.post.application.PostCommandService;
 import com.example.sns.post.application.dto.PostResponse;
 import com.example.sns.post.application.dto.PostUpdateRequest;
 import com.example.sns.post.application.dto.PostUploadRequest;
@@ -24,14 +24,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostController {
 
-    private final PostService postService;
+    private final PostCommandService postCommandService;
     private final PostQueryService postQueryService;
 
     @PostMapping("")
     public ResponseEntity<Void> uploadPost(@Authenticated Long memberId,
                                            @RequestPart(value = "dto") PostUploadRequest request,
                                            @RequestPart List<MultipartFile> postImages) {
-        postService.uploadPost(memberId, request, postImages);
+        postCommandService.uploadPost(memberId, request, postImages);
         return ResponseEntity.ok().build();
     }
 
@@ -40,13 +40,13 @@ public class PostController {
                                            @PathVariable Long postId,
                                            @RequestPart(value = "dto") PostUpdateRequest request,
                                            @RequestPart List<MultipartFile> postImages) {
-        postService.updatePost(memberId, postId, request, postImages);
+        postCommandService.updatePost(memberId, postId, request, postImages);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{postId}")
     public ResponseEntity<Void> deletePost(@Authenticated Long memberId, @PathVariable Long postId) {
-        postService.deletePost(memberId, postId);
+        postCommandService.deletePost(memberId, postId);
         return ResponseEntity.ok().build();
     }
 

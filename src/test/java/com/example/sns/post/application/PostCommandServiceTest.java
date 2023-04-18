@@ -1,7 +1,6 @@
 package com.example.sns.post.application;
 
 import com.example.sns.common.support.ServiceTest;
-import com.example.sns.post.application.dto.PostResponse;
 import com.example.sns.post.domain.Comment;
 import com.example.sns.post.domain.CommentRepository;
 import com.example.sns.post.domain.Post;
@@ -22,13 +21,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.List;
 
 import static com.example.sns.common.fixtures.CommentFixture.getBasicCommentRequest;
-import static com.example.sns.common.fixtures.MemberFixture.getBasicMember;
 import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_CONTENT;
 import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_IMAGE2;
 import static com.example.sns.common.fixtures.PostFixture.EDIT_POST_CONTENT;
 import static com.example.sns.common.fixtures.PostFixture.POST_IMAGE_PATH1;
 import static com.example.sns.common.fixtures.PostFixture.POST_IMAGE_PATH2;
-import static com.example.sns.common.fixtures.PostFixture.getBasicPost;
 import static com.example.sns.common.fixtures.PostFixture.getBasicPostImages;
 import static com.example.sns.common.fixtures.PostFixture.getBasicUpdateRequest;
 import static com.example.sns.common.fixtures.PostFixture.getBasicUploadRequest;
@@ -40,10 +37,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-class PostServiceTest extends ServiceTest {
+class PostCommandServiceTest extends ServiceTest {
 
     @Autowired
-    PostService postService;
+    PostCommandService postCommandService;
 
     @Autowired
     LikeService likeService;
@@ -69,7 +66,7 @@ class PostServiceTest extends ServiceTest {
                 .willReturn(imagePaths);
 
         //when
-        postService.uploadPost(member.getId(), getBasicUploadRequest(), getBasicPostImages());
+        postCommandService.uploadPost(member.getId(), getBasicUploadRequest(), getBasicPostImages());
 
         //then
         List<PostImage> postImages = getPostImages();
@@ -91,7 +88,7 @@ class PostServiceTest extends ServiceTest {
         Long notExistMemberId = 9999L;
 
         //when then
-        assertThatThrownBy(() -> postService.uploadPost(notExistMemberId, getBasicUploadRequest(), getBasicPostImages()))
+        assertThatThrownBy(() -> postCommandService.uploadPost(notExistMemberId, getBasicUploadRequest(), getBasicPostImages()))
                 .isInstanceOf(MemberNotFoundException.class);
     }
 
@@ -103,7 +100,7 @@ class PostServiceTest extends ServiceTest {
                 .willThrow(new ImageStoreException(new Throwable()));
 
         //when then
-        assertThatThrownBy(() -> postService.uploadPost(member.getId(), getBasicUploadRequest(), getBasicPostImages()))
+        assertThatThrownBy(() -> postCommandService.uploadPost(member.getId(), getBasicUploadRequest(), getBasicPostImages()))
                 .isInstanceOf(ImageStoreException.class);
     }
 
@@ -118,7 +115,7 @@ class PostServiceTest extends ServiceTest {
                 .willReturn(List.of(POST_IMAGE_PATH2));
 
         //when
-        postService.updatePost(member.getId(), post.getId(), getBasicUpdateRequest(), List.of(BASIC_POST_IMAGE2));
+        postCommandService.updatePost(member.getId(), post.getId(), getBasicUpdateRequest(), List.of(BASIC_POST_IMAGE2));
 
         //then
         assertThat(post.getImages().get(0).getImagePath()).isEqualTo(POST_IMAGE_PATH2);
@@ -133,7 +130,7 @@ class PostServiceTest extends ServiceTest {
         Long notExistFeedId = 1L;
 
         //when then
-        assertThatThrownBy(() -> postService.updatePost(member.getId(), notExistFeedId, getBasicUpdateRequest(), List.of(BASIC_POST_IMAGE2)))
+        assertThatThrownBy(() -> postCommandService.updatePost(member.getId(), notExistFeedId, getBasicUpdateRequest(), List.of(BASIC_POST_IMAGE2)))
             .isInstanceOf(PostNotFoundException.class);
     }
 
@@ -147,7 +144,7 @@ class PostServiceTest extends ServiceTest {
         commentService.createComment(member.getId(), post.getId(), getBasicCommentRequest(post.getId()));
 
         //when
-        postService.deletePost(member.getId(), post.getId());
+        postCommandService.deletePost(member.getId(), post.getId());
 
         //then
         List<Post> postList = postRepository.findAll();
@@ -165,7 +162,7 @@ class PostServiceTest extends ServiceTest {
         Long notExistPostId = 9999L;
 
         //when then
-        assertThatThrownBy(() -> postService.deletePost(member.getId(), notExistPostId))
+        assertThatThrownBy(() -> postCommandService.deletePost(member.getId(), notExistPostId))
                 .isInstanceOf(PostNotFoundException.class);
     }
 
@@ -177,7 +174,7 @@ class PostServiceTest extends ServiceTest {
         Post post = postRepository.save(Post.createPost(member2, BASIC_POST_CONTENT));
 
         //when then
-        assertThatThrownBy(() -> postService.deletePost(member.getId(), post.getId()))
+        assertThatThrownBy(() -> postCommandService.deletePost(member.getId(), post.getId()))
                 .isInstanceOf(NotAuthorException.class);
     }
 

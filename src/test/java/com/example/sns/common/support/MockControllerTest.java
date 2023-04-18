@@ -9,7 +9,7 @@ import com.example.sns.post.application.CommentService;
 import com.example.sns.post.application.FeedService;
 import com.example.sns.post.application.LikeService;
 import com.example.sns.post.application.PostQueryService;
-import com.example.sns.post.application.PostService;
+import com.example.sns.post.application.PostCommandService;
 import com.example.sns.follow.application.FollowService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class MockControllerTest {
     protected AuthService authService;
 
     @MockBean
-    protected PostService postService;
+    protected PostCommandService postCommandService;
 
     @MockBean
     protected PostQueryService postQueryService;

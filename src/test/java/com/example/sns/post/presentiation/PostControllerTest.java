@@ -68,7 +68,7 @@ class PostControllerTest extends MockControllerTest {
     void deleteTest_feedNotFound() throws Exception {
         //given
         doThrow(new PostNotFoundException(1L))
-                .when(postService)
+                .when(postCommandService)
                 .deletePost(anyLong(), anyLong());
 
         mockMvc.perform(delete("/posts/1")
