@@ -88,7 +88,7 @@ class FeedServiceTest extends ServiceTest {
                 List.of(),
                 0,
                 following2Post.getContent(),
-                following2Post.getCreatedAt().toLocalDate(),
+                following2Post.getCreatedAt(),
                 false);
     }
 
