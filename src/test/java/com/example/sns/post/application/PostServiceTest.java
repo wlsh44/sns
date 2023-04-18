@@ -112,7 +112,7 @@ class PostServiceTest extends ServiceTest {
     @DisplayName("게시글을 수정하면 수정한 데이터를 갖고 있어야 함")
     void editFeed() throws Exception {
         //given
-        Post post = postRepository.save(new Post(member, BASIC_POST_CONTENT));
+        Post post = postRepository.save(Post.createPost(member, BASIC_POST_CONTENT));
         post.updatePostImage(List.of(new PostImage(POST_IMAGE_PATH1, post)));
         given(imageStore.storeFeedImages(any()))
                 .willReturn(List.of(POST_IMAGE_PATH2));
@@ -141,7 +141,7 @@ class PostServiceTest extends ServiceTest {
     @DisplayName("게시글을 지우면 게시글가 삭제되어야 함")
     void delete() throws Exception {
         //given
-        Post post = new Post(member, BASIC_POST_CONTENT);
+        Post post = Post.createPost(member, BASIC_POST_CONTENT);
         post.updatePostImage(List.of(new PostImage(POST_IMAGE_PATH1, post)));
         post = postRepository.save(post);
         commentService.createComment(member.getId(), post.getId(), getBasicCommentRequest(post.getId()));
@@ -174,7 +174,7 @@ class PostServiceTest extends ServiceTest {
     void delete_notAuthor() throws Exception {
         //given
         Member member2 = memberRepository.save(getBasicMember2());
-        Post post = postRepository.save(new Post(member2, BASIC_POST_CONTENT));
+        Post post = postRepository.save(Post.createPost(member2, BASIC_POST_CONTENT));
 
         //when then
         assertThatThrownBy(() -> postService.deletePost(member.getId(), post.getId()))
@@ -200,7 +200,7 @@ class PostServiceTest extends ServiceTest {
 
         //then
         assertAll(
-                () -> assertThat(response.getNickname()).isEqualTo(author.getInfo().getNickname()),
+                () -> assertThat(response.getAuthorNickname()).isEqualTo(author.getInfo().getNickname()),
                 () -> assertThat(response.getLikeCnt()).isEqualTo(1),
                 () -> assertThat(response.getContent()).isEqualTo(post.getContent()),
                 () -> assertThat(response.getId()).isEqualTo(post.getId()),

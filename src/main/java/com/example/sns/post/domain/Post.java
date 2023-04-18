@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -33,9 +34,8 @@ public class Post extends BaseTimeEntity {
 
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member author;
+    @Embedded
+    private Author author;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostImage> images = new ArrayList<>();
@@ -46,13 +46,13 @@ public class Post extends BaseTimeEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Like> likes = new ArrayList<>();
 
-    public Post(Member author, String content) {
+    public Post(Author author, String content) {
         this.content = content;
         this.author = author;
     }
 
     public static Post createPost(Member member, String content) {
-        return new Post(member, getEmptyStringIfContentNull(content));
+        return new Post(new Author(member), getEmptyStringIfContentNull(content));
     }
 
     public void updatePostImage(List<PostImage> postImages) {
@@ -111,8 +111,6 @@ public class Post extends BaseTimeEntity {
     }
 
     public void validateIsOwner(Long memberId) {
-        if (!author.getId().equals(memberId)) {
-            throw new NotAuthorException();
-        }
+        author.validateIsAuthor(memberId);
     }
 }

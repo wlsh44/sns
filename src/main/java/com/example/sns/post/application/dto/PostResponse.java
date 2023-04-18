@@ -37,10 +37,10 @@ public class PostResponse {
     }
 
     public static PostResponse from(Post post, Member member) {
-        Member author = post.getAuthor();
+        Author author = post.getAuthor();
         return new PostResponse(
                 post.getId(),
-                author.getInfo().getNickname(),
+                author.getAuthorId(),
                 getImageUrls(post.getImages()),
                 post.getLikes().size(),
                 post.getContent(),
