@@ -18,22 +18,22 @@ public class Author {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member author;
+    private Member member;
 
     public Long getAuthorId() {
-        return author.getId();
+        return member.getId();
     }
 
     public String getProfile() {
-        return author.getProfileUrl();
+        return member.getProfileUrl();
     }
 
     public String getNickname() {
-        return author.getInfo().getNickname();
+        return member.getInfo().getNickname();
     }
 
     void validateIsAuthor(Long memberId) {
-        if (!author.getId().equals(memberId)) {
+        if (!member.getId().equals(memberId)) {
             throw new NotAuthorException();
         }
     }

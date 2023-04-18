@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,9 +26,8 @@ public class Comment extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member author;
+    @Embedded
+    private Author author;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
@@ -35,14 +35,14 @@ public class Comment extends BaseTimeEntity {
 
     private String content;
 
-    public Comment(Member author, String content) {
+    public Comment(Author author, String content) {
         validateContent(content);
         this.author = author;
         this.content = content;
     }
 
     public static Comment createComment(Member member, String content) {
-        return new Comment(member, content);
+        return new Comment(new Author(member), content);
     }
 
     private void validateContent(String content) {
@@ -57,8 +57,6 @@ public class Comment extends BaseTimeEntity {
     }
 
     public void validateIsAuthor(Long memberId) {
-        if (!author.getId().equals(memberId)) {
-            throw new NotCommentAuthorException();
-        }
+        author.validateIsAuthor(memberId);
     }
 }
