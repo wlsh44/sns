@@ -1,7 +1,7 @@
 package com.example.sns.post.application;
 
 import com.example.sns.common.support.ServiceTest;
-import com.example.sns.imagestore.infrastructure.ImageStore;
+import com.example.sns.common.imagestore.ImageStore;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.exception.MemberNotFoundException;
 import com.example.sns.post.presentiation.dto.PostResponse;
