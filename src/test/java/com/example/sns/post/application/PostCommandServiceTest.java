@@ -46,7 +46,7 @@ class PostCommandServiceTest extends ServiceTest {
     LikeService likeService;
 
     @MockBean
-    ImageStore imageStore;
+    PostImageStore imageStore;
 
     @Autowired
     PostRepository postRepository;
@@ -62,7 +62,7 @@ class PostCommandServiceTest extends ServiceTest {
     void uploadTest() throws Exception {
         //given
         List<String> imagePaths = List.of(POST_IMAGE_PATH1, POST_IMAGE_PATH2);
-        given(imageStore.storeFeedImages(any()))
+        given(imageStore.savePostImages(any()))
                 .willReturn(imagePaths);
 
         //when
@@ -96,8 +96,8 @@ class PostCommandServiceTest extends ServiceTest {
     @DisplayName("이미지 저장에 실패하면 예외가 발생해야 함")
     void uploadFailed_imageStoreException() throws Exception {
         //given
-        given(imageStore.storeFeedImages(any()))
-                .willThrow(new ImageStoreException(new Throwable()));
+        given(imageStore.savePostImages(any()))
+                .willThrow(new ImageStoreException());
 
         //when then
         assertThatThrownBy(() -> postCommandService.uploadPost(member.getId(), getBasicUploadRequest(), getBasicPostImages()))
@@ -111,7 +111,7 @@ class PostCommandServiceTest extends ServiceTest {
         //given
         Post post = postRepository.save(Post.createPost(member, BASIC_POST_CONTENT));
         post.updatePostImage(List.of(new PostImage(POST_IMAGE_PATH1, post)));
-        given(imageStore.storeFeedImages(any()))
+        given(imageStore.savePostImages(any()))
                 .willReturn(List.of(POST_IMAGE_PATH2));
 
         //when
