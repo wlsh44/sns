@@ -18,7 +18,7 @@ public class FilePostImageStore implements PostImageStore {
     private final String storePath;
     private final ImageStore fileImageStore;
 
-    public FilePostImageStore(@Value("${image.post-store-path}") String storePath,
+    public FilePostImageStore(@Value("${cloud.aws.s3.store-path.post}") String storePath,
                               ImageStore fileImageStore) {
         this.storePath = storePath;
         this.fileImageStore = fileImageStore;
@@ -33,12 +33,12 @@ public class FilePostImageStore implements PostImageStore {
                 .collect(Collectors.toList());
     }
 
-    private void validateEmptyImages(List<MultipartFile> feedImages) {
-        if (feedImages.isEmpty()) {
+    private void validateEmptyImages(List<MultipartFile> images) {
+        if (images.isEmpty()) {
             throw new InvalidImageException();
         }
 
-        feedImages.stream()
+        images.stream()
                 .filter(MultipartFile::isEmpty)
                 .findAny()
                 .ifPresent(multipartFile -> {

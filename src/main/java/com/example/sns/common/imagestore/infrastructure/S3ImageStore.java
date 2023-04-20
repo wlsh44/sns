@@ -30,8 +30,8 @@ public class S3ImageStore implements ImageStore {
     private final AmazonS3 s3Client;
     private final FileNameGenerator fileNameGenerator;
 
-    public S3ImageStore(@Value("${ncp.s3.bucket}") String bucket,
-                        @Value("${ncp.s3.store-path.temp}") String tempFilePath,
+    public S3ImageStore(@Value("${cloud.aws.s3.bucket}") String bucket,
+                        @Value("${cloud.aws.s3.store-path.temp}") String tempFilePath,
                         AmazonS3 s3Client,
                         FileNameGenerator fileNameGenerator) {
         this.bucket = bucket;
