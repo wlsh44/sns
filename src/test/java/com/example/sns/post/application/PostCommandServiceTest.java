@@ -1,5 +1,6 @@
 package com.example.sns.post.application;
 
+import com.example.sns.common.imagestore.exception.TemporaryFileException;
 import com.example.sns.common.support.ServiceTest;
 import com.example.sns.post.domain.Comment;
 import com.example.sns.post.domain.CommentRepository;
@@ -8,8 +9,7 @@ import com.example.sns.post.domain.PostImage;
 import com.example.sns.post.domain.PostRepository;
 import com.example.sns.post.exception.NotPostAuthorException;
 import com.example.sns.post.exception.PostNotFoundException;
-import com.example.sns.imagestore.exception.ImageStoreException;
-import com.example.sns.imagestore.infrastructure.ImageStore;
+import com.example.sns.common.imagestore.exception.ImageStoreException;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.exception.MemberNotFoundException;
 import org.junit.jupiter.api.Disabled;
@@ -46,7 +46,7 @@ class PostCommandServiceTest extends ServiceTest {
     LikeService likeService;
 
     @MockBean
-    ImageStore imageStore;
+    PostImageStore imageStore;
 
     @Autowired
     PostRepository postRepository;
@@ -62,7 +62,7 @@ class PostCommandServiceTest extends ServiceTest {
     void uploadTest() throws Exception {
         //given
         List<String> imagePaths = List.of(POST_IMAGE_PATH1, POST_IMAGE_PATH2);
-        given(imageStore.storeFeedImages(any()))
+        given(imageStore.savePostImages(any()))
                 .willReturn(imagePaths);
 
         //when
@@ -93,15 +93,27 @@ class PostCommandServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("이미지 저장에 실패하면 예외가 발생해야 함")
+    @DisplayName("s3이미지 저장에 실패하면 예외가 발생해야 함")
     void uploadFailed_imageStoreException() throws Exception {
         //given
-        given(imageStore.storeFeedImages(any()))
-                .willThrow(new ImageStoreException(new Throwable()));
+        given(imageStore.savePostImages(any()))
+                .willThrow(new ImageStoreException());
 
         //when then
         assertThatThrownBy(() -> postCommandService.uploadPost(member.getId(), getBasicUploadRequest(), getBasicPostImages()))
                 .isInstanceOf(ImageStoreException.class);
+    }
+
+    @Test
+    @DisplayName("임시 이미지 저장에 실패하면 예외가 발생해야 함")
+    void uploadFailed_temporaryFileException() throws Exception {
+        //given
+        given(imageStore.savePostImages(any()))
+                .willThrow(new TemporaryFileException(TemporaryFileException.TRANSFER_ERROR));
+
+        //when then
+        assertThatThrownBy(() -> postCommandService.uploadPost(member.getId(), getBasicUploadRequest(), getBasicPostImages()))
+                .isInstanceOf(TemporaryFileException.class);
     }
 
     @Test
@@ -111,7 +123,7 @@ class PostCommandServiceTest extends ServiceTest {
         //given
         Post post = postRepository.save(Post.createPost(member, BASIC_POST_CONTENT));
         post.updatePostImage(List.of(new PostImage(POST_IMAGE_PATH1, post)));
-        given(imageStore.storeFeedImages(any()))
+        given(imageStore.savePostImages(any()))
                 .willReturn(List.of(POST_IMAGE_PATH2));
 
         //when

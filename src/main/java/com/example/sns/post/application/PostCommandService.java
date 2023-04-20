@@ -7,7 +7,6 @@ import com.example.sns.post.domain.Post;
 import com.example.sns.post.domain.PostImage;
 import com.example.sns.post.domain.PostRepository;
 import com.example.sns.post.exception.PostNotFoundException;
-import com.example.sns.imagestore.infrastructure.ImageStore;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.exception.MemberNotFoundException;
 import com.example.sns.member.domain.MemberRepository;
@@ -26,7 +25,7 @@ public class PostCommandService {
 
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
-    private final ImageStore imageStore;
+    private final PostImageStore imageStore;
     private final CommentRepository commentRepository;
 
     @Transactional
@@ -41,7 +40,7 @@ public class PostCommandService {
     }
 
     private List<PostImage> savePostImages(List<MultipartFile> images, Post post) {
-        List<String> imagePaths = imageStore.storeFeedImages(images);
+        List<String> imagePaths = imageStore.savePostImages(images);
         return imagePaths.stream()
                 .map(imagePath -> new PostImage(imagePath, post))
                 .collect(Collectors.toList());

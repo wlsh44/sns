@@ -30,6 +30,16 @@ jwt:
     expired: 10000
     issuer: sns-test
 
-image:
-  feed-store-path: feedPath
-  profile-store-path: profilePath
+cloud.aws:
+  credentials:
+    accessKey: accessKey
+    secretKey: secretKey
+  s3:
+    endpoint: https://kr.object.ncloudstorage.com
+    region:
+      static: kr-standard
+    bucket: sns-image-s3
+    store-path:
+      post: postPath/
+      profile: profilePath/
+      temp: tempPath/

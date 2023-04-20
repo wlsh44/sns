@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,8 +18,8 @@ import static com.example.sns.common.fixtures.MemberFixture.BASIC_PROFILE;
 import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_CONTENT;
 import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_IMAGE1;
 import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_IMAGE2;
-import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_UPDATE_REQUEST_MULTIPART;
-import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_UPLOAD_REQUEST_MULTIPART;
+import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_UPDATE_MULTIPART;
+import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_UPLOAD_MULTIPART;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
@@ -39,7 +38,7 @@ class PostControllerTest extends MockControllerTest {
         mockMvc.perform(multipart("/posts")
                         .file(BASIC_POST_IMAGE1)
                         .file(BASIC_POST_IMAGE2)
-                        .file(BASIC_POST_UPLOAD_REQUEST_MULTIPART)
+                        .file(BASIC_POST_UPLOAD_MULTIPART)
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN))
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -50,7 +49,7 @@ class PostControllerTest extends MockControllerTest {
     void updateTest() throws Exception {
         mockMvc.perform(multipart("/posts/1")
                         .file(BASIC_POST_IMAGE1)
-                        .file(BASIC_POST_UPDATE_REQUEST_MULTIPART)
+                        .file(BASIC_POST_UPDATE_MULTIPART)
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN))
                 .andDo(print())
                 .andExpect(status().isOk());
