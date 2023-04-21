@@ -2,19 +2,19 @@ package com.example.sns.member.presentation;
 
 import com.example.sns.common.support.MockControllerTest;
 import com.example.sns.member.exception.MemberNotFoundException;
+import com.example.sns.member.presentation.dto.MemberInfoResponse;
 import com.example.sns.member.presentation.dto.MemberProfileResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 
 import static com.example.sns.common.fixtures.AuthFixture.ACCESS_TOKEN;
+import static com.example.sns.common.fixtures.MemberFixture.BASIC_EMAIL;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_NAME;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_NICKNAME;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,7 +39,7 @@ class MemberControllerTest extends MockControllerTest {
     }
 
     @Test
-    @DisplayName("예외가 발생할 경우 400 응답을 줘야 함")
+    @DisplayName("없는 멤버의 프로필을 조회할 경우 400 응답을 줘야 함")
     void getProfileTest_memberNotFound() throws Exception {
         //given
         given(memberQueryService.getProfile(any(), any()))
@@ -48,6 +48,36 @@ class MemberControllerTest extends MockControllerTest {
         //when then
         mockMvc.perform(get("/members/profile")
                         .param("username", "username")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("멤버 정보 조회에 성공할 경우 올바른 데이터와 200 응답을 줘야 함")
+    void getMemberInfoTest() throws Exception {
+        //given
+        MemberInfoResponse response = new MemberInfoResponse(1L, BASIC_NAME, BASIC_NICKNAME, null, null, BASIC_EMAIL);
+        given(memberQueryService.getMemberInfo(any()))
+                .willReturn(response);
+
+        //when then
+        mockMvc.perform(get("/members/me")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(mapper.writeValueAsString(response)));
+    }
+
+    @Test
+    @DisplayName("없는 멤버의 정보를 조회할 경우 400 응답을 줘야 함")
+    void getMemberInfoTest_memberNotFound() throws Exception {
+        //given
+        given(memberQueryService.getMemberInfo(any()))
+                .willThrow(new MemberNotFoundException(1L));
+
+        //when then
+        mockMvc.perform(get("/members/me")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
