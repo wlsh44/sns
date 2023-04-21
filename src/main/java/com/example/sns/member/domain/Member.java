@@ -94,4 +94,10 @@ public class Member extends BaseTimeEntity {
                 .findAny()
                 .orElseThrow(NotFollowingMemberException::new);
     }
+
+    public void update(String nickname, String biography, String profilePath) {
+        this.info.updateNickname(nickname);
+        this.biography = biography;
+        this.profileUrl = profilePath;
+    }
 }

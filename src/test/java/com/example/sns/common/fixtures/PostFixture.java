@@ -20,8 +20,8 @@ public class PostFixture {
     public static final String FILE_NAME2 = "test2.jpeg";
     public static final MockMultipartFile BASIC_POST_IMAGE1 = new MockMultipartFile("postImages", FILE_NAME1, "image/jpeg", "image".getBytes());
     public static final MockMultipartFile BASIC_POST_IMAGE2 = new MockMultipartFile("postImages", FILE_NAME2, "image/jpeg", "image".getBytes());
-    public static final MockMultipartFile BASIC_POST_UPLOAD_MULTIPART = new MockMultipartFile("dto", "", "application/json", "{\"content\": \"feed content\"}".getBytes());
-    public static final MockMultipartFile BASIC_POST_UPDATE_MULTIPART = new MockMultipartFile("dto", "", "application/json", "{\"content\": \"new feed content\"}".getBytes());
+    public static final MockMultipartFile BASIC_POST_UPLOAD_MULTIPART = new MockMultipartFile("body", "", "application/json", "{\"content\": \"feed content\"}".getBytes());
+    public static final MockMultipartFile BASIC_POST_UPDATE_MULTIPART = new MockMultipartFile("body", "", "application/json", "{\"content\": \"new feed content\"}".getBytes());
 
     public static PostUploadRequest getBasicUploadRequest() {
         return new PostUploadRequest(BASIC_POST_CONTENT);

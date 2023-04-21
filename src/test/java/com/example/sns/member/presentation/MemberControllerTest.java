@@ -1,6 +1,10 @@
 package com.example.sns.member.presentation;
 
+import com.example.sns.common.imagestore.exception.ImageStoreException;
+import com.example.sns.common.imagestore.exception.InvalidImageException;
 import com.example.sns.common.support.MockControllerTest;
+import com.example.sns.member.application.dto.MemberUpdateRequest;
+import com.example.sns.member.exception.AlreadyExistNicknameException;
 import com.example.sns.member.exception.MemberNotFoundException;
 import com.example.sns.member.presentation.dto.MemberInfoResponse;
 import com.example.sns.member.presentation.dto.MemberProfileResponse;
@@ -9,12 +13,20 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 
 import static com.example.sns.common.fixtures.AuthFixture.ACCESS_TOKEN;
+import static com.example.sns.common.fixtures.MemberFixture.BASIC_BIOGRAPHY2;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_EMAIL;
+import static com.example.sns.common.fixtures.MemberFixture.BASIC_MEMBER_UPDATE_MULTIPART;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_NAME;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_NICKNAME;
+import static com.example.sns.common.fixtures.MemberFixture.BASIC_NICKNAME2;
+import static com.example.sns.common.fixtures.MemberFixture.BASIC_PROFILE_IMAGE;
+import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_IMAGE1;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -78,6 +90,85 @@ class MemberControllerTest extends MockControllerTest {
 
         //when then
         mockMvc.perform(get("/members/me")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("멤버 정보 수정에 성공할 경우 200 응답을 줘야 함")
+    void updateMember() throws Exception {
+        //given
+
+        //when then
+        mockMvc.perform(multipart("/members/me")
+                        .file(BASIC_PROFILE_IMAGE)
+                        .file(BASIC_MEMBER_UPDATE_MULTIPART)
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("없는 멤버의 정보를 수정하면 예외가 발생해야 함")
+    void updateMember_memberNotFound() throws Exception {
+        //given
+        doThrow(new MemberNotFoundException(1L))
+                .when(memberCommandService).updateMember(any(), any(), any());
+        MemberUpdateRequest request = new MemberUpdateRequest(BASIC_NICKNAME2, BASIC_BIOGRAPHY2);
+
+        //when then
+        mockMvc.perform(multipart("/members/me")
+                        .file(BASIC_PROFILE_IMAGE)
+                        .file(BASIC_MEMBER_UPDATE_MULTIPART)
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("이미 존재하는 닉네임으로 수정할 경우 예외가 발생해야 함")
+    void updateMemberTest_alreadyExistNickname() throws Exception {
+        //given
+        doThrow(new AlreadyExistNicknameException(BASIC_NICKNAME2))
+                .when(memberCommandService).updateMember(any(), any(), any());
+
+        //when then
+        mockMvc.perform(multipart("/members/me")
+                        .file(BASIC_PROFILE_IMAGE)
+                        .file(BASIC_MEMBER_UPDATE_MULTIPART)
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("프로필 저장에 실패할 경우 예외가 발생해야 함")
+    void updateMemberTest_imageStoreException() throws Exception {
+        //given
+        doThrow(new ImageStoreException()).when(memberCommandService)
+                .updateMember(any(), any(), any());
+
+        //when then
+        mockMvc.perform(multipart("/members/me")
+                        .file(BASIC_PROFILE_IMAGE)
+                        .file(BASIC_MEMBER_UPDATE_MULTIPART)
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN))
+                .andDo(print())
+                .andExpect(status().isInternalServerError());
+    }
+
+    @Test
+    @DisplayName("아미지가 없을 경우 예외가 발생해야 함")
+    void updateMemberTest_invalidImage() throws Exception {
+        //given
+        doThrow(new InvalidImageException()).when(memberCommandService)
+                .updateMember(any(), any(), any());
+
+        //when then
+        mockMvc.perform(multipart("/members/me")
+                        .file(BASIC_PROFILE_IMAGE)
+                        .file(BASIC_MEMBER_UPDATE_MULTIPART)
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
