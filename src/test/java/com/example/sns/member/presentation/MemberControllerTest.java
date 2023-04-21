@@ -15,7 +15,6 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -27,7 +26,7 @@ class MemberControllerTest extends MockControllerTest {
     void getProfileTest() throws Exception {
         //given
         MemberProfileResponse response = new MemberProfileResponse(1L, BASIC_NAME, BASIC_NICKNAME, null, null, 0, 0, false);
-        given(memberService.getProfile(any(), any()))
+        given(memberQueryService.getProfile(any(), any()))
                 .willReturn(response);
 
         //when then
@@ -43,7 +42,7 @@ class MemberControllerTest extends MockControllerTest {
     @DisplayName("예외가 발생할 경우 400 응답을 줘야 함")
     void getProfileTest_memberNotFound() throws Exception {
         //given
-        given(memberService.getProfile(any(), any()))
+        given(memberQueryService.getProfile(any(), any()))
                 .willThrow(new MemberNotFoundException(1L));
 
         //when then

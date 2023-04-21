@@ -15,10 +15,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
-class MemberServiceTest extends ServiceTest {
+class MemberQueryServiceTest extends ServiceTest {
 
     @Autowired
-    MemberService memberService;
+    MemberQueryService memberQueryService;
 
     @Autowired
     FollowService followService;
@@ -32,7 +32,7 @@ class MemberServiceTest extends ServiceTest {
         followService.follow(loginMember.getId(), profileMember.getId());
 
         //when
-        MemberProfileResponse response = memberService.getProfile(loginMember.getId(), profileMember.getInfo().getNickname());
+        MemberProfileResponse response = memberQueryService.getProfile(loginMember.getId(), profileMember.getInfo().getNickname());
 
         //then
         assertAll(
@@ -55,7 +55,7 @@ class MemberServiceTest extends ServiceTest {
         Member profileMember = memberRepository.save(getBasicMember2());
 
         //when
-        assertThatThrownBy(() -> memberService.getProfile(notExistId, profileMember.getInfo().getNickname()))
+        assertThatThrownBy(() -> memberQueryService.getProfile(notExistId, profileMember.getInfo().getNickname()))
                 .isInstanceOf(MemberNotFoundException.class);
     }
 
@@ -67,7 +67,7 @@ class MemberServiceTest extends ServiceTest {
         Member loginMember = memberRepository.save(getBasicMember2());
 
         //when
-        assertThatThrownBy(() -> memberService.getProfile(loginMember.getId(), notExistName))
+        assertThatThrownBy(() -> memberQueryService.getProfile(loginMember.getId(), notExistName))
                 .isInstanceOf(MemberNotFoundException.class);
     }
 }

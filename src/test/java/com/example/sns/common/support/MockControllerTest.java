@@ -4,7 +4,7 @@ import com.example.sns.auth.application.AuthService;
 import com.example.sns.auth.config.AuthProperties;
 import com.example.sns.auth.infrastructure.JwtProvider;
 import com.example.sns.auth.presentation.AuthExtractor;
-import com.example.sns.member.application.MemberService;
+import com.example.sns.member.application.MemberQueryService;
 import com.example.sns.post.application.CommentCommandService;
 import com.example.sns.post.application.CommentQueryService;
 import com.example.sns.post.application.FeedService;
@@ -58,7 +58,7 @@ public class MockControllerTest {
     protected CommentQueryService commentQueryService;
 
     @MockBean
-    protected MemberService memberService;
+    protected MemberQueryService memberQueryService;
 
     @MockBean
     protected LikeService likeService;
