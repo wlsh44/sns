@@ -9,7 +9,8 @@ public class MemberFixture {
     public static final String BASIC_NICKNAME = "nickname";
     public static final String BASIC_EMAIL = "nickname@test.test";
     public static final String BASIC_SOCIAL_ID = "1234567890";
-    public static final String BASIC_PROFILE = "profile url";
+    public static final String BASIC_PROFILE1 = "profile url";
+    public static final String BASIC_BIOGRAPHY1 = "biography1";
 
     public static Member getBasicMember() {
         return Member.createUserFrom(new OAuthUserInfoDto(BASIC_NAME, BASIC_EMAIL, BASIC_SOCIAL_ID));
@@ -19,6 +20,8 @@ public class MemberFixture {
     public static final String BASIC_NICKNAME2 = "nickname2";
     public static final String BASIC_EMAIL2 = "nickname2@test.test";
     public static final String BASIC_SOCIAL_ID2 = "1234567891";
+    public static final String BASIC_PROFILE2 = "profile url2";
+    public static final String BASIC_BIOGRAPHY2 = "biography2";
 
     public static Member getBasicMember2() {
         return Member.createUserFrom(new OAuthUserInfoDto(BASIC_NAME2, BASIC_EMAIL2, BASIC_SOCIAL_ID2));
