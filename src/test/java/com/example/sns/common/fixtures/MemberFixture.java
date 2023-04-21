@@ -2,6 +2,7 @@ package com.example.sns.common.fixtures;
 
 import com.example.sns.auth.application.dto.OAuthUserInfoDto;
 import com.example.sns.member.domain.Member;
+import org.springframework.mock.web.MockMultipartFile;
 
 public class MemberFixture {
 
@@ -15,6 +16,8 @@ public class MemberFixture {
     public static Member getBasicMember() {
         return Member.createUserFrom(new OAuthUserInfoDto(BASIC_NAME, BASIC_EMAIL, BASIC_SOCIAL_ID));
     }
+    public static final MockMultipartFile BASIC_PROFILE_IMAGE = new MockMultipartFile("image", "", "image/jpeg", "image".getBytes());
+    public static final MockMultipartFile BASIC_MEMBER_UPDATE_MULTIPART = new MockMultipartFile("body", "", "application/json", "{\"nickname\": \"nickname\", \"biography\": \"biography\"}".getBytes());
 
     public static final String BASIC_NAME2 = "name2";
     public static final String BASIC_NICKNAME2 = "nickname2";
