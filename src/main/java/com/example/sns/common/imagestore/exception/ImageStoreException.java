@@ -10,4 +10,8 @@ public class ImageStoreException extends SnsException {
     public ImageStoreException() {
         super(ERROR_MSG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    public ImageStoreException(String errorMsg, HttpStatus status) {
+        super(errorMsg, status);
+    }
 }
