@@ -6,9 +6,15 @@ import com.example.sns.member.domain.Member;
 import com.example.sns.member.exception.MemberNotFoundException;
 import com.example.sns.member.presentation.dto.MemberInfoResponse;
 import com.example.sns.member.presentation.dto.MemberProfileResponse;
+import com.example.sns.member.presentation.dto.MemberSearchDto;
+import com.example.sns.member.presentation.dto.MemberSearchResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 import static com.example.sns.common.fixtures.MemberFixture.getBasicMember;
 import static com.example.sns.common.fixtures.MemberFixture.getBasicMember2;
@@ -113,5 +119,35 @@ class MemberQueryServiceTest extends ServiceTest {
         //when then
         assertThatThrownBy(() -> memberQueryService.getMemberInfo(notExistId))
                 .isInstanceOf(MemberNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("유저 닉네임을 포함하는 유저들의 정보를 가져와야 함")
+    void searchMembersTest() throws Exception {
+        //given
+        String search = "name";
+        Member member1 = memberRepository.save(getBasicMember());
+        Member member2 = memberRepository.save(getBasicMember2());
+        Pageable pageable = PageRequest.of(0, 10);
+        MemberSearchResponse expect = getSearchMembersExpect(member1, member2);
+
+        //when
+        MemberSearchResponse response = memberQueryService.searchMembers(search, pageable);
+
+        //then
+        assertThat(response).usingRecursiveComparison()
+                .isEqualTo(expect);
+
+    }
+
+    private MemberSearchResponse getSearchMembersExpect(Member member1, Member member2) {
+        return new MemberSearchResponse(
+                List.of(
+                        new MemberSearchDto(member1.getId(), member1.getInfo().getNickname(), member1.getProfileUrl()),
+                        new MemberSearchDto(member2.getId(), member2.getInfo().getNickname(), member2.getProfileUrl())
+                ),
+                true,
+                0
+        );
     }
 }
