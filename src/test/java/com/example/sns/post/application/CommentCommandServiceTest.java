@@ -1,6 +1,7 @@
 package com.example.sns.post.application;
 
 import com.example.sns.common.support.ServiceTest;
+import com.example.sns.member.domain.Member;
 import com.example.sns.post.application.dto.NewCommentRequest;
 import com.example.sns.post.domain.Comment;
 import com.example.sns.post.domain.CommentRepository;
@@ -19,6 +20,7 @@ import java.util.List;
 import static com.example.sns.common.fixtures.CommentFixture.BASIC_COMMENT_CONTENT1;
 import static com.example.sns.common.fixtures.CommentFixture.getBasicCommentRequest;
 import static com.example.sns.common.fixtures.CommentFixture.getEmptyContentCommentRequest;
+import static com.example.sns.common.fixtures.MemberFixture.getBasicMember;
 import static com.example.sns.common.fixtures.PostFixture.getBasicPost;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -40,6 +42,7 @@ class CommentCommandServiceTest extends ServiceTest {
     @DisplayName("올바른 댓글을 생성해야 함")
     void create() throws Exception {
         //given
+        Member member = memberRepository.save(getBasicMember());
         post = postRepository.save(getBasicPost(member));
         NewCommentRequest request = getBasicCommentRequest(post.getId());
 
@@ -57,6 +60,7 @@ class CommentCommandServiceTest extends ServiceTest {
     @DisplayName("댓글 내용이 비었을 경우 예외가 발생해야 함")
     void create_emptyContent() throws Exception {
         //given
+        Member member = memberRepository.save(getBasicMember());
         post = postRepository.save(getBasicPost(member));
         NewCommentRequest request = getEmptyContentCommentRequest(post.getId());
 
@@ -69,6 +73,7 @@ class CommentCommandServiceTest extends ServiceTest {
     @DisplayName("없는 피드에 댓글을 달 경우 예외가 발생해야 함")
     void create_feedNotFound() throws Exception {
         //given
+        Member member = memberRepository.save(getBasicMember());
         post = postRepository.save(getBasicPost(member));
         Long notExistFeedId = 9999L;
         NewCommentRequest request = getBasicCommentRequest(notExistFeedId);
@@ -82,6 +87,7 @@ class CommentCommandServiceTest extends ServiceTest {
     @DisplayName("댓글이 삭제 되어야 함")
     void deleteCommentTest() throws Exception {
         //given
+        Member member = memberRepository.save(getBasicMember());
         post = postRepository.save(getBasicPost(member));
         commentCommandService.createComment(member.getId(), post.getId(), getBasicCommentRequest(post.getId()));
 
@@ -97,6 +103,7 @@ class CommentCommandServiceTest extends ServiceTest {
     @DisplayName("없는 댓글일 경우 예외가 발생해야 함")
     void deleteCommentTest_commentNotFound() throws Exception {
         //given
+        Member member = memberRepository.save(getBasicMember());
         post = postRepository.save(getBasicPost(member));
         Long notExistId = 999L;
         commentCommandService.createComment(member.getId(), post.getId(), getBasicCommentRequest(post.getId()));
@@ -110,6 +117,7 @@ class CommentCommandServiceTest extends ServiceTest {
     @DisplayName("댓글 작성자가 아닐 경우 예외가 발생해야 함")
     void deleteCommentTest_notAuthor() throws Exception {
         //given
+        Member member = memberRepository.save(getBasicMember());
         post = postRepository.save(getBasicPost(member));
         Long notAuthorId = 999L;
         commentCommandService.createComment(member.getId(), post.getId(), getBasicCommentRequest(post.getId()));

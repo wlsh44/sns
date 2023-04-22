@@ -21,6 +21,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.List;
 
 import static com.example.sns.common.fixtures.CommentFixture.getBasicCommentRequest;
+import static com.example.sns.common.fixtures.MemberFixture.getBasicMember;
 import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_CONTENT;
 import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_IMAGE2;
 import static com.example.sns.common.fixtures.PostFixture.EDIT_POST_CONTENT;
@@ -61,6 +62,7 @@ class PostCommandServiceTest extends ServiceTest {
     @DisplayName("게시글 업로드에 성공해야 함")
     void uploadTest() throws Exception {
         //given
+        Member member = memberRepository.save(getBasicMember());
         List<String> imagePaths = List.of(POST_IMAGE_PATH1, POST_IMAGE_PATH2);
         given(imageStore.savePostImages(any()))
                 .willReturn(imagePaths);
@@ -96,6 +98,7 @@ class PostCommandServiceTest extends ServiceTest {
     @DisplayName("s3이미지 저장에 실패하면 예외가 발생해야 함")
     void uploadFailed_imageStoreException() throws Exception {
         //given
+        Member member = memberRepository.save(getBasicMember());
         given(imageStore.savePostImages(any()))
                 .willThrow(new ImageStoreException());
 
@@ -108,6 +111,7 @@ class PostCommandServiceTest extends ServiceTest {
     @DisplayName("임시 이미지 저장에 실패하면 예외가 발생해야 함")
     void uploadFailed_temporaryFileException() throws Exception {
         //given
+        Member member = memberRepository.save(getBasicMember());
         given(imageStore.savePostImages(any()))
                 .willThrow(new TemporaryFileException(TemporaryFileException.TRANSFER_ERROR));
 
@@ -121,6 +125,7 @@ class PostCommandServiceTest extends ServiceTest {
     @DisplayName("게시글을 수정하면 수정한 데이터를 갖고 있어야 함")
     void editFeed() throws Exception {
         //given
+        Member member = memberRepository.save(getBasicMember());
         Post post = postRepository.save(Post.createPost(member, BASIC_POST_CONTENT));
         post.updatePostImage(List.of(new PostImage(POST_IMAGE_PATH1, post)));
         given(imageStore.savePostImages(any()))
@@ -139,6 +144,7 @@ class PostCommandServiceTest extends ServiceTest {
     @DisplayName("없는 게시글을 수정하려고 하면 예외가 발생해야 함")
     void editFeed_feedNotFound() throws Exception {
         //given
+        Member member = memberRepository.save(getBasicMember());
         Long notExistFeedId = 1L;
 
         //when then
@@ -150,6 +156,7 @@ class PostCommandServiceTest extends ServiceTest {
     @DisplayName("게시글을 지우면 게시글가 삭제되어야 함")
     void delete() throws Exception {
         //given
+        Member member = memberRepository.save(getBasicMember());
         Post post = Post.createPost(member, BASIC_POST_CONTENT);
         post.updatePostImage(List.of(new PostImage(POST_IMAGE_PATH1, post)));
         post = postRepository.save(post);
@@ -171,6 +178,7 @@ class PostCommandServiceTest extends ServiceTest {
     @DisplayName("없는 게시글을 삭제하려고 할 경우 예외가 발생해야 함")
     void delete_postNotFound() throws Exception {
         //given
+        Member member = memberRepository.save(getBasicMember());
         Long notExistPostId = 9999L;
 
         //when then
@@ -182,6 +190,7 @@ class PostCommandServiceTest extends ServiceTest {
     @DisplayName("유저의 게시글가 아닌 게시글을 삭제할 경우 예외가 발생해야 함")
     void delete_notAuthor() throws Exception {
         //given
+        Member member = memberRepository.save(getBasicMember());
         Member member2 = memberRepository.save(getBasicMember2());
         Post post = postRepository.save(Post.createPost(member2, BASIC_POST_CONTENT));
 
