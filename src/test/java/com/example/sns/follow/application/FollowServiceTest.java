@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 import static com.example.sns.common.fixtures.MemberFixture.getBasicMember;
+import static com.example.sns.common.fixtures.MemberFixture.getBasicMember2;
 import static com.example.sns.common.fixtures.MemberFixture.getFollower;
 import static com.example.sns.common.fixtures.MemberFixture.getFollowing;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -51,6 +52,7 @@ class FollowServiceTest extends ServiceTest {
     @DisplayName("없는 유저를 팔로우 하면 예외가 발생해야 함")
     void follow_memberNotFound() throws Exception {
         //given
+        Member member = memberRepository.save(getBasicMember());
         Long notExistMemberId = 999L;
 
         //when then
@@ -92,6 +94,7 @@ class FollowServiceTest extends ServiceTest {
     @DisplayName("없는 유저를 팔로우 하면 예외가 발생해야 함")
     void unfollow_memberNotFound() throws Exception {
         //given
+        Member member = memberRepository.save(getBasicMember());
         Long notExistMemberId = 999L;
 
         //when then
@@ -103,10 +106,11 @@ class FollowServiceTest extends ServiceTest {
     @DisplayName("팔로우하지 않은 유저를 언팔로우 하면 예외가 발생해야 함")
     void unfollow_notFollowingMember() throws Exception {
         //given
-        Member basicMember = memberRepository.save(getBasicMember());
+        Member member1 = memberRepository.save(getBasicMember());
+        Member member2 = memberRepository.save(getBasicMember2());
 
         //when
-        assertThatThrownBy(() -> followService.unfollow(member.getId(), basicMember.getId()))
+        assertThatThrownBy(() -> followService.unfollow(member1.getId(), member2.getId()))
                 .isInstanceOf(NotFollowingMemberException.class);
     }
 }
