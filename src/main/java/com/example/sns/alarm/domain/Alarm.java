@@ -31,8 +31,11 @@ public abstract class Alarm extends BaseTimeEntity {
 
     private boolean read;
 
-    protected Alarm(Member target) {
+    private String text;
+
+    protected Alarm(Member target, String text) {
         this.target = target;
+        this.text = text;
         this.read = false;
     }
 }
