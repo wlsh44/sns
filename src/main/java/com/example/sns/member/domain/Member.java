@@ -100,4 +100,8 @@ public class Member extends BaseTimeEntity {
         this.biography = biography;
         this.profileUrl = profilePath;
     }
+
+    public String getDeviceToken() {
+        return null;
+    }
 }
