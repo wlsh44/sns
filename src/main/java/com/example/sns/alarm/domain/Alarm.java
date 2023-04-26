@@ -40,7 +40,7 @@ public class Alarm extends BaseTimeEntity {
     }
 
     public static Alarm createFollowedAlarm(Member target, Member follower) {
-        String text = String.format(FOLLOW.getText(), follower.getInfo().getNickname());
+        String text = FOLLOW.getText(follower.getInfo().getNickname());
         return new Alarm(target, text, FOLLOW);
     }
 }

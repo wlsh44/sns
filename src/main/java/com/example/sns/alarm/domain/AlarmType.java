@@ -9,7 +9,7 @@ public enum AlarmType {
         this.text = text;
     }
 
-    public String getText() {
-        return text;
+    public String getText(String param) {
+        return String.format(text, param);
     }
 }

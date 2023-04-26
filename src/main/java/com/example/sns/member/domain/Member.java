@@ -101,7 +101,7 @@ public class Member extends BaseTimeEntity {
         this.profileUrl = profilePath;
     }
 
-    public String getDeviceToken() {
+    public List<String> getDeviceTokens() {
         return null;
     }
 }
