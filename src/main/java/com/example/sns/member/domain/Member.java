@@ -47,6 +47,9 @@ public class Member extends BaseTimeEntity {
     @OneToMany(mappedBy = "following")
     private final List<Follow> followers = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private final List<Device> devices = new ArrayList<>();
+
     private Member(String socialId, String userName, String nickName, String email) {
         this.socialId = socialId;
         this.info = new MemberInfo(userName, nickName, email);
@@ -102,6 +105,12 @@ public class Member extends BaseTimeEntity {
     }
 
     public List<String> getDeviceTokens() {
-        return null;
+        return devices.stream()
+                .map(Device::getToken)
+                .toList();
+    }
+
+    public void addDevice(String token) {
+        this.devices.add(new Device(token, this));
     }
 }
