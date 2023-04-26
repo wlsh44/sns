@@ -6,21 +6,18 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+
+import static com.example.sns.alarm.domain.AlarmType.FOLLOW;
 
 @Getter
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class Alarm extends BaseTimeEntity {
+public class Alarm extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,9 +30,17 @@ public abstract class Alarm extends BaseTimeEntity {
 
     private String text;
 
-    protected Alarm(Member target, String text) {
+    private AlarmType type;
+
+    private Alarm(Member target, String text, AlarmType type) {
         this.target = target;
         this.text = text;
+        this.type = type;
         this.read = false;
+    }
+
+    public static Alarm createFollowedAlarm(Member target, Member follower) {
+        String text = String.format(FOLLOW.getText(), follower.getInfo().getNickname());
+        return new Alarm(target, text, FOLLOW);
     }
 }

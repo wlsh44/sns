@@ -1,7 +1,7 @@
 package com.example.sns.alarm.application;
 
-import com.example.sns.alarm.domain.FollowAlarm;
-import com.example.sns.alarm.domain.FollowAlarmRepository;
+import com.example.sns.alarm.domain.Alarm;
+import com.example.sns.alarm.domain.AlarmRepository;
 import com.example.sns.follow.application.FollowedEvent;
 import com.example.sns.member.domain.Member;
 import lombok.RequiredArgsConstructor;
@@ -16,14 +16,14 @@ import org.springframework.transaction.event.TransactionalEventListener;
 public class FollowAlarmEventHandler {
 
     private final AlarmService alarmService;
-    private final FollowAlarmRepository followAlarmRepository;
+    private final AlarmRepository alarmRepository;
 
     @Async
     @TransactionalEventListener
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void sendAlarm(FollowedEvent event) {
-        Member target = event.getFollower();
+        Member target = event.getFollowing();
         alarmService.send(target.getDeviceToken());
-        followAlarmRepository.save(new FollowAlarm(target, event.getFollowing()));
+        alarmRepository.save(Alarm.createFollowedAlarm(target, event.getFollower()));
     }
 }
