@@ -19,15 +19,11 @@ public class FollowService {
     @Transactional
     public void follow(Long memberId, Long followingId) {
         Member follower = getMember(memberId);
-        Member following = getMember(followingId);
+        Member following = memberRepository.findByIdFetchDevices(followingId)
+                .orElseThrow(() -> new MemberNotFoundException(followingId));
 
         follower.follow(following);
         eventPublisher.publishEvent(new FollowedEvent(follower, following));
-    }
-
-    private Member getMember(Long id) {
-        return memberRepository.findById(id)
-                .orElseThrow(() -> new MemberNotFoundException(id));
     }
 
     @Transactional
@@ -36,5 +32,10 @@ public class FollowService {
         Member following = getMember(followingId);
 
         follower.unfollow(following);
+    }
+
+    private Member getMember(Long id) {
+        return memberRepository.findById(id)
+                .orElseThrow(() -> new MemberNotFoundException(id));
     }
 }
