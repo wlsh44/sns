@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-@Profile({"dev", "prod"})
 public class S3PostImageStore implements PostImageStore {
 
     private final String storePath;

@@ -17,7 +17,6 @@ import java.util.List;
 
 @Slf4j
 @Configuration
-@Profile({"dev", "prod"})
 public class FcmConfig {
 
     private final String fcmPrivateKeyPath;

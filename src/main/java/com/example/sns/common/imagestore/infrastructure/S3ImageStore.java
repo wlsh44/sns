@@ -21,9 +21,7 @@ import static com.example.sns.common.imagestore.exception.TemporaryFileException
 
 @Slf4j
 @Component
-@Profile({"dev", "prod"})
 public class S3ImageStore implements ImageStore {
-
 
     private final String bucket;
     private final String tempFilePath;
