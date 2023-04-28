@@ -57,6 +57,7 @@ class AlarmEventListenerTest extends ServiceTest {
 
         //when
         followService.follow(follower.getId(), following.getId());
+        executor.getThreadPoolExecutor().awaitTermination(1, TimeUnit.SECONDS);
 
         //then
         int count = (int) events.stream(FollowedEvent.class).count();
