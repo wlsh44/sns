@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import static com.example.sns.alarm.domain.AlarmType.FOLLOW;
+import static com.example.sns.alarm.domain.AlarmType.POST_UPLOAD;
 
 @Getter
 @Entity
@@ -42,5 +43,10 @@ public class Alarm extends BaseTimeEntity {
     public static Alarm createFollowedAlarm(Member target, Member follower) {
         String text = FOLLOW.getText(follower.getInfo().getNickname());
         return new Alarm(target, text, FOLLOW);
+    }
+
+    public static Alarm createPostUploadedAlarm(Member target, Member following) {
+        String text = POST_UPLOAD.getText(following.getInfo().getNickname());
+        return new Alarm(target, text, POST_UPLOAD);
     }
 }
