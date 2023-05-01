@@ -1,8 +1,8 @@
 package com.example.sns.member.application;
 
-import com.example.sns.common.imagestore.ImageStore;
-import com.example.sns.common.imagestore.exception.ImageStoreException;
-import com.example.sns.common.imagestore.exception.InvalidImageException;
+import com.example.sns.common.infrastructure.imagestore.ImageStore;
+import com.example.sns.common.infrastructure.imagestore.exception.ImageStoreException;
+import com.example.sns.common.infrastructure.imagestore.exception.InvalidImageException;
 import com.example.sns.common.support.ServiceTest;
 import com.example.sns.member.application.dto.MemberUpdateRequest;
 import com.example.sns.member.domain.Member;

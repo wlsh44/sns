@@ -1,5 +1,6 @@
 package com.example.sns.common.support;
 
+import com.example.sns.common.infrastructure.fcm.AlarmService;
 import com.example.sns.auth.application.AuthService;
 import com.example.sns.auth.config.AuthProperties;
 import com.example.sns.auth.infrastructure.JwtProvider;
@@ -14,6 +15,7 @@ import com.example.sns.post.application.PostQueryService;
 import com.example.sns.post.application.PostCommandService;
 import com.example.sns.follow.application.FollowService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.firebase.messaging.FirebaseMessaging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -69,4 +71,10 @@ public class MockControllerTest {
 
     @MockBean
     protected FeedService feedService;
+
+    @MockBean
+    protected AlarmService alarmService;
+
+    @MockBean
+    protected FirebaseMessaging firebaseMessaging;
 }

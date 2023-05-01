@@ -1,5 +1,6 @@
 package com.example.sns.post.application;
 
+import com.example.sns.follow.domain.Follow;
 import com.example.sns.post.application.dto.PostUpdateRequest;
 import com.example.sns.post.application.dto.PostUploadRequest;
 import com.example.sns.post.domain.CommentRepository;
@@ -11,6 +12,7 @@ import com.example.sns.member.domain.Member;
 import com.example.sns.member.exception.MemberNotFoundException;
 import com.example.sns.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +29,7 @@ public class PostCommandService {
     private final PostRepository postRepository;
     private final PostImageStore imageStore;
     private final CommentRepository commentRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public void uploadPost(Long memberId, PostUploadRequest request, List<MultipartFile> images) {
@@ -37,6 +40,8 @@ public class PostCommandService {
         postImages.forEach(post::addPostImage);
 
         postRepository.save(post);
+
+        eventPublisher.publishEvent(new PostUploadedEvent(getFollowers(member), member));
     }
 
     private List<PostImage> savePostImages(List<MultipartFile> images, Post post) {
@@ -44,6 +49,12 @@ public class PostCommandService {
         return imagePaths.stream()
                 .map(imagePath -> new PostImage(imagePath, post))
                 .collect(Collectors.toList());
+    }
+
+    private List<Member> getFollowers(Member member) {
+        return member.getFollowers().stream()
+                .map(Follow::getFollower)
+                .toList();
     }
 
     @Transactional

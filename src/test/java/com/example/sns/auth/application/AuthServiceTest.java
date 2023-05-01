@@ -4,6 +4,7 @@ import com.example.sns.auth.infrastructure.GoogleClient;
 import com.example.sns.auth.infrastructure.JwtProvider;
 import com.example.sns.auth.presentation.dto.TokenResponse;
 import com.example.sns.common.fixtures.MemberFixture;
+import com.example.sns.common.support.ServiceTest;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.domain.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -26,9 +27,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
-@Transactional
-@SpringBootTest
-class AuthServiceTest {
+class AuthServiceTest extends ServiceTest {
 
     @Autowired
     AuthService authService;

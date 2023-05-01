@@ -43,3 +43,8 @@ cloud.aws:
       post: postPath/
       profile: profilePath/
       temp: tempPath/
+
+fcm:
+  key:
+    path: keyPath
+    scope: https://www.googleapis.com/auth/cloud-platform

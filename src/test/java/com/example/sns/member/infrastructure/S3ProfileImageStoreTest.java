@@ -1,7 +1,7 @@
 package com.example.sns.member.infrastructure;
 
-import com.example.sns.common.imagestore.ImageStore;
-import com.example.sns.common.imagestore.exception.InvalidImageException;
+import com.example.sns.common.infrastructure.imagestore.ImageStore;
+import com.example.sns.common.infrastructure.imagestore.exception.InvalidImageException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

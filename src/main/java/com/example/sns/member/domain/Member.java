@@ -9,7 +9,6 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
@@ -23,7 +22,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@ToString(exclude = "followings")
 @EqualsAndHashCode(of = "id", callSuper = false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseTimeEntity {
@@ -46,6 +44,9 @@ public class Member extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "following")
     private final List<Follow> followers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private final List<Device> devices = new ArrayList<>();
 
     private Member(String socialId, String userName, String nickName, String email) {
         this.socialId = socialId;
@@ -99,5 +100,15 @@ public class Member extends BaseTimeEntity {
         this.info.updateNickname(nickname);
         this.biography = biography;
         this.profileUrl = profilePath;
+    }
+
+    public List<String> getDeviceTokens() {
+        return devices.stream()
+                .map(Device::getToken)
+                .toList();
+    }
+
+    public void addDevice(String token) {
+        this.devices.add(new Device(token, this));
     }
 }

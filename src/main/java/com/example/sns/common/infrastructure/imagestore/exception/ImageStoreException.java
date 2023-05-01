@@ -1,4 +1,4 @@
-package com.example.sns.common.imagestore.exception;
+package com.example.sns.common.infrastructure.imagestore.exception;
 
 import com.example.sns.common.exception.SnsException;
 import org.springframework.http.HttpStatus;

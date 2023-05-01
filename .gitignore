@@ -49,3 +49,6 @@ src/main/resources/static
 src/main/resources/application.yml
 data-dev.sql
 .run/
+/src/main/resources/sns-project-377909-firebase-adminsdk-nza69-533f79c5dc.json
+
+src/test/resources/application-integration-test.yml
