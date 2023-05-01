@@ -5,6 +5,8 @@ import com.example.sns.alarm.domain.AlarmRepository;
 import com.example.sns.common.infrastructure.fcm.AlarmService;
 import com.example.sns.common.support.ServiceTest;
 import com.example.sns.follow.application.FollowService;
+import com.example.sns.follow.domain.Follow;
+import com.example.sns.follow.domain.FollowRepository;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.domain.MemberRepository;
 import com.example.sns.post.domain.PostRepository;
@@ -47,7 +49,7 @@ class PostUploadEventHandlerTest extends ServiceTest {
     MemberRepository memberRepository;
 
     @Autowired
-    FollowService followService;
+    FollowRepository followRepository;
 
     @Autowired
     PostRepository postRepository;
@@ -72,6 +74,7 @@ class PostUploadEventHandlerTest extends ServiceTest {
         //given
         Member follower = memberRepository.save(getFollower());
         Member following = memberRepository.save(getFollowing());
+        followRepository.save(Follow.createFollowTable(follower, following));
         List<String> imagePaths = List.of(POST_IMAGE_PATH1, POST_IMAGE_PATH2);
         given(imageStore.savePostImages(any()))
                 .willReturn(imagePaths);
@@ -91,7 +94,7 @@ class PostUploadEventHandlerTest extends ServiceTest {
         //given
         Member follower = memberRepository.save(getFollower());
         Member following = memberRepository.save(getFollowing());
-        followService.follow(follower.getId(), following.getId());
+        followRepository.save(Follow.createFollowTable(follower, following));
 
         //when
         postCommandService.uploadPost(following.getId(), getBasicUploadRequest(), getBasicPostImages());
@@ -100,8 +103,7 @@ class PostUploadEventHandlerTest extends ServiceTest {
         //then
         List<Alarm> alarms = alarmRepository.findAll();
         assertThat(alarms).hasSize(1);
-        assertThat(alarms.get(0).getTarget().getId()).isEqualTo(follower.getId());
-        assertThat(alarms.get(0).getText()).isEqualTo(POST_UPLOAD.getText(follower.getInfo().getNickname()));
+        assertThat(alarms.get(0).getTargetId()).isEqualTo(follower.getId());
+        assertThat(alarms.get(0).getText()).isEqualTo(POST_UPLOAD.getText(following.getInfo().getNickname()));
     }
-
 }

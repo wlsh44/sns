@@ -1,9 +1,10 @@
-package com.example.sns.member.application;
+package com.example.sns.follow.application;
 
 import com.example.sns.alarm.domain.Alarm;
 import com.example.sns.alarm.domain.AlarmRepository;
 import com.example.sns.common.infrastructure.fcm.AlarmService;
 import com.example.sns.common.support.ServiceTest;
+import com.example.sns.follow.application.FollowEventHandler;
 import com.example.sns.follow.application.FollowService;
 import com.example.sns.follow.application.FollowedEvent;
 import com.example.sns.member.domain.Member;
