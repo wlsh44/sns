@@ -1,7 +1,6 @@
-package com.example.sns.alarm.infrastructure;
+package com.example.sns.common.infrastructure.fcm;
 
-import com.example.sns.alarm.application.AlarmService;
-import com.example.sns.alarm.infrastructure.dto.MessageDto;
+import com.example.sns.common.infrastructure.fcm.dto.MessageDto;
 import com.google.firebase.messaging.BatchResponse;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;

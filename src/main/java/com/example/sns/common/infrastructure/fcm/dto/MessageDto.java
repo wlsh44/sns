@@ -1,4 +1,4 @@
-package com.example.sns.alarm.infrastructure.dto;
+package com.example.sns.common.infrastructure.fcm.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.example.sns.common.support;
 
-import com.example.sns.alarm.application.AlarmService;
+import com.example.sns.common.infrastructure.fcm.AlarmService;
 import com.example.sns.auth.application.AuthService;
 import com.example.sns.auth.config.AuthProperties;
 import com.example.sns.auth.infrastructure.JwtProvider;
