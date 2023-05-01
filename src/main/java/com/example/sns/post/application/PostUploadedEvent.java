@@ -1,5 +1,6 @@
 package com.example.sns.post.application;
 
+import com.example.sns.common.infrastructure.fcm.dto.AlarmTargetsDto;
 import com.example.sns.member.domain.Member;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -7,9 +8,13 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @Getter
-@RequiredArgsConstructor
 public class PostUploadedEvent {
 
-    private final List<Member> targets;
-    private final Member postAuthor;
+    private final AlarmTargetsDto targets;
+    private final String authorNickname;
+
+    public PostUploadedEvent(List<Member> targets, Member postAuthor) {
+        this.authorNickname = postAuthor.getInfo().getNickname();
+        this.targets = new AlarmTargetsDto(targets);
+    }
 }

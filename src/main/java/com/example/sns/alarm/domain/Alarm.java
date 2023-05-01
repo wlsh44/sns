@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import java.util.List;
+
 import static com.example.sns.alarm.domain.AlarmType.FOLLOW;
 import static com.example.sns.alarm.domain.AlarmType.POST_UPLOAD;
 
@@ -24,8 +26,7 @@ public class Alarm extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Member target;
+    private Long targetId;
 
     private boolean read;
 
@@ -33,20 +34,20 @@ public class Alarm extends BaseTimeEntity {
 
     private AlarmType type;
 
-    private Alarm(Member target, String text, AlarmType type) {
-        this.target = target;
+    private Alarm(Long targetId, String text, AlarmType type) {
+        this.targetId = targetId;
         this.text = text;
         this.type = type;
         this.read = false;
     }
 
-    public static Alarm createFollowedAlarm(Member target, Member follower) {
-        String text = FOLLOW.getText(follower.getInfo().getNickname());
-        return new Alarm(target, text, FOLLOW);
+    public static Alarm createFollowedAlarm(Long targetId, String text) {
+        return new Alarm(targetId, text, FOLLOW);
     }
 
-    public static Alarm createPostUploadedAlarm(Member target, Member following) {
-        String text = POST_UPLOAD.getText(following.getInfo().getNickname());
-        return new Alarm(target, text, POST_UPLOAD);
+    public static List<Alarm> createPostUploadedAlarms(List<Long> targetIds, String text) {
+        return targetIds.stream()
+                .map(targetId -> new Alarm(targetId, text, POST_UPLOAD))
+                .toList();
     }
 }

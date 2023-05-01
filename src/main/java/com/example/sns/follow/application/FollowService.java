@@ -19,8 +19,7 @@ public class FollowService {
     @Transactional
     public void follow(Long memberId, Long followingId) {
         Member follower = getMember(memberId);
-        Member following = memberRepository.findByIdFetchDevices(followingId)
-                .orElseThrow(() -> new MemberNotFoundException(followingId));
+        Member following = getMember(followingId);
 
         follower.follow(following);
         eventPublisher.publishEvent(new FollowedEvent(follower, following));
