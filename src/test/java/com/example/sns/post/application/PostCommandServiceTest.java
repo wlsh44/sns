@@ -1,6 +1,6 @@
 package com.example.sns.post.application;
 
-import com.example.sns.common.imagestore.exception.TemporaryFileException;
+import com.example.sns.common.infrastructure.imagestore.exception.TemporaryFileException;
 import com.example.sns.common.support.ServiceTest;
 import com.example.sns.post.domain.Comment;
 import com.example.sns.post.domain.CommentRepository;
@@ -9,7 +9,7 @@ import com.example.sns.post.domain.PostImage;
 import com.example.sns.post.domain.PostRepository;
 import com.example.sns.post.exception.NotPostAuthorException;
 import com.example.sns.post.exception.PostNotFoundException;
-import com.example.sns.common.imagestore.exception.ImageStoreException;
+import com.example.sns.common.infrastructure.imagestore.exception.ImageStoreException;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.exception.MemberNotFoundException;
 import org.junit.jupiter.api.Disabled;

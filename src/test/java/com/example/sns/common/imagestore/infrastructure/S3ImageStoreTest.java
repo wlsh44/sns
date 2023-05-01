@@ -2,8 +2,10 @@ package com.example.sns.common.imagestore.infrastructure;
 
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
-import com.example.sns.common.imagestore.exception.ImageStoreException;
-import com.example.sns.common.imagestore.exception.TemporaryFileException;
+import com.example.sns.common.infrastructure.imagestore.exception.ImageStoreException;
+import com.example.sns.common.infrastructure.imagestore.exception.TemporaryFileException;
+import com.example.sns.common.infrastructure.imagestore.FileNameGenerator;
+import com.example.sns.common.infrastructure.imagestore.S3ImageStore;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

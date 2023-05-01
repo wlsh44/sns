@@ -1,7 +1,7 @@
 package com.example.sns.member.infrastructure;
 
-import com.example.sns.common.imagestore.ImageStore;
-import com.example.sns.common.imagestore.exception.InvalidImageException;
+import com.example.sns.common.infrastructure.imagestore.ImageStore;
+import com.example.sns.common.infrastructure.imagestore.exception.InvalidImageException;
 import com.example.sns.member.application.ProfileImageStore;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

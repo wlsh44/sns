@@ -1,23 +1,23 @@
-package com.example.sns.common.imagestore.infrastructure;
+package com.example.sns.common.infrastructure.imagestore;
 
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.example.sns.common.imagestore.ImageStore;
-import com.example.sns.common.imagestore.exception.ImageStoreException;
-import com.example.sns.common.imagestore.exception.TemporaryFileException;
+import com.example.sns.common.infrastructure.imagestore.FileNameGenerator;
+import com.example.sns.common.infrastructure.imagestore.ImageStore;
+import com.example.sns.common.infrastructure.imagestore.exception.ImageStoreException;
+import com.example.sns.common.infrastructure.imagestore.exception.TemporaryFileException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 
-import static com.example.sns.common.imagestore.exception.TemporaryFileException.CREATE_ERROR;
-import static com.example.sns.common.imagestore.exception.TemporaryFileException.TRANSFER_ERROR;
+import static com.example.sns.common.infrastructure.imagestore.exception.TemporaryFileException.CREATE_ERROR;
+import static com.example.sns.common.infrastructure.imagestore.exception.TemporaryFileException.TRANSFER_ERROR;
 
 @Slf4j
 @Component

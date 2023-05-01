@@ -1,10 +1,9 @@
 package com.example.sns.post.infrastructure;
 
-import com.example.sns.common.imagestore.ImageStore;
-import com.example.sns.common.imagestore.exception.InvalidImageException;
+import com.example.sns.common.infrastructure.imagestore.ImageStore;
+import com.example.sns.common.infrastructure.imagestore.exception.InvalidImageException;
 import com.example.sns.post.application.PostImageStore;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 

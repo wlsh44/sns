@@ -1,6 +1,6 @@
-package com.example.sns.common.imagestore.infrastructure;
+package com.example.sns.common.infrastructure.imagestore;
 
-import com.example.sns.common.imagestore.exception.InvalidImageException;
+import com.example.sns.common.infrastructure.imagestore.exception.InvalidImageException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;

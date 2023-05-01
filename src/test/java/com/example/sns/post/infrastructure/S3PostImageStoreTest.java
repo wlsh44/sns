@@ -1,15 +1,13 @@
 package com.example.sns.post.infrastructure;
 
-import com.example.sns.common.imagestore.ImageStore;
-import com.example.sns.common.imagestore.exception.InvalidImageException;
-import org.junit.jupiter.api.BeforeEach;
+import com.example.sns.common.infrastructure.imagestore.ImageStore;
+import com.example.sns.common.infrastructure.imagestore.exception.InvalidImageException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -17,7 +15,6 @@ import java.util.List;
 import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_UPLOAD_MULTIPART;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;

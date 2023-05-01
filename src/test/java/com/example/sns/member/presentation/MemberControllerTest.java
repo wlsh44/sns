@@ -1,7 +1,7 @@
 package com.example.sns.member.presentation;
 
-import com.example.sns.common.imagestore.exception.ImageStoreException;
-import com.example.sns.common.imagestore.exception.InvalidImageException;
+import com.example.sns.common.infrastructure.imagestore.exception.ImageStoreException;
+import com.example.sns.common.infrastructure.imagestore.exception.InvalidImageException;
 import com.example.sns.common.support.MockControllerTest;
 import com.example.sns.member.exception.AlreadyExistNicknameException;
 import com.example.sns.member.exception.MemberNotFoundException;
