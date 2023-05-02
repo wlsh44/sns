@@ -26,9 +26,8 @@ public class PostUploadEventHandler {
     private final AlarmService alarmService;
     private final AlarmRepository alarmRepository;
 
-    @Async("asyncThreadPoolTaskExecutor")
+    @Async
     @TransactionalEventListener
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void sendPostUploadedAlarm(PostUploadedEvent event) {
         AlarmTargetsDto targets = event.getTargets();
         String text = POST_UPLOAD.getText(event.getAuthorNickname());
