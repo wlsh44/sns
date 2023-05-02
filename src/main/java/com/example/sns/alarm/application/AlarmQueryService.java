@@ -16,7 +16,7 @@ public class AlarmQueryService {
 
     private final AlarmRepository alarmRepository;
 
-    public AlarmListResponse getAlarms(Long memberId, Pageable pageable) {
+    public AlarmListResponse findAlarms(Long memberId, Pageable pageable) {
         Slice<Alarm> alarmSlice = alarmRepository.findByMemberId(memberId, pageable);
 
         return AlarmListResponse.createResponse(alarmSlice.getContent(), alarmSlice.hasNext(), alarmSlice.getNumber());

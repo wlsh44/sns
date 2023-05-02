@@ -19,7 +19,6 @@ import static com.example.sns.common.fixtures.AlarmFixture.getFollowAlarm;
 import static com.example.sns.common.fixtures.MemberFixture.getBasicMember;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 class AlarmQueryServiceTest extends ServiceTest {
 
@@ -45,7 +44,7 @@ class AlarmQueryServiceTest extends ServiceTest {
                 0);
 
         //when
-        AlarmListResponse response = alarmQueryService.getAlarms(member.getId(), pageable);
+        AlarmListResponse response = alarmQueryService.findAlarms(member.getId(), pageable);
 
         //then
         assertThat(response).usingRecursiveComparison()
