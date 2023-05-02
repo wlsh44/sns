@@ -63,7 +63,6 @@ class PostUploadEventHandlerTest extends ServiceTest {
     ApplicationEvents events;
 
     @Autowired
-    @Qualifier("asyncThreadPoolTaskExecutor")
     ThreadPoolTaskExecutor executor;
 
 

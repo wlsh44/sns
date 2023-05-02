@@ -47,7 +47,6 @@ class FollowEventHandlerTest extends ServiceTest {
     ApplicationEvents events;
 
     @Autowired
-    @Qualifier("asyncThreadPoolTaskExecutor")
     ThreadPoolTaskExecutor executor;
 
     @Test
