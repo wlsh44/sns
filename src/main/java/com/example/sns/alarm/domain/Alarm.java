@@ -50,7 +50,7 @@ public class Alarm extends BaseTimeEntity {
                 .toList();
     }
 
-    public boolean isOwner(Long memberId) {
+    public boolean isReceiver(Long memberId) {
         return this.memberId.equals(memberId);
     }
 

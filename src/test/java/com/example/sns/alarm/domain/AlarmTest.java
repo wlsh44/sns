@@ -9,10 +9,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.example.sns.common.fixtures.AlarmFixture.getFollowAlarm;
-import static com.example.sns.common.fixtures.MemberFixture.getBasicMember;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,7 +28,7 @@ class AlarmTest {
         Alarm alarm = getFollowAlarm(member);
 
         //when
-        boolean res = alarm.isOwner(2L);
+        boolean res = alarm.isReceiver(2L);
 
         //then
         assertThat(res).isFalse();
