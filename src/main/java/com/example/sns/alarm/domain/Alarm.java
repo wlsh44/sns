@@ -1,5 +1,6 @@
 package com.example.sns.alarm.domain;
 
+import com.example.sns.alarm.exception.AlreadyReadAlarmException;
 import com.example.sns.common.entity.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -47,5 +48,16 @@ public class Alarm extends BaseTimeEntity {
         return targetIds.stream()
                 .map(targetId -> new Alarm(targetId, text, POST_UPLOAD))
                 .toList();
+    }
+
+    public boolean isOwner(Long memberId) {
+        return this.memberId.equals(memberId);
+    }
+
+    public void read() {
+        if (this.isRead()) {
+            throw new AlreadyReadAlarmException();
+        }
+        this.read = true;
     }
 }
