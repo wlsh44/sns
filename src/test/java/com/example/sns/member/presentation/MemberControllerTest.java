@@ -3,6 +3,7 @@ package com.example.sns.member.presentation;
 import com.example.sns.common.infrastructure.imagestore.exception.ImageStoreException;
 import com.example.sns.common.infrastructure.imagestore.exception.InvalidImageException;
 import com.example.sns.common.support.MockControllerTest;
+import com.example.sns.member.application.dto.DeviceTokenRequest;
 import com.example.sns.member.exception.AlreadyExistNicknameException;
 import com.example.sns.member.exception.MemberNotFoundException;
 import com.example.sns.member.presentation.dto.MemberInfoResponse;
@@ -12,6 +13,7 @@ import com.example.sns.member.presentation.dto.MemberSearchResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 import java.util.List;
 
@@ -28,6 +30,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -189,5 +192,21 @@ class MemberControllerTest extends MockControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(mapper.writeValueAsString(response)));
+    }
+
+    @Test
+    @DisplayName("디바이스 토큰을 추가할 경우 200 응답을 줘야 함")
+    void addDeviceTest() throws Exception {
+        //given
+        DeviceTokenRequest request = new DeviceTokenRequest("token");
+
+        //when then
+        mockMvc.perform(post("/members/device")
+                        .param("nickname", "nickname")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(request))
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 }
