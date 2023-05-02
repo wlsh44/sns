@@ -1,5 +1,6 @@
 package com.example.sns.common.support;
 
+import com.example.sns.alarm.application.AlarmCommandService;
 import com.example.sns.alarm.application.AlarmQueryService;
 import com.example.sns.common.infrastructure.fcm.AlarmService;
 import com.example.sns.auth.application.AuthService;
@@ -81,4 +82,7 @@ public class MockControllerTest {
 
     @MockBean
     protected AlarmQueryService alarmQueryService;
+
+    @MockBean
+    protected AlarmCommandService alarmCommandService;
 }
