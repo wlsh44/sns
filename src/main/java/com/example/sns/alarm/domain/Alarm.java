@@ -24,7 +24,7 @@ public class Alarm extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long targetId;
+    private Long memberId;
 
     private boolean read;
 
@@ -32,8 +32,8 @@ public class Alarm extends BaseTimeEntity {
 
     private AlarmType type;
 
-    private Alarm(Long targetId, String text, AlarmType type) {
-        this.targetId = targetId;
+    private Alarm(Long memberId, String text, AlarmType type) {
+        this.memberId = memberId;
         this.text = text;
         this.type = type;
         this.read = false;

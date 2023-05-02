@@ -102,7 +102,7 @@ class PostUploadEventHandlerTest extends ServiceTest {
         //then
         List<Alarm> alarms = alarmRepository.findAll();
         assertThat(alarms).hasSize(1);
-        assertThat(alarms.get(0).getTargetId()).isEqualTo(follower.getId());
+        assertThat(alarms.get(0).getMemberId()).isEqualTo(follower.getId());
         assertThat(alarms.get(0).getText()).isEqualTo(POST_UPLOAD.getText(following.getInfo().getNickname()));
     }
 }
