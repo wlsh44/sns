@@ -1,7 +1,6 @@
 package com.example.sns.alarm.domain;
 
 import com.example.sns.common.entity.BaseTimeEntity;
-import com.example.sns.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 
 import java.util.List;
 
@@ -26,7 +24,7 @@ public class Alarm extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long targetId;
+    private Long memberId;
 
     private boolean read;
 
@@ -34,8 +32,8 @@ public class Alarm extends BaseTimeEntity {
 
     private AlarmType type;
 
-    private Alarm(Long targetId, String text, AlarmType type) {
-        this.targetId = targetId;
+    private Alarm(Long memberId, String text, AlarmType type) {
+        this.memberId = memberId;
         this.text = text;
         this.type = type;
         this.read = false;

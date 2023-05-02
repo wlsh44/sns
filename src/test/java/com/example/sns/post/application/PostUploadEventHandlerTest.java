@@ -4,7 +4,6 @@ import com.example.sns.alarm.domain.Alarm;
 import com.example.sns.alarm.domain.AlarmRepository;
 import com.example.sns.common.infrastructure.fcm.AlarmService;
 import com.example.sns.common.support.ServiceTest;
-import com.example.sns.follow.application.FollowService;
 import com.example.sns.follow.domain.Follow;
 import com.example.sns.follow.domain.FollowRepository;
 import com.example.sns.member.domain.Member;
@@ -103,7 +102,7 @@ class PostUploadEventHandlerTest extends ServiceTest {
         //then
         List<Alarm> alarms = alarmRepository.findAll();
         assertThat(alarms).hasSize(1);
-        assertThat(alarms.get(0).getTargetId()).isEqualTo(follower.getId());
+        assertThat(alarms.get(0).getMemberId()).isEqualTo(follower.getId());
         assertThat(alarms.get(0).getText()).isEqualTo(POST_UPLOAD.getText(following.getInfo().getNickname()));
     }
 }

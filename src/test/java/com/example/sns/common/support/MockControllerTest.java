@@ -1,5 +1,6 @@
 package com.example.sns.common.support;
 
+import com.example.sns.alarm.application.AlarmQueryService;
 import com.example.sns.common.infrastructure.fcm.AlarmService;
 import com.example.sns.auth.application.AuthService;
 import com.example.sns.auth.config.AuthProperties;
@@ -77,4 +78,7 @@ public class MockControllerTest {
 
     @MockBean
     protected FirebaseMessaging firebaseMessaging;
+
+    @MockBean
+    protected AlarmQueryService alarmQueryService;
 }
