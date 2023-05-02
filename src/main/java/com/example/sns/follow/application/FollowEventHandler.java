@@ -6,12 +6,9 @@ import com.example.sns.alarm.domain.AlarmType;
 import com.example.sns.common.infrastructure.fcm.AlarmService;
 import com.example.sns.common.infrastructure.fcm.dto.AlarmTargetDto;
 import com.example.sns.common.infrastructure.fcm.dto.MessageDto;
-import com.example.sns.follow.application.FollowedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.List;
@@ -27,7 +24,6 @@ public class FollowEventHandler {
 
     @Async
     @TransactionalEventListener
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void sendFollowedAlarm(FollowedEvent event) {
         AlarmTargetDto target = event.getTarget();
         String text = FOLLOW.getText(event.getFollowerNickname());
