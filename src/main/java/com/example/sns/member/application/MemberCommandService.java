@@ -33,6 +33,12 @@ public class MemberCommandService {
         }
     }
 
+    public void addDeviceToken(Long memberId, String token) {
+        Member member = getMember(memberId);
+
+        member.addDevice(token);
+    }
+
     private Member getMember(Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException(memberId));

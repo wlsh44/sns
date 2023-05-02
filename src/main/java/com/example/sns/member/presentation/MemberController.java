@@ -3,6 +3,7 @@ package com.example.sns.member.presentation;
 import com.example.sns.auth.presentation.Authenticated;
 import com.example.sns.member.application.MemberCommandService;
 import com.example.sns.member.application.MemberQueryService;
+import com.example.sns.member.application.dto.DeviceTokenRequest;
 import com.example.sns.member.application.dto.MemberUpdateRequest;
 import com.example.sns.member.presentation.dto.MemberInfoResponse;
 import com.example.sns.member.presentation.dto.MemberProfileResponse;
@@ -13,6 +14,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -56,5 +58,12 @@ public class MemberController {
         MemberSearchResponse response = memberQueryService.searchMembers(nickname, pageable);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/device")
+    public ResponseEntity<Void> addDevice(@Authenticated Long memberId, @RequestBody DeviceTokenRequest request) {
+        memberCommandService.addDeviceToken(memberId, request.getToken());
+
+        return ResponseEntity.ok().build();
     }
 }
