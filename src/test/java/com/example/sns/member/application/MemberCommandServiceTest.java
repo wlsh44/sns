@@ -5,6 +5,7 @@ import com.example.sns.common.infrastructure.imagestore.exception.ImageStoreExce
 import com.example.sns.common.infrastructure.imagestore.exception.InvalidImageException;
 import com.example.sns.common.support.ServiceTest;
 import com.example.sns.member.application.dto.MemberUpdateRequest;
+import com.example.sns.member.domain.Device;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.domain.MemberRepository;
 import com.example.sns.member.exception.AlreadyExistNicknameException;
@@ -14,6 +15,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_BIOGRAPHY2;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_NICKNAME;
@@ -120,5 +123,22 @@ class MemberCommandServiceTest extends ServiceTest {
         //when then
         assertThatThrownBy(() -> memberCommandService.updateMember(member.getId(), request, image))
                 .isInstanceOf(InvalidImageException.class);
+    }
+
+    @Test
+    @DisplayName("디바이스 토큰을 추가해야 함")
+    void addDeviceTokenTest() throws Exception {
+        //given
+        String token = "token";
+        Member member = memberRepository.save(getBasicMember());
+
+        //when
+        memberCommandService.addDeviceToken(member.getId(), token);
+
+        //then
+        List<Device> devices = em.createQuery("select d from Device d", Device.class)
+                .getResultList();
+        assertThat(devices).hasSize(1);
+        assertThat(devices.get(0).getToken()).isEqualTo(token);
     }
 }
