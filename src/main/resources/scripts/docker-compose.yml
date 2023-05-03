@@ -12,7 +12,7 @@ services:
 
   blue:
     container_name: blue
-    image: k87913j/ci-cd-practice
+    image: k87913j/sns
     restart: always
     expose:
       - "8080"
@@ -21,7 +21,7 @@ services:
 
   green:
     container_name: green
-    image: k87913j/ci-cd-practice
+    image: k87913j/sns
     restart: always
     expose:
       - "8080"
