@@ -1,0 +1,29 @@
+version: '3'
+services:
+
+  nginx:
+    image: nginx
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - /root/nginx/:/etc/nginx/conf.d/
+
+  blue:
+    container_name: blue
+    image: k87913j/sns
+    restart: always
+    expose:
+      - "8080"
+    volumes:
+      - /root/config:/config
+
+  green:
+    container_name: green
+    image: k87913j/sns
+    restart: always
+    expose:
+      - "8080"
+    volumes:
+      - /root/config:/config
