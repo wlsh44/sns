@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/members")
 @RequiredArgsConstructor
@@ -46,7 +48,7 @@ public class MemberController {
     @PostMapping("/me")
     public ResponseEntity<Void> updateMember(
             @Authenticated Long memberId,
-            @RequestPart("body") MemberUpdateRequest request,
+            @RequestPart("body") @Valid MemberUpdateRequest request,
             @RequestPart("image") MultipartFile multipartFile) {
         memberCommandService.updateMember(memberId, request, multipartFile);
 
@@ -61,7 +63,7 @@ public class MemberController {
     }
 
     @PostMapping("/device")
-    public ResponseEntity<Void> addDevice(@Authenticated Long memberId, @RequestBody DeviceTokenRequest request) {
+    public ResponseEntity<Void> addDevice(@Authenticated Long memberId, @RequestBody @Valid DeviceTokenRequest request) {
         memberCommandService.addDeviceToken(memberId, request.getToken());
 
         return ResponseEntity.ok().build();

@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/posts")
@@ -25,7 +28,7 @@ public class CommentController {
     private final CommentQueryService commentQueryService;
 
     @PostMapping("/{postId}/comments")
-    public ResponseEntity<Void> create(@Authenticated Long memberId, @PathVariable Long postId, NewCommentRequest request) {
+    public ResponseEntity<Void> create(@Authenticated Long memberId, @PathVariable Long postId, @RequestBody @Valid NewCommentRequest request) {
         commentCommandService.createComment(memberId, postId, request);
         return ResponseEntity.ok().build();
     }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -29,7 +30,7 @@ public class PostController {
 
     @PostMapping("")
     public ResponseEntity<Void> uploadPost(@Authenticated Long memberId,
-                                           @RequestPart(value = "body") PostUploadRequest request,
+                                           @RequestPart(value = "body") @Valid PostUploadRequest request,
                                            @RequestPart List<MultipartFile> postImages) {
         postCommandService.uploadPost(memberId, request, postImages);
         return ResponseEntity.ok().build();
@@ -38,7 +39,7 @@ public class PostController {
     @PostMapping("/{postId}")
     public ResponseEntity<Void> updatePost(@Authenticated Long memberId,
                                            @PathVariable Long postId,
-                                           @RequestPart(value = "body") PostUpdateRequest request,
+                                           @RequestPart(value = "body") @Valid PostUpdateRequest request,
                                            @RequestPart List<MultipartFile> postImages) {
         postCommandService.updatePost(memberId, postId, request, postImages);
         return ResponseEntity.ok().build();
