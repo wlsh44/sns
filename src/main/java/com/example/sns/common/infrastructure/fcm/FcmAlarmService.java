@@ -32,6 +32,9 @@ public class FcmAlarmService implements AlarmService {
 
     @Override
     public void sendAll(List<MessageDto> messageDtoList) {
+        if (messageDtoList.isEmpty()) {
+            return;
+        }
         List<Message> messages = createMessages(messageDtoList);
         sendMessages(messages)
                 .filter(this::isFailureExist)
