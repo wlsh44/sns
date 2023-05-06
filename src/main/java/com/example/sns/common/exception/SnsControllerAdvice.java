@@ -3,7 +3,9 @@ package com.example.sns.common.exception;
 import com.example.sns.auth.exception.ExpiredTokenException;
 import com.example.sns.common.exception.dto.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -17,6 +19,13 @@ public class SnsControllerAdvice {
         return ResponseEntity
                 .status(e.getStatus())
                 .body(new ErrorResponse(e.getErrorMsg()));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> argumentNotValidException(MethodArgumentNotValidException e) {
+        log.error("e = ", e);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(SnsException.class)
