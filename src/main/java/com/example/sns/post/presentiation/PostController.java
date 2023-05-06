@@ -30,7 +30,7 @@ public class PostController {
 
     @PostMapping("")
     public ResponseEntity<Void> uploadPost(@Authenticated Long memberId,
-                                           @RequestPart(value = "body") PostUploadRequest request,
+                                           @RequestPart(value = "body") @Valid PostUploadRequest request,
                                            @RequestPart List<MultipartFile> postImages) {
         postCommandService.uploadPost(memberId, request, postImages);
         return ResponseEntity.ok().build();
