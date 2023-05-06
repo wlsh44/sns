@@ -48,7 +48,7 @@ public class MemberController {
     @PostMapping("/me")
     public ResponseEntity<Void> updateMember(
             @Authenticated Long memberId,
-            @RequestPart("body") MemberUpdateRequest request,
+            @RequestPart("body") @Valid MemberUpdateRequest request,
             @RequestPart("image") MultipartFile multipartFile) {
         memberCommandService.updateMember(memberId, request, multipartFile);
 
