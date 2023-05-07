@@ -15,7 +15,7 @@ public class SnsControllerAdvice {
 
     @ExceptionHandler(ExpiredTokenException.class)
     public ResponseEntity<ErrorResponse> authException(ExpiredTokenException e) {
-        log.error("인증 에러 = {}", e.getErrorMsg());
+        log.info("인증 에러 = {}", e.getErrorMsg());
         return ResponseEntity
                 .status(e.getStatus())
                 .body(new ErrorResponse(e.getErrorMsg()));
@@ -23,16 +23,29 @@ public class SnsControllerAdvice {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> argumentNotValidException(MethodArgumentNotValidException e) {
-        log.error("e = ", e);
+        log.info("e = ", e);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(SnsException.class)
     public ResponseEntity<ErrorResponse> snsException(SnsException e) {
-        log.error("e.getErrorMsg() = {}", e.getErrorMsg());
+        HttpStatus status = e.getStatus();
+        if (status.is4xxClientError()) {
+            log.info("클라이언트 예외 = {}", e.getErrorMsg());
+        } else if (status.is5xxServerError()) {
+            log.error("서버 예외.", e);
+        }
         return ResponseEntity
-                .status(e.getStatus())
+                .status(status)
+                .body(new ErrorResponse());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> exception(Exception e) {
+        log.error("예상하지 못한 예외", e);
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorResponse());
     }
 }
