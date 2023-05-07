@@ -40,4 +40,12 @@ public class SnsControllerAdvice {
                 .status(status)
                 .body(new ErrorResponse());
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> exception(Exception e) {
+        log.error("예상하지 못한 예외", e);
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorResponse());
+    }
 }
