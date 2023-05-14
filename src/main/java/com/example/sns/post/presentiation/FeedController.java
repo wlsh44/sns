@@ -26,7 +26,7 @@ public class FeedController {
     }
 
     @GetMapping("/timeline")
-    public ResponseEntity<RecentFeedResponse> findRecentFeed(Pageable pageable) {
+    public ResponseEntity<RecentFeedResponse> findRecentFeed(@PageableDefault Pageable pageable) {
         RecentFeedResponse response = feedService.findRecentFeed(pageable);
         return ResponseEntity.ok(response);
     }
