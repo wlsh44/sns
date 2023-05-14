@@ -24,7 +24,7 @@ docker compose up -d $IDLE_SERVER
 for ((RETRY_COUNT=0; RETRY_COUNT <= 10; RETRY_COUNT++));
 do
     echo " health checking $IDLE_SERVER..."
-    REQUEST=$(docker exec nginx curl http://$IDLE_SERVER:8080)
+    REQUEST=$(docker exec nginx curl http://$IDLE_SERVER/health-check:8080)
     echo $REQUEST
     if [ -n "$REQUEST" ]; then
         echo ">>>>>>>>>>>>>>>>>> Success health checking!!"
