@@ -88,7 +88,7 @@ public class Post extends BaseTimeEntity {
 
     private void validateAlreadyLike(Member member) {
         if (isLikedBy(member)) {
-            throw new AlreadyLikedPostException();
+            throw new AlreadyLikedPostException(this.id, member.getId());
         }
     }
 
