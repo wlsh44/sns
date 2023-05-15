@@ -73,13 +73,6 @@ class CommentQueryServiceTest extends ServiceTest {
     }
 
     private CommentResponse getCommentResponse(Member commentAuthor, Comment commentByCommentAuthor2) {
-        return new CommentResponse(
-                commentByCommentAuthor2.getId(),
-                commentAuthor.getId(),
-                commentAuthor.getProfileUrl(),
-                commentAuthor.getInfo().getUsername(),
-                commentByCommentAuthor2.getContent(),
-                commentByCommentAuthor2.getCreatedAt()
-        );
+        return new CommentResponse(commentByCommentAuthor2);
     }
 }

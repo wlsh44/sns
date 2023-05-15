@@ -160,7 +160,7 @@ class PostCommandServiceTest extends ServiceTest {
         Post post = Post.createPost(member, BASIC_POST_CONTENT);
         post.updatePostImage(List.of(new PostImage(POST_IMAGE_PATH1, post)));
         post = postRepository.save(post);
-        commentCommandService.createComment(member.getId(), post.getId(), getBasicCommentRequest(post.getId()));
+        commentCommandService.createComment(member.getId(), post.getId(), getBasicCommentRequest());
 
         //when
         postCommandService.deletePost(member.getId(), post.getId());
