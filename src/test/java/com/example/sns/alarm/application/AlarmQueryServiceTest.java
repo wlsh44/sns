@@ -39,8 +39,8 @@ class AlarmQueryServiceTest extends ServiceTest {
         Alarm alarm = alarmRepository.save(getFollowAlarm(member));
         Pageable pageable = PageRequest.of(0, 10);
         AlarmListResponse expect = new AlarmListResponse(
-                List.of(alarm),
-                false,
+                List.of(new AlarmDto(alarm.getId(), alarm.getText(), alarm.isRead())),
+                true,
                 0);
 
         //when

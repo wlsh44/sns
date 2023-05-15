@@ -14,7 +14,7 @@ public class AlarmListResponse {
     private final boolean last;
     private final int offset;
 
-    public static AlarmListResponse createResponse(List<Alarm> alarms, boolean hasNext, int offset) {
+    public static AlarmListResponse from(List<Alarm> alarms, boolean hasNext, int offset) {
         List<AlarmDto> alarmDtoList = alarms.stream()
                 .map(alarm -> new AlarmDto(alarm.getId(), alarm.getText(), alarm.isRead()))
                 .toList();
