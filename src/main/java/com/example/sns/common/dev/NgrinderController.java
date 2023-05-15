@@ -1,7 +1,7 @@
 package com.example.sns.common.dev;
 
 import com.example.sns.auth.application.dto.OAuthUserInfoDto;
-import com.example.sns.auth.infrastructure.JwtProvider;
+import com.example.sns.auth.application.JwtProvider;
 import com.example.sns.auth.presentation.dto.TokenResponse;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.domain.MemberRepository;

@@ -1,7 +1,6 @@
 package com.example.sns.auth.application;
 
 import com.example.sns.auth.infrastructure.GoogleClient;
-import com.example.sns.auth.infrastructure.JwtProvider;
 import com.example.sns.auth.presentation.dto.TokenResponse;
 import com.example.sns.common.fixtures.MemberFixture;
 import com.example.sns.common.support.ServiceTest;
@@ -10,7 +9,6 @@ import com.example.sns.member.domain.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.transaction.annotation.Transactional;
 

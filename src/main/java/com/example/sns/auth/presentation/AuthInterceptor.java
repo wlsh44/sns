@@ -1,6 +1,6 @@
 package com.example.sns.auth.presentation;
 
-import com.example.sns.auth.infrastructure.JwtProvider;
+import com.example.sns.auth.application.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
