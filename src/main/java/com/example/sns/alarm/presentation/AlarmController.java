@@ -1,8 +1,8 @@
-package com.example.sns.alarm.ui;
+package com.example.sns.alarm.presentation;
 
 import com.example.sns.alarm.application.AlarmCommandService;
 import com.example.sns.alarm.application.AlarmQueryService;
-import com.example.sns.alarm.ui.dto.AlarmListResponse;
+import com.example.sns.alarm.presentation.dto.AlarmListResponse;
 import com.example.sns.auth.presentation.Authenticated;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;

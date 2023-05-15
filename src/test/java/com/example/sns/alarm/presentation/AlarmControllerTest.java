@@ -1,27 +1,20 @@
-package com.example.sns.alarm.ui;
+package com.example.sns.alarm.presentation;
 
 import com.example.sns.alarm.exception.AlarmNotFoundException;
 import com.example.sns.alarm.exception.AlreadyReadAlarmException;
 import com.example.sns.alarm.exception.NotAlarmReceiverException;
-import com.example.sns.alarm.ui.dto.AlarmDto;
-import com.example.sns.alarm.ui.dto.AlarmListResponse;
+import com.example.sns.alarm.presentation.dto.AlarmDto;
+import com.example.sns.alarm.presentation.dto.AlarmListResponse;
 import com.example.sns.common.support.MockControllerTest;
-import com.example.sns.post.presentiation.dto.MyFeedResponse;
-import com.example.sns.post.presentiation.dto.PostResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.example.sns.common.fixtures.AuthFixture.ACCESS_TOKEN;
-import static com.example.sns.common.fixtures.MemberFixture.BASIC_NICKNAME;
-import static com.example.sns.common.fixtures.MemberFixture.BASIC_PROFILE1;
-import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_CONTENT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;

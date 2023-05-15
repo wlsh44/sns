@@ -2,7 +2,7 @@ package com.example.sns.alarm.application;
 
 import com.example.sns.alarm.domain.Alarm;
 import com.example.sns.alarm.domain.AlarmRepository;
-import com.example.sns.alarm.ui.dto.AlarmListResponse;
+import com.example.sns.alarm.presentation.dto.AlarmListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;

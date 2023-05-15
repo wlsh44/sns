@@ -2,8 +2,8 @@ package com.example.sns.alarm.application;
 
 import com.example.sns.alarm.domain.Alarm;
 import com.example.sns.alarm.domain.AlarmRepository;
-import com.example.sns.alarm.ui.dto.AlarmDto;
-import com.example.sns.alarm.ui.dto.AlarmListResponse;
+import com.example.sns.alarm.presentation.dto.AlarmDto;
+import com.example.sns.alarm.presentation.dto.AlarmListResponse;
 import com.example.sns.common.support.ServiceTest;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.domain.MemberRepository;

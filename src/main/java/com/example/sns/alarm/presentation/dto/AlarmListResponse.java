@@ -1,4 +1,4 @@
-package com.example.sns.alarm.ui.dto;
+package com.example.sns.alarm.presentation.dto;
 
 import com.example.sns.alarm.domain.Alarm;
 import lombok.Getter;
