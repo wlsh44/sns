@@ -1,5 +1,6 @@
 package com.example.sns.post.domain;
 
+import com.example.sns.common.entity.BaseTimeEntity;
 import com.example.sns.member.domain.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -18,7 +19,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "likes")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Like {
+public class Like extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
