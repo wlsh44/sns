@@ -33,7 +33,7 @@ class CommentControllerTest extends MockControllerTest {
     @DisplayName("댓글을 생성하면 200 읃답을 해야 함")
     void createTest() throws Exception {
         //given
-        NewCommentRequest request = getBasicCommentRequest(1L);
+        NewCommentRequest request = getBasicCommentRequest();
 
         //when then
         mockMvc.perform(post("/posts/1/comments")
@@ -48,9 +48,8 @@ class CommentControllerTest extends MockControllerTest {
     @DisplayName("없는 피드에 댓글을 달 경우 400 예외를 응답해야 함")
     void createTest_feedNotFound() throws Exception {
         //given
-        Long notExistFeedId = 1L;
-        NewCommentRequest request = getBasicCommentRequest(notExistFeedId);
-        doThrow(new PostNotFoundException(notExistFeedId))
+        NewCommentRequest request = getBasicCommentRequest();
+        doThrow(new PostNotFoundException(1L))
                 .when(commentCommandService)
                 .createComment(any(), any(), any());
 
@@ -67,7 +66,7 @@ class CommentControllerTest extends MockControllerTest {
     @DisplayName("댓글 내용이 비었을 경우 400 예외를 응답해야 함")
     void createTest_emptyContent() throws Exception {
         //given
-        NewCommentRequest request = getEmptyContentCommentRequest(1L);
+        NewCommentRequest request = getEmptyContentCommentRequest();
         doThrow(new EmptyCommentException())
                 .when(commentCommandService)
                 .createComment(any(), any(), any());
