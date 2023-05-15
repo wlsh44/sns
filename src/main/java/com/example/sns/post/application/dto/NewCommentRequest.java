@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class NewCommentRequest {
 
-    @NotEmpty
+    @NotNull
     private Long feedId;
 
     @NotNull
