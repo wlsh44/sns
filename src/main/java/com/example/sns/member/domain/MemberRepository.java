@@ -12,9 +12,9 @@ import java.util.Optional;
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findBySocialId(String socialId);
-    Optional<Member> findByInfoNickname(String nickname);
-    boolean existsByInfoNickname(String nickname);
-    Slice<Member> findByInfoNicknameContaining(String nickname, Pageable pageable);
+    Optional<Member> findByInfoUsername(String username);
+    boolean existsByInfoUsername(String username);
+    Slice<Member> findByInfoUsernameContaining(String username, Pageable pageable);
 
     @Query("select m from Member m left join fetch m.devices where m.id = :memberId")
     Optional<Member> findByIdFetchDevices(@Param("memberId") Long memberId);

@@ -18,7 +18,7 @@ public class PostResponse {
 
     private final Long id;
     private final Long authorId;
-    private final String authorNickname;
+    private final String authorUsername;
     private final String authorProfile;
     private final List<String> images;
     private final int likeCnt;
@@ -35,7 +35,7 @@ public class PostResponse {
         return new PostResponse(
                 post.getId(),
                 author.getId(),
-                author.getNickname(),
+                author.getUsername(),
                 author.getProfile(),
                 getImageUrls(post.getImages()),
                 post.getLikes().size(),

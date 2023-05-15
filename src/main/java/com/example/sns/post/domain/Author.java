@@ -27,8 +27,8 @@ public class Author {
         return member.getProfileUrl();
     }
 
-    public String getNickname() {
-        return member.getInfo().getNickname();
+    public String getUsername() {
+        return member.getInfo().getUsername();
     }
 
     boolean isAuthor(Long memberId) {

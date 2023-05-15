@@ -8,7 +8,7 @@ import com.example.sns.member.application.dto.MemberUpdateRequest;
 import com.example.sns.member.domain.Device;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.domain.MemberRepository;
-import com.example.sns.member.exception.AlreadyExistNicknameException;
+import com.example.sns.member.exception.AlreadyExistUsernameException;
 import com.example.sns.member.exception.MemberNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,8 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_BIOGRAPHY2;
-import static com.example.sns.common.fixtures.MemberFixture.BASIC_NICKNAME;
-import static com.example.sns.common.fixtures.MemberFixture.BASIC_NICKNAME2;
+import static com.example.sns.common.fixtures.MemberFixture.BASIC_USERNAME;
+import static com.example.sns.common.fixtures.MemberFixture.BASIC_USERNAME2;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_PROFILE2;
 import static com.example.sns.common.fixtures.MemberFixture.getBasicMember;
 import static com.example.sns.common.fixtures.MemberFixture.getBasicMember2;
@@ -47,7 +47,7 @@ class MemberCommandServiceTest extends ServiceTest {
     void updateMemberTest() throws Exception {
         //given
         Member member = memberRepository.save(getBasicMember());
-        MemberUpdateRequest request = new MemberUpdateRequest(BASIC_NICKNAME2, BASIC_BIOGRAPHY2);
+        MemberUpdateRequest request = new MemberUpdateRequest(BASIC_USERNAME2, BASIC_BIOGRAPHY2);
         MultipartFile image = mock(MultipartFile.class);
         given(imageStore.saveImage(any(), any()))
                 .willReturn(BASIC_PROFILE2);
@@ -60,7 +60,7 @@ class MemberCommandServiceTest extends ServiceTest {
         //then
         Member updatedMember = memberRepository.findById(member.getId()).get();
         assertAll(
-                () -> assertThat(updatedMember.getInfo().getNickname()).isEqualTo(BASIC_NICKNAME2),
+                () -> assertThat(updatedMember.getInfo().getUsername()).isEqualTo(BASIC_USERNAME2),
                 () -> assertThat(updatedMember.getBiography()).isEqualTo(BASIC_BIOGRAPHY2),
                 () -> assertThat(updatedMember.getProfileUrl()).isEqualTo(BASIC_PROFILE2)
         );
@@ -71,7 +71,7 @@ class MemberCommandServiceTest extends ServiceTest {
     void updateMemberTest_memberNotFound() throws Exception {
         //given
         Long notExistId = 999L;
-        MemberUpdateRequest request = new MemberUpdateRequest(BASIC_NICKNAME2, BASIC_BIOGRAPHY2);
+        MemberUpdateRequest request = new MemberUpdateRequest(BASIC_USERNAME2, BASIC_BIOGRAPHY2);
         MultipartFile image = mock(MultipartFile.class);
 
         //when then
@@ -81,16 +81,16 @@ class MemberCommandServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("이미 존재하는 닉네임으로 수정할 경우 예외가 발생해야 함")
-    void updateMemberTest_alreadyExistNickname() throws Exception {
+    void updateMemberTest_alreadyExistUsername() throws Exception {
         //given
         memberRepository.save(getBasicMember());
         Member member = memberRepository.save(getBasicMember2());
-        MemberUpdateRequest request = new MemberUpdateRequest(BASIC_NICKNAME, BASIC_BIOGRAPHY2);
+        MemberUpdateRequest request = new MemberUpdateRequest(BASIC_USERNAME, BASIC_BIOGRAPHY2);
         MultipartFile image = mock(MultipartFile.class);
 
         //when then
         assertThatThrownBy(() -> memberCommandService.updateMember(member.getId(), request, image))
-                .isInstanceOf(AlreadyExistNicknameException.class);
+                .isInstanceOf(AlreadyExistUsernameException.class);
     }
 
     @Test
@@ -98,7 +98,7 @@ class MemberCommandServiceTest extends ServiceTest {
     void updateMemberTest_imageStoreException() throws Exception {
         //given
         Member member = memberRepository.save(getBasicMember());
-        MemberUpdateRequest request = new MemberUpdateRequest(BASIC_NICKNAME2, BASIC_BIOGRAPHY2);
+        MemberUpdateRequest request = new MemberUpdateRequest(BASIC_USERNAME2, BASIC_BIOGRAPHY2);
         MultipartFile image = mock(MultipartFile.class);
         given(imageStore.saveImage(any(), any()))
                 .willThrow(ImageStoreException.class);
@@ -115,7 +115,7 @@ class MemberCommandServiceTest extends ServiceTest {
     void updateMemberTest_invalidImage() throws Exception {
         //given
         Member member = memberRepository.save(getBasicMember());
-        MemberUpdateRequest request = new MemberUpdateRequest(BASIC_NICKNAME2, BASIC_BIOGRAPHY2);
+        MemberUpdateRequest request = new MemberUpdateRequest(BASIC_USERNAME2, BASIC_BIOGRAPHY2);
         MultipartFile image = mock(MultipartFile.class);
         given(image.isEmpty())
                 .willReturn(true);

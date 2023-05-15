@@ -48,17 +48,17 @@ public class Member extends BaseTimeEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private final List<Device> devices = new ArrayList<>();
 
-    private Member(String socialId, String userName, String nickName, String email) {
+    private Member(String socialId, String userName, String username, String email) {
         this.socialId = socialId;
-        this.info = new MemberInfo(userName, nickName, email);
+        this.info = new MemberInfo(userName, username, email);
     }
 
     public static Member createUserFrom(OAuthUserInfoDto userInfo) {
-        String nickName = getNickNameFromEmail(userInfo);
-        return new Member(userInfo.getSocialId(), userInfo.getName(), nickName, userInfo.getEmail());
+        String username = getUsernameFromEmail(userInfo);
+        return new Member(userInfo.getSocialId(), userInfo.getName(), username, userInfo.getEmail());
     }
 
-    private static String getNickNameFromEmail(OAuthUserInfoDto userInfo) {
+    private static String getUsernameFromEmail(OAuthUserInfoDto userInfo) {
         return userInfo.getEmail().split("@")[0];
     }
 
@@ -96,8 +96,8 @@ public class Member extends BaseTimeEntity {
                 .orElseThrow(NotFollowingMemberException::new);
     }
 
-    public void update(String nickname, String biography, String profilePath) {
-        this.info.updateNickname(nickname);
+    public void update(String username, String biography, String profilePath) {
+        this.info.updateUsername(username);
         this.biography = biography;
         this.profileUrl = profilePath;
     }

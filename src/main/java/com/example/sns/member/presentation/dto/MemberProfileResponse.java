@@ -10,7 +10,7 @@ public class MemberProfileResponse {
 
     private final Long id;
     private final String name;
-    private final String nickname;
+    private final String username;
     private final String profileImage;
     private final String biography;
     private final int followerCnt;
@@ -20,10 +20,10 @@ public class MemberProfileResponse {
     private final boolean following;
 
     @Builder
-    public MemberProfileResponse(Long id, String name, String nickname, String profileImage, String biography, int followerCnt, int followingCnt, boolean following) {
+    public MemberProfileResponse(Long id, String name, String username, String profileImage, String biography, int followerCnt, int followingCnt, boolean following) {
         this.id = id;
         this.name = name;
-        this.nickname = nickname;
+        this.username = username;
         this.profileImage = profileImage;
         this.biography = biography;
         this.followerCnt = followerCnt;
@@ -35,7 +35,7 @@ public class MemberProfileResponse {
         return new MemberProfileResponse(
                 member.getId(),
                 member.getInfo().getName(),
-                member.getInfo().getNickname(),
+                member.getInfo().getUsername(),
                 member.getProfileUrl(),
                 member.getBiography(),
                 member.getFollowers().size(),

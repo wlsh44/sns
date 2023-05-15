@@ -77,7 +77,7 @@ class CommentQueryServiceTest extends ServiceTest {
                 commentByCommentAuthor2.getId(),
                 commentAuthor.getId(),
                 commentAuthor.getProfileUrl(),
-                commentAuthor.getInfo().getNickname(),
+                commentAuthor.getInfo().getUsername(),
                 commentByCommentAuthor2.getContent(),
                 commentByCommentAuthor2.getCreatedAt()
         );

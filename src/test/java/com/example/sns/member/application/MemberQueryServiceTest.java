@@ -39,7 +39,7 @@ class MemberQueryServiceTest extends ServiceTest {
         MemberProfileResponse expect = getMemberProfileExpect(profileMember);
 
         //when
-        MemberProfileResponse response = memberQueryService.getProfile(loginMember.getId(), profileMember.getInfo().getNickname());
+        MemberProfileResponse response = memberQueryService.getProfile(loginMember.getId(), profileMember.getInfo().getUsername());
 
         //then
         assertThat(response).usingRecursiveComparison()
@@ -50,7 +50,7 @@ class MemberQueryServiceTest extends ServiceTest {
         return new MemberProfileResponse(
                 member.getId(),
                 member.getInfo().getName(),
-                member.getInfo().getNickname(),
+                member.getInfo().getUsername(),
                 member.getProfileUrl(),
                 member.getBiography(),
                 1,
@@ -68,7 +68,7 @@ class MemberQueryServiceTest extends ServiceTest {
         Member profileMember = memberRepository.save(getBasicMember2());
 
         //when
-        assertThatThrownBy(() -> memberQueryService.getProfile(notExistId, profileMember.getInfo().getNickname()))
+        assertThatThrownBy(() -> memberQueryService.getProfile(notExistId, profileMember.getInfo().getUsername()))
                 .isInstanceOf(MemberNotFoundException.class);
     }
 
@@ -103,7 +103,7 @@ class MemberQueryServiceTest extends ServiceTest {
         return new MemberInfoResponse(
                 member.getId(),
                 member.getInfo().getName(),
-                member.getInfo().getNickname(),
+                member.getInfo().getUsername(),
                 member.getProfileUrl(),
                 member.getBiography(),
                 member.getInfo().getEmail()
@@ -143,8 +143,8 @@ class MemberQueryServiceTest extends ServiceTest {
     private MemberSearchResponse getSearchMembersExpect(Member member1, Member member2) {
         return new MemberSearchResponse(
                 List.of(
-                        new MemberSearchDto(member1.getId(), member1.getInfo().getNickname(), member1.getProfileUrl()),
-                        new MemberSearchDto(member2.getId(), member2.getInfo().getNickname(), member2.getProfileUrl())
+                        new MemberSearchDto(member1.getId(), member1.getInfo().getUsername(), member1.getProfileUrl()),
+                        new MemberSearchDto(member2.getId(), member2.getInfo().getUsername(), member2.getProfileUrl())
                 ),
                 true,
                 0

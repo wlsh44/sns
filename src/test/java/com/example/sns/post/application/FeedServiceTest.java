@@ -83,7 +83,7 @@ class FeedServiceTest extends ServiceTest {
         return new PostResponse(
                 following2Post.getId(),
                 following2.getId(),
-                following2.getInfo().getNickname(),
+                following2.getInfo().getUsername(),
                 following2.getProfileUrl(),
                 List.of(),
                 0,

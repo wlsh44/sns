@@ -9,8 +9,8 @@ import lombok.RequiredArgsConstructor;
 public class MemberInfoResponse {
 
     private final Long id;
+    private final String name;
     private final String username;
-    private final String nickname;
     private final String profileImage;
     private final String biography;
     private final String email;
@@ -19,7 +19,7 @@ public class MemberInfoResponse {
         return new MemberInfoResponse(
                 member.getId(),
                 member.getInfo().getName(),
-                member.getInfo().getNickname(),
+                member.getInfo().getUsername(),
                 member.getProfileUrl(),
                 member.getBiography(),
                 member.getInfo().getEmail()

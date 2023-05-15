@@ -3,7 +3,7 @@ package com.example.sns.member.domain;
 import com.example.sns.auth.application.dto.OAuthUserInfoDto;
 import com.example.sns.follow.exception.AlreadyFollowException;
 import com.example.sns.follow.exception.NotFollowingMemberException;
-import com.example.sns.member.exception.InvalidNicknameException;
+import com.example.sns.member.exception.InvalidUsernameException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,8 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_BIOGRAPHY2;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_EMAIL;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_NAME;
-import static com.example.sns.common.fixtures.MemberFixture.BASIC_NICKNAME;
-import static com.example.sns.common.fixtures.MemberFixture.BASIC_NICKNAME2;
+import static com.example.sns.common.fixtures.MemberFixture.BASIC_USERNAME;
+import static com.example.sns.common.fixtures.MemberFixture.BASIC_USERNAME2;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_PROFILE2;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_SOCIAL_ID;
 import static com.example.sns.common.fixtures.MemberFixture.FOLLOWER_EMAIL;
@@ -26,7 +26,6 @@ import static com.example.sns.common.fixtures.MemberFixture.getBasicMember;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
@@ -46,7 +45,7 @@ class MemberTest {
         assertSoftly(softAssertions -> {
             softAssertions.assertThat(member.getInfo().getName()).isEqualTo(BASIC_NAME);
             softAssertions.assertThat(member.getInfo().getEmail()).isEqualTo(BASIC_EMAIL);
-            softAssertions.assertThat(member.getInfo().getNickname()).isEqualTo(BASIC_NICKNAME);
+            softAssertions.assertThat(member.getInfo().getUsername()).isEqualTo(BASIC_USERNAME);
             softAssertions.assertThat(member.getSocialId()).isEqualTo(BASIC_SOCIAL_ID);
         });
     }
@@ -142,22 +141,22 @@ class MemberTest {
         Member member = getBasicMember();
 
         //when
-        member.update(BASIC_NICKNAME2, BASIC_BIOGRAPHY2, BASIC_PROFILE2);
+        member.update(BASIC_USERNAME2, BASIC_BIOGRAPHY2, BASIC_PROFILE2);
 
         //then
-        assertThat(member.getInfo().getNickname()).isEqualTo(BASIC_NICKNAME2);
+        assertThat(member.getInfo().getUsername()).isEqualTo(BASIC_USERNAME2);
         assertThat(member.getBiography()).isEqualTo(BASIC_BIOGRAPHY2);
         assertThat(member.getProfileUrl()).isEqualTo(BASIC_PROFILE2);
     }
 
     @Test
     @DisplayName("정보가 수정이 되어야 함")
-    void updateTest_invalidNickname() throws Exception {
+    void updateTest_invalidUsername() throws Exception {
         //given
         Member member = getBasicMember();
 
         //when
         assertThatThrownBy(() -> member.update("", BASIC_BIOGRAPHY2, BASIC_PROFILE2))
-                .isInstanceOf(InvalidNicknameException.class);
+                .isInstanceOf(InvalidUsernameException.class);
     }
 }

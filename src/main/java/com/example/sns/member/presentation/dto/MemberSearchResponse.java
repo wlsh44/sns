@@ -20,7 +20,7 @@ public class MemberSearchResponse {
 
     private static List<MemberSearchDto> getMemberSearchDtoList(List<Member> members) {
         return members.stream()
-                .map(member -> new MemberSearchDto(member.getId(), member.getInfo().getNickname(), member.getProfileUrl()))
+                .map(member -> new MemberSearchDto(member.getId(), member.getInfo().getUsername(), member.getProfileUrl()))
                 .toList();
     }
 }

@@ -17,7 +17,7 @@ import java.util.List;
 import static com.example.sns.common.fixtures.AuthFixture.BASIC_ID_TOKEN;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_EMAIL;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_NAME;
-import static com.example.sns.common.fixtures.MemberFixture.BASIC_NICKNAME;
+import static com.example.sns.common.fixtures.MemberFixture.BASIC_USERNAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -55,7 +55,7 @@ class AuthServiceTest extends ServiceTest {
         assertSoftly(softAssertions -> {
             softAssertions.assertThat(member.getId()).isEqualTo(result);
             softAssertions.assertThat(member.getInfo().getName()).isEqualTo(BASIC_NAME);
-            softAssertions.assertThat(member.getInfo().getNickname()).isEqualTo(BASIC_NICKNAME);
+            softAssertions.assertThat(member.getInfo().getUsername()).isEqualTo(BASIC_USERNAME);
             softAssertions.assertThat(member.getInfo().getEmail()).isEqualTo(BASIC_EMAIL);
         });
     }
@@ -80,7 +80,7 @@ class AuthServiceTest extends ServiceTest {
         assertSoftly(softAssertions -> {
             softAssertions.assertThat(member.getId()).isEqualTo(result);
             softAssertions.assertThat(member.getInfo().getName()).isEqualTo(BASIC_NAME);
-            softAssertions.assertThat(member.getInfo().getNickname()).isEqualTo(BASIC_NICKNAME);
+            softAssertions.assertThat(member.getInfo().getUsername()).isEqualTo(BASIC_USERNAME);
             softAssertions.assertThat(member.getInfo().getEmail()).isEqualTo(BASIC_EMAIL);
         });
     }

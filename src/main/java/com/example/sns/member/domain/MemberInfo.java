@@ -1,6 +1,6 @@
 package com.example.sns.member.domain;
 
-import com.example.sns.member.exception.InvalidNicknameException;
+import com.example.sns.member.exception.InvalidUsernameException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,18 +17,18 @@ public class MemberInfo {
 
     private String name;
 
-    private String nickname;
+    private String username;
 
     private String email;
 
-    public void updateNickname(String nickname) {
-        validateNickname(nickname);
-        this.nickname = nickname;
+    public void updateUsername(String username) {
+        validateUsername(username);
+        this.username = username;
     }
 
-    private void validateNickname(String nickname) {
-        if (!StringUtils.hasText(nickname)) {
-            throw new InvalidNicknameException(nickname);
+    private void validateUsername(String username) {
+        if (!StringUtils.hasText(username)) {
+            throw new InvalidUsernameException(username);
         }
     }
 }
