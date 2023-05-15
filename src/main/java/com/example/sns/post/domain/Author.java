@@ -24,11 +24,11 @@ public class Author {
     }
 
     public String getProfile() {
-        return member.getProfileUrl();
+        return member.getSocialInfo().getProfileUrl();
     }
 
     public String getUsername() {
-        return member.getInfo().getUsername();
+        return member.getSocialInfo().getUsername();
     }
 
     boolean isAuthor(Long memberId) {

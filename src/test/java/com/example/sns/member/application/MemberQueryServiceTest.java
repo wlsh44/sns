@@ -39,7 +39,7 @@ class MemberQueryServiceTest extends ServiceTest {
         MemberProfileResponse expect = getMemberProfileExpect(profileMember);
 
         //when
-        MemberProfileResponse response = memberQueryService.getProfile(loginMember.getId(), profileMember.getInfo().getUsername());
+        MemberProfileResponse response = memberQueryService.getProfile(loginMember.getId(), profileMember.getSocialInfo().getUsername());
 
         //then
         assertThat(response).usingRecursiveComparison()
@@ -49,10 +49,10 @@ class MemberQueryServiceTest extends ServiceTest {
     private MemberProfileResponse getMemberProfileExpect(Member member) {
         return new MemberProfileResponse(
                 member.getId(),
-                member.getInfo().getName(),
-                member.getInfo().getUsername(),
-                member.getProfileUrl(),
-                member.getBiography(),
+                member.getDetailedInfo().getName(),
+                member.getSocialInfo().getUsername(),
+                member.getSocialInfo().getProfileUrl(),
+                member.getSocialInfo().getBiography(),
                 1,
                 0,
                 true
@@ -68,7 +68,7 @@ class MemberQueryServiceTest extends ServiceTest {
         Member profileMember = memberRepository.save(getBasicMember2());
 
         //when
-        assertThatThrownBy(() -> memberQueryService.getProfile(notExistId, profileMember.getInfo().getUsername()))
+        assertThatThrownBy(() -> memberQueryService.getProfile(notExistId, profileMember.getSocialInfo().getUsername()))
                 .isInstanceOf(MemberNotFoundException.class);
     }
 
@@ -102,11 +102,11 @@ class MemberQueryServiceTest extends ServiceTest {
     private MemberInfoResponse getMemberInfoExpect(Member member) {
         return new MemberInfoResponse(
                 member.getId(),
-                member.getInfo().getName(),
-                member.getInfo().getUsername(),
-                member.getProfileUrl(),
-                member.getBiography(),
-                member.getInfo().getEmail()
+                member.getDetailedInfo().getName(),
+                member.getSocialInfo().getUsername(),
+                member.getSocialInfo().getProfileUrl(),
+                member.getSocialInfo().getBiography(),
+                member.getDetailedInfo().getEmail()
         );
     }
 
@@ -143,8 +143,8 @@ class MemberQueryServiceTest extends ServiceTest {
     private MemberSearchResponse getSearchMembersExpect(Member member1, Member member2) {
         return new MemberSearchResponse(
                 List.of(
-                        new MemberSearchDto(member1.getId(), member1.getInfo().getUsername(), member1.getProfileUrl()),
-                        new MemberSearchDto(member2.getId(), member2.getInfo().getUsername(), member2.getProfileUrl())
+                        new MemberSearchDto(member1.getId(), member1.getSocialInfo().getUsername(), member1.getSocialInfo().getProfileUrl()),
+                        new MemberSearchDto(member2.getId(), member2.getSocialInfo().getUsername(), member2.getSocialInfo().getProfileUrl())
                 ),
                 true,
                 0

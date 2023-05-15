@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findBySocialId(String socialId);
-    Optional<Member> findByInfoUsername(String username);
-    boolean existsByInfoUsername(String username);
-    Slice<Member> findByInfoUsernameContaining(String username, Pageable pageable);
+    Optional<Member> findBySocialInfoUsername(String username);
+    boolean existsBySocialInfoUsername(String username);
+    Slice<Member> findBySocialInfoUsernameContaining(String username, Pageable pageable);
 }

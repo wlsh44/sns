@@ -43,9 +43,9 @@ class MemberTest {
 
         //then
         assertSoftly(softAssertions -> {
-            softAssertions.assertThat(member.getInfo().getName()).isEqualTo(BASIC_NAME);
-            softAssertions.assertThat(member.getInfo().getEmail()).isEqualTo(BASIC_EMAIL);
-            softAssertions.assertThat(member.getInfo().getUsername()).isEqualTo(BASIC_USERNAME);
+            softAssertions.assertThat(member.getDetailedInfo().getName()).isEqualTo(BASIC_NAME);
+            softAssertions.assertThat(member.getDetailedInfo().getEmail()).isEqualTo(BASIC_EMAIL);
+            softAssertions.assertThat(member.getSocialInfo().getUsername()).isEqualTo(BASIC_USERNAME);
             softAssertions.assertThat(member.getSocialId()).isEqualTo(BASIC_SOCIAL_ID);
         });
     }
@@ -144,9 +144,9 @@ class MemberTest {
         member.update(BASIC_USERNAME2, BASIC_BIOGRAPHY2, BASIC_PROFILE2);
 
         //then
-        assertThat(member.getInfo().getUsername()).isEqualTo(BASIC_USERNAME2);
-        assertThat(member.getBiography()).isEqualTo(BASIC_BIOGRAPHY2);
-        assertThat(member.getProfileUrl()).isEqualTo(BASIC_PROFILE2);
+        assertThat(member.getSocialInfo().getUsername()).isEqualTo(BASIC_USERNAME2);
+        assertThat(member.getSocialInfo().getBiography()).isEqualTo(BASIC_BIOGRAPHY2);
+        assertThat(member.getSocialInfo().getProfileUrl()).isEqualTo(BASIC_PROFILE2);
     }
 
     @Test

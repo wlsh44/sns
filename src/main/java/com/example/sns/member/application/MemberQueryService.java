@@ -21,7 +21,7 @@ public class MemberQueryService {
 
     public MemberProfileResponse getProfile(Long memberId, String username) {
         Member loginMember = getMember(memberId);
-        Member profileMember = memberRepository.findByInfoUsername(username)
+        Member profileMember = memberRepository.findBySocialInfoUsername(username)
                 .orElseThrow(() -> new MemberNotFoundException(username));
 
         return MemberProfileResponse.from(profileMember, profileMember.isFollower(loginMember));
@@ -39,7 +39,7 @@ public class MemberQueryService {
     }
 
     public MemberSearchResponse searchMembers(String username, Pageable pageable) {
-        Slice<Member> memberSlice = memberRepository.findByInfoUsernameContaining(username, pageable);
+        Slice<Member> memberSlice = memberRepository.findBySocialInfoUsernameContaining(username, pageable);
 
         return MemberSearchResponse.from(memberSlice.getContent(), memberSlice.hasNext(), memberSlice.getNumber());
     }

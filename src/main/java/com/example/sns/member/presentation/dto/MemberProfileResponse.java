@@ -23,10 +23,10 @@ public class MemberProfileResponse {
     public static MemberProfileResponse from(Member member, boolean isFollowing) {
         return new MemberProfileResponse(
                 member.getId(),
-                member.getInfo().getName(),
-                member.getInfo().getUsername(),
-                member.getProfileUrl(),
-                member.getBiography(),
+                member.getDetailedInfo().getName(),
+                member.getSocialInfo().getUsername(),
+                member.getSocialInfo().getProfileUrl(),
+                member.getSocialInfo().getBiography(),
                 member.getFollowers().size(),
                 member.getFollowings().size(),
                 isFollowing

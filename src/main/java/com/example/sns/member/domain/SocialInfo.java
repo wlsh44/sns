@@ -13,17 +13,23 @@ import javax.persistence.Embeddable;
 @Embeddable
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberInfo {
-
-    private String name;
+public class SocialInfo {
 
     private String username;
 
-    private String email;
+    private String profileUrl;
 
-    public void updateUsername(String username) {
+    private String biography;
+
+    public SocialInfo(String username) {
+        this.username = username;
+    }
+
+    public void update(String username, String biography, String profilePath) {
         validateUsername(username);
         this.username = username;
+        this.biography = biography;
+        this.profileUrl = profilePath;
     }
 
     private void validateUsername(String username) {

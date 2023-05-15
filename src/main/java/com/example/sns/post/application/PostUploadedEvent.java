@@ -13,7 +13,7 @@ public class PostUploadedEvent {
     private final String authorUsername;
 
     public PostUploadedEvent(List<Member> targets, Member postAuthor) {
-        this.authorUsername = postAuthor.getInfo().getUsername();
+        this.authorUsername = postAuthor.getSocialInfo().getUsername();
         this.targets = new AlarmTargetsDto(targets);
     }
 }

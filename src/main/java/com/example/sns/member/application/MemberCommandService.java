@@ -28,7 +28,7 @@ public class MemberCommandService {
     }
 
     private void validateExistUsername(MemberUpdateRequest request) {
-        if (memberRepository.existsByInfoUsername(request.getUsername())) {
+        if (memberRepository.existsBySocialInfoUsername(request.getUsername())) {
             throw new AlreadyExistUsernameException(request.getUsername());
         }
     }

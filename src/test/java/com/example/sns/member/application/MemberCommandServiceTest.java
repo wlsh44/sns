@@ -60,9 +60,9 @@ class MemberCommandServiceTest extends ServiceTest {
         //then
         Member updatedMember = memberRepository.findById(member.getId()).get();
         assertAll(
-                () -> assertThat(updatedMember.getInfo().getUsername()).isEqualTo(BASIC_USERNAME2),
-                () -> assertThat(updatedMember.getBiography()).isEqualTo(BASIC_BIOGRAPHY2),
-                () -> assertThat(updatedMember.getProfileUrl()).isEqualTo(BASIC_PROFILE2)
+                () -> assertThat(updatedMember.getSocialInfo().getUsername()).isEqualTo(BASIC_USERNAME2),
+                () -> assertThat(updatedMember.getSocialInfo().getBiography()).isEqualTo(BASIC_BIOGRAPHY2),
+                () -> assertThat(updatedMember.getSocialInfo().getProfileUrl()).isEqualTo(BASIC_PROFILE2)
         );
     }
 

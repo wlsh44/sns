@@ -13,6 +13,6 @@ public class FollowedEvent {
 
     public FollowedEvent(Member follower, Member following) {
         this.target = new AlarmTargetDto(following.getId(), following.getDeviceTokens());
-        this.followerUsername = follower.getInfo().getUsername();
+        this.followerUsername = follower.getSocialInfo().getUsername();
     }
 }
