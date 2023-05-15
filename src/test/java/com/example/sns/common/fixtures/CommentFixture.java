@@ -10,12 +10,12 @@ public class CommentFixture {
     public static final String BASIC_COMMENT_CONTENT1 = "content1";
     public static final String BASIC_COMMENT_CONTENT2 = "content2";
 
-    public static NewCommentRequest getBasicCommentRequest(Long feedId) {
-        return new NewCommentRequest(feedId, BASIC_COMMENT_CONTENT1);
+    public static NewCommentRequest getBasicCommentRequest() {
+        return new NewCommentRequest(BASIC_COMMENT_CONTENT1);
     }
 
-    public static NewCommentRequest getEmptyContentCommentRequest(Long feedId) {
-        return new NewCommentRequest(feedId, "");
+    public static NewCommentRequest getEmptyContentCommentRequest() {
+        return new NewCommentRequest("");
     }
 
     public static Comment getBasicComment1(Member member, Post post) {

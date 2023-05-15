@@ -33,13 +33,12 @@ public class Member extends BaseTimeEntity {
     private String socialId;
 
     @Embedded
-    private MemberInfo info;
+    private DetailedInfo detailedInfo;
 
-    private String profileUrl;
+    @Embedded
+    private SocialInfo socialInfo;
 
-    private String biography;
-
-    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "follower", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private final List<Follow> followings = new ArrayList<>();
 
     @OneToMany(mappedBy = "following")
@@ -48,17 +47,18 @@ public class Member extends BaseTimeEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private final List<Device> devices = new ArrayList<>();
 
-    private Member(String socialId, String userName, String nickName, String email) {
+    private Member(String socialId, String name, String username, String email) {
         this.socialId = socialId;
-        this.info = new MemberInfo(userName, nickName, email);
+        this.detailedInfo = new DetailedInfo(name, email);
+        this.socialInfo = new SocialInfo(username);
     }
 
     public static Member createUserFrom(OAuthUserInfoDto userInfo) {
-        String nickName = getNickNameFromEmail(userInfo);
-        return new Member(userInfo.getSocialId(), userInfo.getName(), nickName, userInfo.getEmail());
+        String username = getUsernameFromEmail(userInfo);
+        return new Member(userInfo.getSocialId(), userInfo.getName(), username, userInfo.getEmail());
     }
 
-    private static String getNickNameFromEmail(OAuthUserInfoDto userInfo) {
+    private static String getUsernameFromEmail(OAuthUserInfoDto userInfo) {
         return userInfo.getEmail().split("@")[0];
     }
 
@@ -96,10 +96,8 @@ public class Member extends BaseTimeEntity {
                 .orElseThrow(NotFollowingMemberException::new);
     }
 
-    public void update(String nickname, String biography, String profilePath) {
-        this.info.updateNickname(nickname);
-        this.biography = biography;
-        this.profileUrl = profilePath;
+    public void update(String username, String biography, String profilePath) {
+        this.socialInfo.update(username, biography, profilePath);
     }
 
     public List<String> getDeviceTokens() {

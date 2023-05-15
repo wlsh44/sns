@@ -3,8 +3,6 @@ package com.example.sns.member.domain;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -12,10 +10,7 @@ import java.util.Optional;
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findBySocialId(String socialId);
-    Optional<Member> findByInfoNickname(String nickname);
-    boolean existsByInfoNickname(String nickname);
-    Slice<Member> findByInfoNicknameContaining(String nickname, Pageable pageable);
-
-    @Query("select m from Member m left join fetch m.devices where m.id = :memberId")
-    Optional<Member> findByIdFetchDevices(@Param("memberId") Long memberId);
+    Optional<Member> findBySocialInfoUsername(String username);
+    boolean existsBySocialInfoUsername(String username);
+    Slice<Member> findBySocialInfoUsernameContaining(String username, Pageable pageable);
 }

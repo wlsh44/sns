@@ -63,23 +63,12 @@ class CommentQueryServiceTest extends ServiceTest {
         Comment commentByCommentAuthor2 = commentRepository.save(getBasicComment2(commentAuthor, post));
         return new CommentsResponse(
                 List.of(
-                        getCommentResponse(commentAuthor, commentByCommentAuthor2),
-                        getCommentResponse(postAuthor, commentByPostAuthor),
-                        getCommentResponse(commentAuthor, commentByCommentAuthor1)
+                        CommentResponse.from(commentByCommentAuthor2),
+                        CommentResponse.from(commentByPostAuthor),
+                        CommentResponse.from(commentByCommentAuthor1)
                 ),
                 true,
                 0
-        );
-    }
-
-    private CommentResponse getCommentResponse(Member commentAuthor, Comment commentByCommentAuthor2) {
-        return new CommentResponse(
-                commentByCommentAuthor2.getId(),
-                commentAuthor.getId(),
-                commentAuthor.getProfileUrl(),
-                commentAuthor.getInfo().getNickname(),
-                commentByCommentAuthor2.getContent(),
-                commentByCommentAuthor2.getCreatedAt()
         );
     }
 }

@@ -44,7 +44,7 @@ class CommentCommandServiceTest extends ServiceTest {
         //given
         Member member = memberRepository.save(getBasicMember());
         post = postRepository.save(getBasicPost(member));
-        NewCommentRequest request = getBasicCommentRequest(post.getId());
+        NewCommentRequest request = getBasicCommentRequest();
 
         //when
         commentCommandService.createComment(member.getId(), post.getId(), request);
@@ -62,7 +62,7 @@ class CommentCommandServiceTest extends ServiceTest {
         //given
         Member member = memberRepository.save(getBasicMember());
         post = postRepository.save(getBasicPost(member));
-        NewCommentRequest request = getEmptyContentCommentRequest(post.getId());
+        NewCommentRequest request = getEmptyContentCommentRequest();
 
         //when then
         assertThatThrownBy(() -> commentCommandService.createComment(member.getId(), post.getId(), request))
@@ -76,7 +76,7 @@ class CommentCommandServiceTest extends ServiceTest {
         Member member = memberRepository.save(getBasicMember());
         post = postRepository.save(getBasicPost(member));
         Long notExistFeedId = 9999L;
-        NewCommentRequest request = getBasicCommentRequest(notExistFeedId);
+        NewCommentRequest request = getBasicCommentRequest();
 
         //when then
         assertThatThrownBy(() -> commentCommandService.createComment(member.getId(), notExistFeedId, request))
@@ -89,7 +89,7 @@ class CommentCommandServiceTest extends ServiceTest {
         //given
         Member member = memberRepository.save(getBasicMember());
         post = postRepository.save(getBasicPost(member));
-        commentCommandService.createComment(member.getId(), post.getId(), getBasicCommentRequest(post.getId()));
+        commentCommandService.createComment(member.getId(), post.getId(), getBasicCommentRequest());
 
         //when
         commentCommandService.deleteComment(member.getId(), 1L);
@@ -106,7 +106,7 @@ class CommentCommandServiceTest extends ServiceTest {
         Member member = memberRepository.save(getBasicMember());
         post = postRepository.save(getBasicPost(member));
         Long notExistId = 999L;
-        commentCommandService.createComment(member.getId(), post.getId(), getBasicCommentRequest(post.getId()));
+        commentCommandService.createComment(member.getId(), post.getId(), getBasicCommentRequest());
 
         //when then
         assertThatThrownBy(() -> commentCommandService.deleteComment(member.getId(), notExistId))
@@ -120,7 +120,7 @@ class CommentCommandServiceTest extends ServiceTest {
         Member member = memberRepository.save(getBasicMember());
         post = postRepository.save(getBasicPost(member));
         Long notAuthorId = 999L;
-        commentCommandService.createComment(member.getId(), post.getId(), getBasicCommentRequest(post.getId()));
+        commentCommandService.createComment(member.getId(), post.getId(), getBasicCommentRequest());
 
         //when then
         assertThatThrownBy(() -> commentCommandService.deleteComment(notAuthorId, 1L))

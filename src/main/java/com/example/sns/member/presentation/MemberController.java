@@ -56,8 +56,8 @@ public class MemberController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<MemberSearchResponse> searchMembers(@RequestParam String nickname, @PageableDefault Pageable pageable) {
-        MemberSearchResponse response = memberQueryService.searchMembers(nickname, pageable);
+    public ResponseEntity<MemberSearchResponse> searchMembers(@RequestParam String username, @PageableDefault Pageable pageable) {
+        MemberSearchResponse response = memberQueryService.searchMembers(username, pageable);
 
         return ResponseEntity.ok(response);
     }

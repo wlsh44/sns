@@ -12,7 +12,7 @@ public class MemberNotFoundException extends SnsException {
         super(String.format(ERROR_MSG_LONG, id), HttpStatus.BAD_REQUEST);
     }
 
-    public MemberNotFoundException(String nickname) {
-        super(String.format(ERROR_MSG_STRING, nickname), HttpStatus.BAD_REQUEST);
+    public MemberNotFoundException(String username) {
+        super(String.format(ERROR_MSG_STRING, username), HttpStatus.BAD_REQUEST);
     }
 }

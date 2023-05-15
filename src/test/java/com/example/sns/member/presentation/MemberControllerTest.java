@@ -4,7 +4,7 @@ import com.example.sns.common.infrastructure.imagestore.exception.ImageStoreExce
 import com.example.sns.common.infrastructure.imagestore.exception.InvalidImageException;
 import com.example.sns.common.support.MockControllerTest;
 import com.example.sns.member.application.dto.DeviceTokenRequest;
-import com.example.sns.member.exception.AlreadyExistNicknameException;
+import com.example.sns.member.exception.AlreadyExistUsernameException;
 import com.example.sns.member.exception.MemberNotFoundException;
 import com.example.sns.member.presentation.dto.MemberInfoResponse;
 import com.example.sns.member.presentation.dto.MemberProfileResponse;
@@ -21,8 +21,8 @@ import static com.example.sns.common.fixtures.AuthFixture.ACCESS_TOKEN;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_EMAIL;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_MEMBER_UPDATE_MULTIPART;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_NAME;
-import static com.example.sns.common.fixtures.MemberFixture.BASIC_NICKNAME;
-import static com.example.sns.common.fixtures.MemberFixture.BASIC_NICKNAME2;
+import static com.example.sns.common.fixtures.MemberFixture.BASIC_USERNAME;
+import static com.example.sns.common.fixtures.MemberFixture.BASIC_USERNAME2;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_PROFILE1;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_PROFILE_IMAGE;
 import static org.mockito.ArgumentMatchers.any;
@@ -41,7 +41,7 @@ class MemberControllerTest extends MockControllerTest {
     @DisplayName("프로필 조회에 성공할 경우 올바른 데이터와 200 응답을 줘야 함")
     void getProfileTest() throws Exception {
         //given
-        MemberProfileResponse response = new MemberProfileResponse(1L, BASIC_NAME, BASIC_NICKNAME, null, null, 0, 0, false);
+        MemberProfileResponse response = new MemberProfileResponse(1L, BASIC_NAME, BASIC_USERNAME, null, null, 0, 0, false);
         given(memberQueryService.getProfile(any(), any()))
                 .willReturn(response);
 
@@ -73,7 +73,7 @@ class MemberControllerTest extends MockControllerTest {
     @DisplayName("멤버 정보 조회에 성공할 경우 올바른 데이터와 200 응답을 줘야 함")
     void getMemberInfoTest() throws Exception {
         //given
-        MemberInfoResponse response = new MemberInfoResponse(1L, BASIC_NAME, BASIC_NICKNAME, null, null, BASIC_EMAIL);
+        MemberInfoResponse response = new MemberInfoResponse(1L, BASIC_NAME, BASIC_USERNAME, null, null, BASIC_EMAIL);
         given(memberQueryService.getMemberInfo(any()))
                 .willReturn(response);
 
@@ -131,9 +131,9 @@ class MemberControllerTest extends MockControllerTest {
 
     @Test
     @DisplayName("이미 존재하는 닉네임으로 수정할 경우 예외가 발생해야 함")
-    void updateMemberTest_alreadyExistNickname() throws Exception {
+    void updateMemberTest_alreadyExistUsername() throws Exception {
         //given
-        doThrow(new AlreadyExistNicknameException(BASIC_NICKNAME2))
+        doThrow(new AlreadyExistUsernameException(BASIC_USERNAME2))
                 .when(memberCommandService).updateMember(any(), any(), any());
 
         //when then
@@ -181,13 +181,13 @@ class MemberControllerTest extends MockControllerTest {
     @DisplayName("닉네임으로 검색에 성공할 경우 올바른 데이터와 200 응답을 줘야 함")
     void searchMembers() throws Exception {
         //given
-        MemberSearchResponse response = new MemberSearchResponse(List.of(new MemberSearchDto(1L, BASIC_NICKNAME, BASIC_PROFILE1)), true, 0);
+        MemberSearchResponse response = new MemberSearchResponse(List.of(new MemberSearchDto(1L, BASIC_USERNAME, BASIC_PROFILE1)), true, 0);
         given(memberQueryService.searchMembers(any(), any()))
                 .willReturn(response);
 
         //when then
         mockMvc.perform(get("/members/search")
-                        .param("nickname", "nickname")
+                        .param("username", "username")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -202,7 +202,7 @@ class MemberControllerTest extends MockControllerTest {
 
         //when then
         mockMvc.perform(post("/members/device")
-                        .param("nickname", "nickname")
+                        .param("username", "username")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request))
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + ACCESS_TOKEN))

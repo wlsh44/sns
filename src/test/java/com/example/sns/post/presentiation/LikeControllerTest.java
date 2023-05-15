@@ -61,7 +61,7 @@ class LikeControllerTest extends MockControllerTest {
     @DisplayName("이미 좋아요를 한 게시글인 경우 좋아요를 할 때 400 응답을 해야 함")
     void likeTest_alreadyLikedPost() throws Exception {
         //given
-        doThrow(new AlreadyLikedPostException(this.id, member.getId())).when(likeService).like(any(), any());
+        doThrow(new AlreadyLikedPostException(1L, 1L)).when(likeService).like(any(), any());
 
         //when then
         mockMvc.perform(post("/posts/1/like")

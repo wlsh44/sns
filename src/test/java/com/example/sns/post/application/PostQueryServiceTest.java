@@ -17,7 +17,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.example.sns.common.fixtures.MemberFixture.BASIC_NICKNAME;
+import static com.example.sns.common.fixtures.MemberFixture.BASIC_USERNAME;
 import static com.example.sns.common.fixtures.MemberFixture.getBasicMember;
 import static com.example.sns.common.fixtures.MemberFixture.getBasicMember2;
 import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_CONTENT;
@@ -57,7 +57,7 @@ class PostQueryServiceTest extends ServiceTest {
         LocalDateTime createdAt = post.getCreatedAt();
         Member member = memberRepository.save(getBasicMember2());
         likeService.like(member.getId(), post.getId());
-        PostResponse expect = new PostResponse(post.getId(), author.getId(), BASIC_NICKNAME, author.getProfileUrl(), List.of(), 1, BASIC_POST_CONTENT, createdAt, true);
+        PostResponse expect = new PostResponse(post.getId(), author.getId(), BASIC_USERNAME, author.getSocialInfo().getProfileUrl(), List.of(), 1, BASIC_POST_CONTENT, createdAt, true);
 
         //when
         PostResponse response = postQueryService.findPost(member.getId(), post.getId());

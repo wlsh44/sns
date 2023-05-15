@@ -5,16 +5,14 @@ import com.example.sns.member.domain.Member;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
-
 @Getter
 @RequiredArgsConstructor
 public class FollowedEvent {
     private final AlarmTargetDto target;
-    private final String followerNickname;
+    private final String followerUsername;
 
     public FollowedEvent(Member follower, Member following) {
         this.target = new AlarmTargetDto(following.getId(), following.getDeviceTokens());
-        this.followerNickname = follower.getInfo().getNickname();
+        this.followerUsername = follower.getSocialInfo().getUsername();
     }
 }

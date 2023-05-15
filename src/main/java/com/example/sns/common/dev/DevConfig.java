@@ -19,7 +19,6 @@ public class DevConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-
         Class<InterceptorRegistry> aClass = InterceptorRegistry.class;
         try {
             Field field = aClass.getDeclaredField("registrations");

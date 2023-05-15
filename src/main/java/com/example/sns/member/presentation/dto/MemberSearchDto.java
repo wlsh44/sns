@@ -8,6 +8,6 @@ import lombok.RequiredArgsConstructor;
 public class MemberSearchDto {
 
     private final Long id;
-    private final String nickname;
+    private final String username;
     private final String profileImage;
 }

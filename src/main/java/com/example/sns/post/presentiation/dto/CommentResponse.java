@@ -14,18 +14,18 @@ public class CommentResponse {
     private final Long id;
     private final Long authorId;
     private final String authorProfile;
-    private final String authorNickname;
+    private final String authorUsername;
     private final String content;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private final LocalDateTime createdAt;
 
-    public CommentResponse(Comment comment) {
-        this(
+    public static CommentResponse from(Comment comment) {
+        return new CommentResponse(
                 comment.getId(),
                 comment.getAuthor().getId(),
                 comment.getAuthor().getProfile(),
-                comment.getAuthor().getNickname(),
+                comment.getAuthor().getUsername(),
                 comment.getContent(),
                 comment.getCreatedAt()
         );

@@ -15,7 +15,7 @@ public class CommentsResponse {
 
     public static CommentsResponse from(List<Comment> comments, boolean hasNext, int offset) {
         List<CommentResponse> commentResponseList = comments.stream()
-                .map(CommentResponse::new)
+                .map(CommentResponse::from)
                 .toList();
         return new CommentsResponse(commentResponseList, !hasNext, offset);
     }

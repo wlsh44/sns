@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.example.sns.common.fixtures.AuthFixture.ACCESS_TOKEN;
-import static com.example.sns.common.fixtures.MemberFixture.BASIC_NICKNAME;
+import static com.example.sns.common.fixtures.MemberFixture.BASIC_USERNAME;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_PROFILE1;
 import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_CONTENT;
 import static com.example.sns.common.fixtures.PostFixture.POST_IMAGE_PATH1;
@@ -31,7 +31,7 @@ class FeedControllerTest extends MockControllerTest {
     @DisplayName("내 피드 조회에 성공하면 데이터와 200 응답을 함")
     void findMyFeedTest() throws Exception {
         //given
-        MyFeedResponse response = new MyFeedResponse(List.of(new PostResponse(1L, 1L, BASIC_NICKNAME, BASIC_PROFILE1, List.of("url"), 0, BASIC_POST_CONTENT, LocalDateTime.now(), false)), false, 0);
+        MyFeedResponse response = new MyFeedResponse(List.of(new PostResponse(1L, 1L, BASIC_USERNAME, BASIC_PROFILE1, List.of("url"), 0, BASIC_POST_CONTENT, LocalDateTime.now(), false)), false, 0);
         given(feedService.findMyFeed(any(), any()))
                 .willReturn(response);
 

@@ -26,7 +26,7 @@ public class FollowEventHandler {
     @TransactionalEventListener
     public void sendFollowedAlarm(FollowedEvent event) {
         AlarmTargetDto target = event.getTarget();
-        String text = FOLLOW.getText(event.getFollowerNickname());
+        String text = FOLLOW.getText(event.getFollowerUsername());
 
         alarmRepository.save(Alarm.createFollowedAlarm(target.getTargetId(), text));
 

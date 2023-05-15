@@ -5,7 +5,7 @@ import com.example.sns.alarm.application.AlarmQueryService;
 import com.example.sns.common.infrastructure.fcm.AlarmService;
 import com.example.sns.auth.application.AuthService;
 import com.example.sns.auth.config.AuthProperties;
-import com.example.sns.auth.infrastructure.JwtProvider;
+import com.example.sns.auth.application.JwtProvider;
 import com.example.sns.auth.presentation.AuthExtractor;
 import com.example.sns.member.application.MemberCommandService;
 import com.example.sns.member.application.MemberQueryService;

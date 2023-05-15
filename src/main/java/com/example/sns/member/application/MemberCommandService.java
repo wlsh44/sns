@@ -3,7 +3,7 @@ package com.example.sns.member.application;
 import com.example.sns.member.application.dto.MemberUpdateRequest;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.domain.MemberRepository;
-import com.example.sns.member.exception.AlreadyExistNicknameException;
+import com.example.sns.member.exception.AlreadyExistUsernameException;
 import com.example.sns.member.exception.MemberNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,15 +21,15 @@ public class MemberCommandService {
     public void updateMember(Long memberId, MemberUpdateRequest request, MultipartFile profileImage) {
         Member member = getMember(memberId);
 
-        validateExistNickname(request);
+        validateExistUsername(request);
 
         String profilePath = imageStore.saveProfileImage(profileImage);
-        member.update(request.getNickname(), request.getBiography(), profilePath);
+        member.update(request.getUsername(), request.getBiography(), profilePath);
     }
 
-    private void validateExistNickname(MemberUpdateRequest request) {
-        if (memberRepository.existsByInfoNickname(request.getNickname())) {
-            throw new AlreadyExistNicknameException(request.getNickname());
+    private void validateExistUsername(MemberUpdateRequest request) {
+        if (memberRepository.existsBySocialInfoUsername(request.getUsername())) {
+            throw new AlreadyExistUsernameException(request.getUsername());
         }
     }
 

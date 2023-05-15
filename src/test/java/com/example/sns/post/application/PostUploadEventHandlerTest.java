@@ -12,7 +12,6 @@ import com.example.sns.post.domain.PostRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.test.context.event.ApplicationEvents;
@@ -102,6 +101,6 @@ class PostUploadEventHandlerTest extends ServiceTest {
         List<Alarm> alarms = alarmRepository.findAll();
         assertThat(alarms).hasSize(1);
         assertThat(alarms.get(0).getMemberId()).isEqualTo(follower.getId());
-        assertThat(alarms.get(0).getText()).isEqualTo(POST_UPLOAD.getText(following.getInfo().getNickname()));
+        assertThat(alarms.get(0).getText()).isEqualTo(POST_UPLOAD.getText(following.getSocialInfo().getUsername()));
     }
 }

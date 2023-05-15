@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 public class MemberUpdateRequest {
 
     @NotEmpty
-    private String nickname;
+    private String username;
 
     @NotNull
     private String biography;

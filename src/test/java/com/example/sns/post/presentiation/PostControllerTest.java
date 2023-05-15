@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.example.sns.common.fixtures.AuthFixture.ACCESS_TOKEN;
-import static com.example.sns.common.fixtures.MemberFixture.BASIC_NICKNAME;
+import static com.example.sns.common.fixtures.MemberFixture.BASIC_USERNAME;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_PROFILE1;
 import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_CONTENT;
 import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_IMAGE1;
@@ -80,7 +80,7 @@ class PostControllerTest extends MockControllerTest {
     @DisplayName("게시글 조회에 성공하면 데이터와 200 응답을 함")
     void findPostTest() throws Exception {
         //given
-        PostResponse response = new PostResponse(1L, 1L, BASIC_NICKNAME, BASIC_PROFILE1, List.of("url"), 0, BASIC_POST_CONTENT, LocalDateTime.now(), false);
+        PostResponse response = new PostResponse(1L, 1L, BASIC_USERNAME, BASIC_PROFILE1, List.of("url"), 0, BASIC_POST_CONTENT, LocalDateTime.now(), false);
         given(postQueryService.findPost(any(), any()))
                 .willReturn(response);
 
