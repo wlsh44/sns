@@ -39,8 +39,7 @@ public class AuthService {
         return client.getUserInfo(idToken);
     }
 
-    @Transactional
-    public Member signUp(OAuthUserInfoDto userInfo) {
+    private Member signUp(OAuthUserInfoDto userInfo) {
         Member member = Member.createUserFrom(userInfo);
         return memberRepository.save(member);
     }
