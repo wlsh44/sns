@@ -24,13 +24,14 @@ docker compose up -d $IDLE_SERVER
 for ((RETRY_COUNT=0; RETRY_COUNT <= 10; RETRY_COUNT++));
 do
     echo " health checking $IDLE_SERVER..."
-    REQUEST=$(docker exec nginx curl http://$IDLE_SERVER/health-check:8080)
+    REQUEST=$(docker exec nginx curl http://$IDLE_SERVER:8080/health-check)
     echo $REQUEST
     if [ -n "$REQUEST" ]; then
         echo ">>>>>>>>>>>>>>>>>> Success health checking!!"
         break
     fi
     if [ $RETRY_COUNT -eq 10 ]; then
+        docker rm -f $IDLE_SERVER
         echo " Health checking $IDLE_SERVER failed "
         echo ">>>>>>>>>>>>>>>>>> Stop deploying new application"
         exit 1

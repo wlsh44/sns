@@ -23,7 +23,7 @@ public class AuthService {
         return client.getAuthRedirectURI();
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public TokenResponse signIn(String code) {
         OAuthUserInfoDto userInfo = getUserInfo(code);
         Member member = memberRepository.findBySocialId(userInfo.getSocialId())
