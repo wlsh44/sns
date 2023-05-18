@@ -16,8 +16,9 @@ public class MyFeedResponse {
     private final int offset;
 
     public static MyFeedResponse from(Feed feed, Member member, boolean hasNext, int offset) {
+        //TODO
         List<PostResponse> postResponseList = feed.getPosts().stream()
-                .map(post -> PostResponse.from(post, member))
+                .map(post -> PostResponse.from(post, member, false))
                 .toList();
         return new MyFeedResponse(postResponseList, !hasNext, offset);
     }
