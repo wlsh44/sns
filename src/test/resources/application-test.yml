@@ -1,0 +1,51 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        default_batch_fetch_size: 1000
+    open-in-view: false
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:sns-test;MODE=MYSQL;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+
+oauth:
+  google:
+    auth-uri: https://accounts.google.com/o/oauth2/v2/auth
+    client-id: google-client-id
+    client-secret: google-client-secret
+    grant-type: authorization_code
+    redirect-uri: http://localhost:8080/google/sign-in
+    token-url: https://oauth2.googleapis.com/token
+    scopes: openid,profile,email
+
+jwt:
+  token:
+    secret-key: secretkeysecretkeysecretkeysecretkeysecretkey
+    expired: 10000
+    issuer: sns-test
+
+cloud.aws:
+  credentials:
+    accessKey: accessKey
+    secretKey: secretKey
+  s3:
+    endpoint: https://kr.object.ncloudstorage.com
+    region:
+      static: kr-standard
+    bucket: sns-image-s3
+    store-path:
+      post: postPath/
+      profile: profilePath/
+      temp: tempPath/
+
+fcm:
+  key:
+    path: keyPath
+    scope: https://www.googleapis.com/auth/cloud-platform

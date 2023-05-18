@@ -1,0 +1,43 @@
+services:
+
+  nginx:
+    image: nginx
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /root/nginx:/etc/nginx/conf.d
+      - /root/certbot/conf:/etc/letsencrypt
+      - /root/certbot/www:/var/www/certbot
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    restart: always
+    volumes:
+      - /root/certbot/conf:/etc/letsencrypt
+      - /root/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    depends_on:
+      - nginx
+
+  blue:
+    container_name: blue
+    image: k87913j/sns
+    restart: always
+    expose:
+      - "8080"
+    volumes:
+      - /root/config:/config
+
+  green:
+    container_name: green
+    image: k87913j/sns
+    restart: always
+    expose:
+      - "8080"
+    volumes:
+      - /root/config:/config

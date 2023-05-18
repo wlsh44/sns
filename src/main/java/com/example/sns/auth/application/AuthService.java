@@ -2,7 +2,6 @@ package com.example.sns.auth.application;
 
 import com.example.sns.auth.application.dto.OAuthUserInfoDto;
 import com.example.sns.auth.infrastructure.GoogleClient;
-import com.example.sns.auth.infrastructure.JwtProvider;
 import com.example.sns.auth.presentation.dto.TokenResponse;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.domain.MemberRepository;
@@ -24,7 +23,7 @@ public class AuthService {
         return client.getAuthRedirectURI();
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public TokenResponse signIn(String code) {
         OAuthUserInfoDto userInfo = getUserInfo(code);
         Member member = memberRepository.findBySocialId(userInfo.getSocialId())
@@ -39,8 +38,7 @@ public class AuthService {
         return client.getUserInfo(idToken);
     }
 
-    @Transactional
-    public Member signUp(OAuthUserInfoDto userInfo) {
+    private Member signUp(OAuthUserInfoDto userInfo) {
         Member member = Member.createUserFrom(userInfo);
         return memberRepository.save(member);
     }
