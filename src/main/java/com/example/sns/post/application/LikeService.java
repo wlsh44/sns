@@ -38,9 +38,17 @@ public class LikeService {
     }
 
     public void cancelLike(Long memberId, Long postId) {
+        validateExistsMember(memberId);
         Post post = getPost(postId);
         Like like = getLike(memberId, postId);
+
         post.removeLike(like);
+    }
+
+    private void validateExistsMember(Long memberId) {
+        if (!memberRepository.existsById(memberId)) {
+            throw new MemberNotFoundException(memberId);
+        }
     }
 
     private Like getLike(Long memberId, Long postId) {
