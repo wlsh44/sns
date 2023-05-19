@@ -26,7 +26,7 @@ public class PostQueryService {
         Post post = getPost(postId);
 
         boolean like = likeRepository.existsByMemberIdAndPostId(memberId, postId);
-        return PostResponse.from(post, member, like);
+        return PostResponse.from(post, like);
     }
 
     private Member getMember(Long memberId) {
@@ -35,7 +35,7 @@ public class PostQueryService {
     }
 
     private Post getPost(Long postId) {
-        return postRepository.findByIdFetchWithImages(postId)
+        return postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(postId));
     }
 }
