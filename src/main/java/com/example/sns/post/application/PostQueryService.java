@@ -24,9 +24,9 @@ public class PostQueryService {
     public PostResponse findPost(Long memberId, Long postId) {
         Member member = getMember(memberId);
         Post post = getPost(postId);
+
         boolean like = likeRepository.existsByMemberIdAndPostId(memberId, postId);
         return PostResponse.from(post, member, like);
-
     }
 
     private Member getMember(Long memberId) {

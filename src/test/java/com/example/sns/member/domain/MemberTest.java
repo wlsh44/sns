@@ -61,7 +61,7 @@ class MemberTest {
 
         //when
         follower.follow(followTable);
-
+      
         //then
         assertThat(follower.getFollowings()).hasSize(1);
     }
