@@ -26,7 +26,7 @@ CREATE TABLE `post` (
                         `id` bigint NOT NULL AUTO_INCREMENT,
                         `created_at` datetime NOT NULL,
                         `last_modified_at` datetime NOT NULL,
-                        `content` varchar(255) NOT NULL DEFAULT '',
+                        `content` text NOT NULL DEFAULT (''),
                         `member_id` bigint NOT NULL,
                         PRIMARY KEY (`id`),
                         KEY `FK83s99f4kx8oiqm3ro0sasmpww` (`member_id`),
