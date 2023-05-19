@@ -87,7 +87,7 @@ CREATE TABLE `alarm` (
                          `created_at` datetime NOT NULL,
                          `last_modified_at` datetime NOT NULL,
                          `member_id` bigint NOT NULL,
-                         `read` tinyint(1) NOT NULL,
+                         `is_read` tinyint(1) NOT NULL,
                          `text` varchar(255) NOT NULL,
                          `type` varchar(10) NOT NULL,
                          PRIMARY KEY (`id`),
