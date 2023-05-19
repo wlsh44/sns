@@ -35,7 +35,7 @@ public class PostQueryService {
     }
 
     private Post getPost(Long postId) {
-        return postRepository.findById(postId)
+        return postRepository.findByIdFetchWithImages(postId)
                 .orElseThrow(() -> new PostNotFoundException(postId));
     }
 }
