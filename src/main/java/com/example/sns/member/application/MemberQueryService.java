@@ -1,5 +1,6 @@
 package com.example.sns.member.application;
 
+import com.example.sns.follow.domain.FollowRepository;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.domain.MemberRepository;
 import com.example.sns.member.exception.MemberNotFoundException;
@@ -18,13 +19,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberQueryService {
 
     private final MemberRepository memberRepository;
+    private final FollowRepository followRepository;
 
     public MemberProfileResponse getProfile(Long memberId, String username) {
-        Member loginMember = getMember(memberId);
+        validateExistsMember(memberId);
         Member profileMember = memberRepository.findBySocialInfoUsername(username)
                 .orElseThrow(() -> new MemberNotFoundException(username));
+        boolean isFollowing = followRepository.existsByFollowerIdAndFollowingId(memberId, profileMember.getId());
 
-        return MemberProfileResponse.from(profileMember, profileMember.isFollower(loginMember));
+        return MemberProfileResponse.from(profileMember, isFollowing);
+    }
+
+    private void validateExistsMember(Long memberId) {
+        if (!memberRepository.existsById(memberId)) {
+            throw new MemberNotFoundException(memberId);
+        }
     }
 
     public MemberInfoResponse getMemberInfo(Long memberId) {

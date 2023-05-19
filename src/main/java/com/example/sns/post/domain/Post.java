@@ -82,29 +82,11 @@ public class Post extends BaseTimeEntity {
     }
 
     public void addLike(Member member) {
-        validateAlreadyLike(member);
         likes.add(new Like(this, member));
     }
 
-    private void validateAlreadyLike(Member member) {
-        if (isLikedBy(member)) {
-            throw new AlreadyLikedPostException(this.id, member.getId());
-        }
-    }
-
-    public boolean isLikedBy(Member member) {
-        return likes.stream().anyMatch(like -> like.hasMember(member));
-    }
-
-    public void removeLike(Member member) {
-        likes.remove(getLike(member));
-    }
-
-    private Like getLike(Member member) {
-        return likes.stream()
-                .filter(like -> like.hasMember(member))
-                .findAny()
-                .orElseThrow(NotLikedPostException::new);
+    public void removeLike(Like like) {
+        likes.remove(like);
     }
 
     public void validateIsAuthor(Long memberId) {

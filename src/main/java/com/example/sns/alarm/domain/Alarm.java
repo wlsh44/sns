@@ -6,7 +6,10 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,10 +30,12 @@ public class Alarm extends BaseTimeEntity {
 
     private Long memberId;
 
+    @Column(name = "is_read")
     private boolean read;
 
     private String text;
 
+    @Enumerated(EnumType.STRING)
     private AlarmType type;
 
     private Alarm(Long memberId, String text, AlarmType type) {
