@@ -16,7 +16,7 @@ public class RecentFeedResponse {
 
     public static RecentFeedResponse from(List<Post> posts, boolean hasNext, int offset) {
         List<RecentFeedPostResponse> timeline = posts.stream()
-                .map(post -> new RecentFeedPostResponse(post.getId(), post.getImages().get(0).getImagePath()))
+                .map(post -> new RecentFeedPostResponse(post.getId(), post.getThumbnailImagePath()))
                 .toList();
         return new RecentFeedResponse(timeline, !hasNext, offset);
     }

@@ -1,6 +1,5 @@
 package com.example.sns.post.presentiation.dto;
 
-import com.example.sns.member.domain.Member;
 import com.example.sns.post.domain.Author;
 import com.example.sns.post.domain.Post;
 import com.example.sns.post.domain.PostImage;
@@ -30,7 +29,7 @@ public class PostResponse {
     @JsonProperty(namespace = "isLike")
     private final boolean like;
 
-    public static PostResponse from(Post post, Member member, boolean like) {
+    public static PostResponse from(Post post, boolean like) {
         Author author = post.getAuthor();
         return new PostResponse(
                 post.getId(),
