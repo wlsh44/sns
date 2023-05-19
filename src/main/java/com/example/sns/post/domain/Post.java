@@ -88,6 +88,7 @@ public class Post extends BaseTimeEntity {
     public void removeLike(Like like) {
         likes.remove(like);
     }
+
     public void validateIsAuthor(Long memberId) {
         if (!author.isAuthor(memberId)) {
             throw new NotPostAuthorException();

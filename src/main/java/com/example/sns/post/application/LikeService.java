@@ -11,7 +11,6 @@ import com.example.sns.post.exception.AlreadyLikedPostException;
 import com.example.sns.post.exception.NotLikedPostException;
 import com.example.sns.post.exception.PostNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
