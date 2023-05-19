@@ -3,8 +3,6 @@ package com.example.sns.member.domain;
 import com.example.sns.auth.application.dto.OAuthUserInfoDto;
 import com.example.sns.common.entity.BaseTimeEntity;
 import com.example.sns.follow.domain.Follow;
-import com.example.sns.follow.exception.AlreadyFollowException;
-import com.example.sns.follow.exception.NotFollowingMemberException;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -62,38 +60,15 @@ public class Member extends BaseTimeEntity {
         return userInfo.getEmail().split("@")[0];
     }
 
-    public void follow(Member following) {
-        validateAlreadyFollow(following);
-        Follow followTable = Follow.createFollowTable(this, following);
+    public void follow(Follow followTable) {
         followings.add(followTable);
+
+        Member following = followTable.getFollowing();
         following.getFollowers().add(followTable);
     }
 
-    public boolean isFollower(Member member) {
-        return followers.stream()
-                .anyMatch(follow -> follow.isFollowing(member, this));
-    }
-
-    public boolean isFollowing(Member member) {
-        return followings.stream()
-                .anyMatch(follow -> follow.isFollowing(this, member));
-    }
-
-    private void validateAlreadyFollow(Member following) {
-        if (isFollowing(following)) {
-            throw new AlreadyFollowException();
-        }
-    }
-
-    public void unfollow(Member following) {
-        followings.remove(getFollow(following));
-    }
-
-    private Follow getFollow(Member following) {
-        return followings.stream()
-                .filter(follow -> follow.isFollowing(this, following))
-                .findAny()
-                .orElseThrow(NotFollowingMemberException::new);
+    public void unfollow(Follow follow) {
+        followings.remove(follow);
     }
 
     public void update(String username, String biography, String profilePath) {

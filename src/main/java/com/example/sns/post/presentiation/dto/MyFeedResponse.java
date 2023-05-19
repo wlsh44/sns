@@ -1,7 +1,5 @@
 package com.example.sns.post.presentiation.dto;
 
-import com.example.sns.member.domain.Member;
-import com.example.sns.post.domain.Feed;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -15,10 +13,7 @@ public class MyFeedResponse {
     private final boolean last;
     private final int offset;
 
-    public static MyFeedResponse from(Feed feed, Member member, boolean hasNext, int offset) {
-        List<PostResponse> postResponseList = feed.getPosts().stream()
-                .map(post -> PostResponse.from(post, member))
-                .toList();
-        return new MyFeedResponse(postResponseList, !hasNext, offset);
+    public static MyFeedResponse from(List<PostResponse> feed, boolean hasNext, int offset) {
+        return new MyFeedResponse(feed, !hasNext, offset);
     }
 }

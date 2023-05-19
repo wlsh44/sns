@@ -61,7 +61,7 @@ class MemberQueryServiceTest extends ServiceTest {
 
 
     @Test
-    @DisplayName("멤버 프로필을 가져와야 함")
+    @DisplayName("로그인 유저가 없는 경우 예외가 발생해야 함")
     void getProfileTest_loginMemberNotFound() throws Exception {
         //given
         Long notExistId = 999L;

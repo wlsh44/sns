@@ -30,7 +30,7 @@ public class PostResponse {
     @JsonProperty(namespace = "isLike")
     private final boolean like;
 
-    public static PostResponse from(Post post, Member member) {
+    public static PostResponse from(Post post, Member member, boolean like) {
         Author author = post.getAuthor();
         return new PostResponse(
                 post.getId(),
@@ -41,7 +41,7 @@ public class PostResponse {
                 post.getLikes().size(),
                 post.getContent(),
                 post.getCreatedAt(),
-                post.isLikedBy(member)
+                like
         );
     }
 
