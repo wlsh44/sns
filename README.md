@@ -39,7 +39,8 @@ Instagram과 유사한 간단한 SNS 서비스 백엔드 구현<br>
 
 ## 아키텍쳐
 
-![설계 이미지]()
+<img width="873" alt="image" src="https://github.com/wlsh44/sns/assets/49276666/a496bb73-b8ce-4bee-b399-354ed67d6302">
+
 
 ## 📌 브랜치 및 커밋 전략
 
