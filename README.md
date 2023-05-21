@@ -6,22 +6,40 @@ Instagram과 유사한 간단한 SNS 서비스 백엔드 구현<br>
 도메인 주소: https://wlsh-sns.duckdns.org/ <br>
 
 ## 📌 사용 기술
+
+**Idea**
+
+![idea](https://img.shields.io/badge/IntelliJ-grey)
+
+**Development**
+
+![java](https://img.shields.io/badge/open--jdk-17-brightgreen) 
 [![framework](https://img.shields.io/badge/spring%20boot-2.7.8-yellowgreen)](https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.7-Release-Notes)
 [![build tool](https://img.shields.io/badge/gradle-7.6-orange)](https://gradle.org/)
 ![ORM](https://img.shields.io/badge/JPA-grey)
-[![Rdb](https://img.shields.io/badge/MySQL-8.0-blue)](https://dev.mysql.com/doc/refman/8.0/en/) 
-![java](https://img.shields.io/badge/open--jdk-17-brightgreen) 
-![idea](https://img.shields.io/badge/IntelliJ-grey) 
+[![Rdb](https://img.shields.io/badge/MySQL-8.0-blue)](https://dev.mysql.com/doc/refman/8.0/en/)
+
+**Deploy**
+
+![cloud](https://img.shields.io/badge/Naver%20Cloud%20Platform-grey)
 ![OS](https://img.shields.io/badge/ubuntu-18.04-red)
-![load test](https://img.shields.io/badge/ngrinder-3.5-green)
+![CI CD](https://img.shields.io/badge/Github%20Actions-grey)
 [![image](https://img.shields.io/badge/docker-latest-lightgrey)](https://hub.docker.com/r/k87913j/sns) 
-![CI CD](https://img.shields.io/badge/GithubActions-grey)
-![cloud](https://img.shields.io/badge/NaverCloudPlatform-grey)
+
+**Test**
+
+[![Rdb](https://img.shields.io/badge/JUnit-5.0-yellow)](https://junit.org/junit5/)
+[![Rdb](https://img.shields.io/badge/mockito-5.3-yellowgreen)](https://site.mockito.org/)
+
+
+**Load Test**
+
+![load test](https://img.shields.io/badge/ngrinder-3.5-green)
 
 ## 📌 프로젝트 중점 사항
 
 - SNS 서비스 설계 및 구현
-- N + 1 문제 경험 및 쿼리 튜닝을 통한 해결  
+- JPA 활용과 N + 1 문제 경험 및 쿼리 튜닝을 통한 해결  
 - Junit을 이용하여 높은 커버리지의 단위 테스트 작성을 통해 리팩터링 등의 과정에도 코드의 신뢰성 경험
 - CI/CD를 적용하여 자동화 된 빌드와 무중단 배포 경험
 - 성능 테스트을 경험하고, 개선을 통한 차이 확인
@@ -37,7 +55,7 @@ Instagram과 유사한 간단한 SNS 서비스 백엔드 구현<br>
 - 알람 기능
 - 피드 기능
 
-## 아키텍쳐
+## 📌 아키텍쳐
 
 <img width="873" alt="image" src="https://github.com/wlsh44/sns/assets/49276666/a496bb73-b8ce-4bee-b399-354ed67d6302">
 
