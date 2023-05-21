@@ -94,4 +94,8 @@ public class Post extends BaseTimeEntity {
             throw new NotPostAuthorException();
         }
     }
+
+    public String getThumbnailImagePath() {
+        return images.get(0).getImagePath();
+    }
 }
