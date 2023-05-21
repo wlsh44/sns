@@ -5,6 +5,15 @@
 Instagram과 유사한 간단한 SNS 서비스 백엔드 구현<br>
 도메인 주소: https://wlsh-sns.duckdns.org/ <br>
 
+## 📌 프로젝트 중점 사항
+
+- SNS 서비스 설계 및 구현
+- JPA 활용과 N + 1 문제 경험 및 쿼리 튜닝을 통한 해결  
+- Junit을 이용하여 높은 커버리지의 단위 테스트 작성을 통해 리팩터링 등의 과정에도 코드의 신뢰성 경험
+- CI/CD를 적용하여 자동화 된 빌드와 무중단 배포 경험
+- 성능 테스트을 경험하고, 개선을 통한 차이 확인
+- 캐싱을 적용하여 과부화가 걸릴 것이라 판단되는 시나리오의 성능 개선(진행 중)
+
 ## 📌 사용 기술
 
 **Idea**
@@ -13,7 +22,7 @@ Instagram과 유사한 간단한 SNS 서비스 백엔드 구현<br>
 
 **Development**
 
-![java](https://img.shields.io/badge/open--jdk-17-brightgreen) 
+![java](https://img.shields.io/badge/open--jdk-17-brightgreen)
 [![framework](https://img.shields.io/badge/spring%20boot-2.7.8-yellowgreen)](https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.7-Release-Notes)
 [![build tool](https://img.shields.io/badge/gradle-7.6-orange)](https://gradle.org/)
 ![ORM](https://img.shields.io/badge/JPA-grey)
@@ -24,7 +33,7 @@ Instagram과 유사한 간단한 SNS 서비스 백엔드 구현<br>
 ![cloud](https://img.shields.io/badge/Naver%20Cloud%20Platform-grey)
 ![OS](https://img.shields.io/badge/ubuntu-18.04-red)
 ![CI CD](https://img.shields.io/badge/Github%20Actions-grey)
-[![image](https://img.shields.io/badge/docker-latest-lightgrey)](https://hub.docker.com/r/k87913j/sns) 
+[![image](https://img.shields.io/badge/docker-latest-lightgrey)](https://hub.docker.com/r/k87913j/sns)
 
 **Test**
 
@@ -36,14 +45,6 @@ Instagram과 유사한 간단한 SNS 서비스 백엔드 구현<br>
 
 ![load test](https://img.shields.io/badge/ngrinder-3.5-green)
 
-## 📌 프로젝트 중점 사항
-
-- SNS 서비스 설계 및 구현
-- JPA 활용과 N + 1 문제 경험 및 쿼리 튜닝을 통한 해결  
-- Junit을 이용하여 높은 커버리지의 단위 테스트 작성을 통해 리팩터링 등의 과정에도 코드의 신뢰성 경험
-- CI/CD를 적용하여 자동화 된 빌드와 무중단 배포 경험
-- 성능 테스트을 경험하고, 개선을 통한 차이 확인
-- 캐싱을 적용하여 과부화가 걸릴 것이라 판단되는 시나리오의 성능 개선(진행 중)
 
 ## 📌 주요 기능
 
