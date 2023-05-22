@@ -4,8 +4,9 @@
 
 Instagram과 유사한 간단한 SNS 서비스 백엔드 구현<br>
 도메인 주소: https://wlsh-sns.duckdns.org/ <br>
+위키: https://wlsh-sns.duckdns.org/wiki
 
-## 📌 프로젝트 중점 사항
+## 📌 프로젝트 목표 및 중점 사항
 
 - SNS 서비스 설계 및 구현
 - JPA 활용과 N + 1 문제 경험 및 쿼리 튜닝을 통한 해결  
