@@ -24,10 +24,10 @@ public class NgrinderController {
 
     private final JwtProvider jwtProvider;
     private final MemberRepository memberRepository;
+    private final Random random = new Random();
 
     @PostMapping("/sign-up")
     public ResponseEntity<TokenResponse> signUp() {
-        Random random = new Random();
         int randomNumber = random.nextInt();
         String name = "test" + randomNumber;
         String email = "email" + randomNumber + "@test.com";

@@ -36,14 +36,12 @@ class CommentCommandServiceTest extends ServiceTest {
     @Autowired
     CommentRepository commentRepository;
 
-    Post post;
-
     @Test
     @DisplayName("올바른 댓글을 생성해야 함")
     void create() throws Exception {
         //given
         Member member = memberRepository.save(getBasicMember());
-        post = postRepository.save(getBasicPost(member));
+        Post post = postRepository.save(getBasicPost(member));
         NewCommentRequest request = getBasicCommentRequest();
 
         //when
@@ -61,11 +59,13 @@ class CommentCommandServiceTest extends ServiceTest {
     void create_emptyContent() throws Exception {
         //given
         Member member = memberRepository.save(getBasicMember());
-        post = postRepository.save(getBasicPost(member));
+        Post post = postRepository.save(getBasicPost(member));
         NewCommentRequest request = getEmptyContentCommentRequest();
+        Long memberId = member.getId();
+        Long postId = post.getId();
 
         //when then
-        assertThatThrownBy(() -> commentCommandService.createComment(member.getId(), post.getId(), request))
+        assertThatThrownBy(() -> commentCommandService.createComment(memberId, postId, request))
             .isInstanceOf(EmptyCommentException.class);
     }
 
@@ -74,12 +74,13 @@ class CommentCommandServiceTest extends ServiceTest {
     void create_feedNotFound() throws Exception {
         //given
         Member member = memberRepository.save(getBasicMember());
-        post = postRepository.save(getBasicPost(member));
+        Post post = postRepository.save(getBasicPost(member));
         Long notExistFeedId = 9999L;
         NewCommentRequest request = getBasicCommentRequest();
+        Long memberId = member.getId();
 
         //when then
-        assertThatThrownBy(() -> commentCommandService.createComment(member.getId(), notExistFeedId, request))
+        assertThatThrownBy(() -> commentCommandService.createComment(memberId, notExistFeedId, request))
                 .isInstanceOf(PostNotFoundException.class);
     }
 
@@ -88,7 +89,7 @@ class CommentCommandServiceTest extends ServiceTest {
     void deleteCommentTest() throws Exception {
         //given
         Member member = memberRepository.save(getBasicMember());
-        post = postRepository.save(getBasicPost(member));
+        Post post = postRepository.save(getBasicPost(member));
         commentCommandService.createComment(member.getId(), post.getId(), getBasicCommentRequest());
 
         //when
@@ -96,7 +97,7 @@ class CommentCommandServiceTest extends ServiceTest {
 
         //then
         List<Comment> comments = commentRepository.findAll();
-        assertThat(comments).hasSize(0);
+        assertThat(comments).isEmpty();
     }
 
     @Test
@@ -104,12 +105,13 @@ class CommentCommandServiceTest extends ServiceTest {
     void deleteCommentTest_commentNotFound() throws Exception {
         //given
         Member member = memberRepository.save(getBasicMember());
-        post = postRepository.save(getBasicPost(member));
+        Post post = postRepository.save(getBasicPost(member));
         Long notExistId = 999L;
         commentCommandService.createComment(member.getId(), post.getId(), getBasicCommentRequest());
+        Long memberId = member.getId();
 
         //when then
-        assertThatThrownBy(() -> commentCommandService.deleteComment(member.getId(), notExistId))
+        assertThatThrownBy(() -> commentCommandService.deleteComment(memberId, notExistId))
                 .isInstanceOf(CommentNotFoundException.class);
     }
 
@@ -118,7 +120,7 @@ class CommentCommandServiceTest extends ServiceTest {
     void deleteCommentTest_notAuthor() throws Exception {
         //given
         Member member = memberRepository.save(getBasicMember());
-        post = postRepository.save(getBasicPost(member));
+        Post post = postRepository.save(getBasicPost(member));
         Long notAuthorId = 999L;
         commentCommandService.createComment(member.getId(), post.getId(), getBasicCommentRequest());
 

@@ -24,7 +24,7 @@ public class DataInitializer {
 
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
-    private final int dataSize = 1;
+    private static final int DATA_SIZE = 1;
 
     @PostConstruct
     public void initData() {
@@ -33,26 +33,26 @@ public class DataInitializer {
     }
 
     private void initPosts(List<Member> members) {
-        for (int i = 0; i < dataSize; i++) {
+        for (int i = 0; i < DATA_SIZE; i++) {
             String content = "content" + i;
             Member member = members.get(i);
             Post post = new Post(new Author(member), content);
             post.addPostImage(new PostImage("http://dummyimage.com/213x100.png/dddddd/000000", post));
             postRepository.save(post);
         }
-        log.info("POST {}개 초기화 완료", dataSize);
+        log.info("POST {}개 초기화 완료", DATA_SIZE);
     }
 
     private List<Member> initMembers() {
         List<Member> members = new ArrayList<>();
-        for (int i = 0; i < dataSize; i++) {
+        for (int i = 0; i < DATA_SIZE; i++) {
             String name = "member" + i;
             String email = String.format("email%d@test.com", i);
             String socialId = String.valueOf(i);
             Member member = memberRepository.save(Member.createUserFrom(new OAuthUserInfoDto(name, email, socialId)));
             members.add(member);
         }
-        log.info("MEMBER {}개 초기화 완료", dataSize);
+        log.info("MEMBER {}개 초기화 완료", DATA_SIZE);
         return members;
     }
 }

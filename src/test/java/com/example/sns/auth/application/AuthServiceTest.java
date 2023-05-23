@@ -19,11 +19,9 @@ import static com.example.sns.common.fixtures.MemberFixture.BASIC_EMAIL;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_NAME;
 import static com.example.sns.common.fixtures.MemberFixture.BASIC_USERNAME;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 
 class AuthServiceTest extends ServiceTest {
 
@@ -76,7 +74,7 @@ class AuthServiceTest extends ServiceTest {
         List<Member> members = memberRepository.findAll();
         Member member = members.get(0);
 
-        assertThat(members.size()).isEqualTo(1);
+        assertThat(members).hasSize(1);
         assertSoftly(softAssertions -> {
             softAssertions.assertThat(member.getId()).isEqualTo(result);
             softAssertions.assertThat(member.getDetailedInfo().getName()).isEqualTo(BASIC_NAME);

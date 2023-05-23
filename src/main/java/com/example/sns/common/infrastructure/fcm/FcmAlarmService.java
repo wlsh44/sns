@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -45,7 +44,7 @@ public class FcmAlarmService implements AlarmService {
     private List<Message> createMessages(List<MessageDto> messageDtoList) {
         return messageDtoList.stream()
                 .map(this::createMessage)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private Message createMessage(MessageDto messageDto) {

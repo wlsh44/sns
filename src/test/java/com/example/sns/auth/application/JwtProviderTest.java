@@ -1,6 +1,5 @@
 package com.example.sns.auth.application;
 
-import com.example.sns.auth.application.JwtProvider;
 import com.example.sns.auth.exception.ExpiredTokenException;
 import com.example.sns.auth.exception.InvalidTokenException;
 import org.junit.jupiter.api.BeforeEach;

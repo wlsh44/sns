@@ -27,7 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest
 @MockBean(JpaMetamodelMappingContext.class)
-public class MockControllerTest {
+public abstract class MockControllerTest {
 
     @Autowired
     protected MockMvc mockMvc;

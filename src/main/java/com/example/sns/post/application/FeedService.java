@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -33,7 +32,7 @@ public class FeedService {
     private List<PostResponse> getPostResponses(Long memberId, Slice<Post> myFeedSlice) {
         return myFeedSlice.getContent().stream()
                 .map(post -> PostResponse.from(post, isMemberLikePost(memberId, post)))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private boolean isMemberLikePost(Long memberId, Post post) {
