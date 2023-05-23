@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -48,7 +47,7 @@ public class PostCommandService {
         List<String> imagePaths = imageStore.savePostImages(images);
         return imagePaths.stream()
                 .map(imagePath -> new PostImage(imagePath, post))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private List<Member> getFollowers(Member member) {

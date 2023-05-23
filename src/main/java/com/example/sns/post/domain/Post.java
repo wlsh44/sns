@@ -2,9 +2,7 @@ package com.example.sns.post.domain;
 
 import com.example.sns.common.entity.BaseTimeEntity;
 import com.example.sns.member.domain.Member;
-import com.example.sns.post.exception.AlreadyLikedPostException;
 import com.example.sns.post.exception.NotPostAuthorException;
-import com.example.sns.post.exception.NotLikedPostException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

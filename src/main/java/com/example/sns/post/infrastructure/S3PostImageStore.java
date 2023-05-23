@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class S3PostImageStore implements PostImageStore {
@@ -28,7 +27,7 @@ public class S3PostImageStore implements PostImageStore {
 
         return images.stream()
                 .map(feedImage -> s3ImageStore.saveImage(feedImage, storePath))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private void validateEmptyImages(List<MultipartFile> images) {

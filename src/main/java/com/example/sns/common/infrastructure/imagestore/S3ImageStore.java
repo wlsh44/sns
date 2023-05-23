@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 import static com.example.sns.common.infrastructure.imagestore.exception.TemporaryFileException.CREATE_ERROR;
 import static com.example.sns.common.infrastructure.imagestore.exception.TemporaryFileException.TRANSFER_ERROR;
@@ -57,8 +58,7 @@ public class S3ImageStore implements ImageStore {
     }
 
     private File convertToFile(MultipartFile multipartFile) {
-        String tempFilePath = getTempFilePath(multipartFile);
-        File file = new File(tempFilePath);
+        File file = new File(getTempFilePath(multipartFile));
         try {
             multipartFile.transferTo(file);
             return file;
@@ -81,8 +81,9 @@ public class S3ImageStore implements ImageStore {
     }
 
     private void removeFile(File file) {
-        boolean res = file.delete();
-        if (!res) {
+        try {
+            Files.delete(file.toPath());
+        } catch (IOException e) {
             log.warn("파일이 삭제되지 않았습니다.");
         }
     }
