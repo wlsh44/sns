@@ -112,7 +112,7 @@ class PostCommandServiceTest extends ServiceTest {
                 .willThrow(new ImageStoreException());
 
         //when then
-        assertThatThrownBy(() -> postCommandService.uploadPost(member.getId(), uploadRequest, postImages))
+        assertThatThrownBy(() -> postCommandService.uploadPost(memberId, uploadRequest, postImages))
                 .isInstanceOf(ImageStoreException.class);
     }
 
@@ -130,41 +130,6 @@ class PostCommandServiceTest extends ServiceTest {
         //when then
         assertThatThrownBy(() -> postCommandService.uploadPost(memberId, uploadRequest, postImages))
                 .isInstanceOf(TemporaryFileException.class);
-    }
-
-    @Test
-    @Disabled
-    @DisplayName("게시글을 수정하면 수정한 데이터를 갖고 있어야 함")
-    void editFeed() throws Exception {
-        //given
-        Member member = memberRepository.save(getBasicMember());
-        Post post = postRepository.save(Post.createPost(member, BASIC_POST_CONTENT));
-        post.updatePostImage(List.of(new PostImage(POST_IMAGE_PATH1, post)));
-        given(imageStore.savePostImages(any()))
-                .willReturn(List.of(POST_IMAGE_PATH2));
-
-        //when
-        postCommandService.updatePost(member.getId(), post.getId(), getBasicUpdateRequest(), List.of(BASIC_POST_IMAGE2));
-
-        //then
-        assertThat(post.getImages().get(0).getImagePath()).isEqualTo(POST_IMAGE_PATH2);
-        assertThat(post.getContent()).isEqualTo(EDIT_POST_CONTENT);
-    }
-
-    @Test
-    @Disabled
-    @DisplayName("없는 게시글을 수정하려고 하면 예외가 발생해야 함")
-    void editFeed_feedNotFound() throws Exception {
-        //given
-        Member member = memberRepository.save(getBasicMember());
-        PostUpdateRequest updateRequest = getBasicUpdateRequest();
-        Long memberId = member.getId();
-        Long notExistFeedId = 1L;
-        List<MultipartFile> postImages = List.of(BASIC_POST_IMAGE2);
-
-        //when then
-        assertThatThrownBy(() -> postCommandService.updatePost(memberId, notExistFeedId, updateRequest, postImages))
-            .isInstanceOf(PostNotFoundException.class);
     }
 
     @Test
