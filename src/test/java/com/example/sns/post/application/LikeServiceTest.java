@@ -17,11 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 import static com.example.sns.common.fixtures.MemberFixture.getBasicMember;
-import static com.example.sns.common.fixtures.MemberFixture.getBasicMember2;
 import static com.example.sns.common.fixtures.PostFixture.getBasicPost;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 class LikeServiceTest extends ServiceTest {
 
@@ -56,9 +54,10 @@ class LikeServiceTest extends ServiceTest {
         Long notExistId = 999L;
         Member member = memberRepository.save(getBasicMember());
         Post post = postRepository.save(getBasicPost(member));
+        Long postId = post.getId();
 
         //when
-        assertThatThrownBy(() -> likeService.like(notExistId, post.getId()))
+        assertThatThrownBy(() -> likeService.like(notExistId, postId))
                 .isInstanceOf(MemberNotFoundException.class);
     }
 
@@ -68,9 +67,10 @@ class LikeServiceTest extends ServiceTest {
         //given
         Long notExistId = 999L;
         Member member = memberRepository.save(getBasicMember());
+        Long memberId = member.getId();
 
         //when
-        assertThatThrownBy(() -> likeService.like(member.getId(), notExistId))
+        assertThatThrownBy(() -> likeService.like(memberId, notExistId))
                 .isInstanceOf(PostNotFoundException.class);
     }
 
@@ -81,9 +81,11 @@ class LikeServiceTest extends ServiceTest {
         Member member = memberRepository.save(getBasicMember());
         Post post = postRepository.save(getBasicPost(member));
         likeService.like(member.getId(), post.getId());
+        Long memberId = member.getId();
+        Long postId = post.getId();
 
         //when
-        assertThatThrownBy(() -> likeService.like(member.getId(), post.getId()))
+        assertThatThrownBy(() -> likeService.like(memberId, postId))
                 .isInstanceOf(AlreadyLikedPostException.class);
     }
 
@@ -100,7 +102,7 @@ class LikeServiceTest extends ServiceTest {
 
         //then
         List<Like> likes = likeRepository.findAll();
-        assertThat(likes).hasSize(0);
+        assertThat(likes).isEmpty();
     }
 
     @Test
@@ -110,9 +112,10 @@ class LikeServiceTest extends ServiceTest {
         Long notExistId = 999L;
         Member member = memberRepository.save(getBasicMember());
         Post post = postRepository.save(getBasicPost(member));
+        Long postId = post.getId();
 
         //when
-        assertThatThrownBy(() -> likeService.cancelLike(notExistId, post.getId()))
+        assertThatThrownBy(() -> likeService.cancelLike(notExistId, postId))
                 .isInstanceOf(MemberNotFoundException.class);
     }
 
@@ -122,9 +125,10 @@ class LikeServiceTest extends ServiceTest {
         //given
         Long notExistId = 999L;
         Member member = memberRepository.save(getBasicMember());
+        Long memberId = member.getId();
 
         //when
-        assertThatThrownBy(() -> likeService.cancelLike(member.getId(), notExistId))
+        assertThatThrownBy(() -> likeService.cancelLike(memberId, notExistId))
                 .isInstanceOf(PostNotFoundException.class);
     }
 
@@ -134,9 +138,11 @@ class LikeServiceTest extends ServiceTest {
         //given
         Member member = memberRepository.save(getBasicMember());
         Post post = postRepository.save(getBasicPost(member));
+        Long memberId = member.getId();
+        Long postId = post.getId();
 
         //when
-        assertThatThrownBy(() -> likeService.cancelLike(member.getId(), post.getId()))
+        assertThatThrownBy(() -> likeService.cancelLike(memberId, postId))
                 .isInstanceOf(NotLikedPostException.class);
     }
 }

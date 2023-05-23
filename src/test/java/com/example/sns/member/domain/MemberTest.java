@@ -79,7 +79,7 @@ class MemberTest {
         follower.unfollow(followTable);
 
         //then
-        assertThat(follower.getFollowings()).hasSize(0);
+        assertThat(follower.getFollowings()).isEmpty();
     }
 
     @Test

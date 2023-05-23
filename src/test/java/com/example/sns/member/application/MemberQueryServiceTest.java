@@ -66,9 +66,10 @@ class MemberQueryServiceTest extends ServiceTest {
         //given
         Long notExistId = 999L;
         Member profileMember = memberRepository.save(getBasicMember2());
+        String username = profileMember.getSocialInfo().getUsername();
 
         //when
-        assertThatThrownBy(() -> memberQueryService.getProfile(notExistId, profileMember.getSocialInfo().getUsername()))
+        assertThatThrownBy(() -> memberQueryService.getProfile(notExistId, username))
                 .isInstanceOf(MemberNotFoundException.class);
     }
 
@@ -77,10 +78,10 @@ class MemberQueryServiceTest extends ServiceTest {
     void getProfileTest_profileMemberNotFound() throws Exception {
         //given
         String notExistName = "notExistName";
-        Member loginMember = memberRepository.save(getBasicMember2());
+        Long loginMemberId = memberRepository.save(getBasicMember2()).getId();
 
         //when
-        assertThatThrownBy(() -> memberQueryService.getProfile(loginMember.getId(), notExistName))
+        assertThatThrownBy(() -> memberQueryService.getProfile(loginMemberId, notExistName))
                 .isInstanceOf(MemberNotFoundException.class);
     }
 

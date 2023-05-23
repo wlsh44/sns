@@ -3,7 +3,6 @@ package com.example.sns.auth.presentation;
 import com.example.sns.auth.exception.OAuthException;
 import com.example.sns.auth.presentation.dto.TokenResponse;
 import com.example.sns.common.support.MockControllerTest;
-import com.example.sns.common.exception.dto.ErrorResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.util.UriComponentsBuilder;

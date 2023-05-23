@@ -48,10 +48,10 @@ class AlarmCommandServiceTest extends ServiceTest {
     void readTest_alarmNotFound() throws Exception {
         //given
         Long notExistId = 999L;
-        Member member = memberRepository.save(getBasicMember());
+        Long memberId = memberRepository.save(getBasicMember()).getId();
 
         //when then
-        assertThatThrownBy(() -> alarmCommandService.readAlarm(member.getId(), notExistId))
+        assertThatThrownBy(() -> alarmCommandService.readAlarm(memberId, notExistId))
                 .isInstanceOf(AlarmNotFoundException.class);
     }
 
@@ -60,11 +60,11 @@ class AlarmCommandServiceTest extends ServiceTest {
     void readTest_notAlarmOwner() throws Exception {
         //given
         Member member = memberRepository.save(getBasicMember());
-        Alarm alarm = alarmRepository.save(getFollowAlarm(member));
-        Member notAlarmReceiver = memberRepository.save(getBasicMember2());
+        Long alarmId = alarmRepository.save(getFollowAlarm(member)).getId();
+        Long notAlarmReceiverId = memberRepository.save(getBasicMember2()).getId();
 
         //when then
-        assertThatThrownBy(() -> alarmCommandService.readAlarm(notAlarmReceiver.getId(), alarm.getId()))
+        assertThatThrownBy(() -> alarmCommandService.readAlarm(notAlarmReceiverId, alarmId))
                 .isInstanceOf(NotAlarmReceiverException.class);
     }
 }

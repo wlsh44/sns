@@ -55,7 +55,7 @@ class AlarmTest {
         alarm.read();
 
         //when then
-        assertThatThrownBy(() -> alarm.read())
+        assertThatThrownBy(alarm::read)
                 .isInstanceOf(AlreadyReadAlarmException.class);
     }
 }

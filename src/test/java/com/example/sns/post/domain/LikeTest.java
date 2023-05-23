@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 import static com.example.sns.common.fixtures.MemberFixture.getBasicMember;
 import static com.example.sns.common.fixtures.PostFixture.getBasicPost;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 class LikeTest {
 

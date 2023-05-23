@@ -52,11 +52,11 @@ class FollowServiceTest extends ServiceTest {
     @DisplayName("없는 유저를 팔로우 하면 예외가 발생해야 함")
     void follow_memberNotFound() throws Exception {
         //given
-        Member member = memberRepository.save(getBasicMember());
+        Long memberId = memberRepository.save(getBasicMember()).getId();
         Long notExistMemberId = 999L;
 
         //when then
-        assertThatThrownBy(() -> followService.follow(member.getId(), notExistMemberId))
+        assertThatThrownBy(() -> followService.follow(memberId, notExistMemberId))
             .isInstanceOf(MemberNotFoundException.class);
     }
 
@@ -64,12 +64,12 @@ class FollowServiceTest extends ServiceTest {
     @DisplayName("이미 팔로우 한 유저인 경우 예외가 발생해야 함")
     void follow_alreadyFollow() throws Exception {
         //given
-        Member follower = memberRepository.save(getFollower());
-        Member following = memberRepository.save(getFollowing());
-        followService.follow(follower.getId(), following.getId());
+        Long followerId = memberRepository.save(getFollower()).getId();
+        Long followingId = memberRepository.save(getFollowing()).getId();
+        followService.follow(followerId, followingId);
 
         //when
-        assertThatThrownBy(() -> followService.follow(follower.getId(), following.getId()))
+        assertThatThrownBy(() -> followService.follow(followerId, followingId))
                 .isInstanceOf(AlreadyFollowException.class);
     }
 
@@ -86,7 +86,7 @@ class FollowServiceTest extends ServiceTest {
 
         //then
         List<Follow> follow = followRepository.findAll();
-        assertThat(follow.size()).isEqualTo(0);
+        assertThat(follow).isEmpty();
     }
 
 
@@ -94,11 +94,11 @@ class FollowServiceTest extends ServiceTest {
     @DisplayName("없는 유저를 팔로우 하면 예외가 발생해야 함")
     void unfollow_memberNotFound() throws Exception {
         //given
-        Member member = memberRepository.save(getBasicMember());
+        Long memberId = memberRepository.save(getBasicMember()).getId();
         Long notExistMemberId = 999L;
 
         //when then
-        assertThatThrownBy(() -> followService.unfollow(member.getId(), notExistMemberId))
+        assertThatThrownBy(() -> followService.unfollow(memberId, notExistMemberId))
                 .isInstanceOf(MemberNotFoundException.class);
     }
 
@@ -106,11 +106,11 @@ class FollowServiceTest extends ServiceTest {
     @DisplayName("팔로우하지 않은 유저를 언팔로우 하면 예외가 발생해야 함")
     void unfollow_notFollowingMember() throws Exception {
         //given
-        Member member1 = memberRepository.save(getBasicMember());
-        Member member2 = memberRepository.save(getBasicMember2());
+        Long member1Id = memberRepository.save(getBasicMember()).getId();
+        Long member2Id = memberRepository.save(getBasicMember2()).getId();
 
         //when
-        assertThatThrownBy(() -> followService.unfollow(member1.getId(), member2.getId()))
+        assertThatThrownBy(() -> followService.unfollow(member1Id, member2Id))
                 .isInstanceOf(NotFollowingMemberException.class);
     }
 }

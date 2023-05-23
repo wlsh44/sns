@@ -13,8 +13,6 @@ import org.springframework.http.HttpHeaders;
 import java.util.List;
 
 import static com.example.sns.common.fixtures.AuthFixture.ACCESS_TOKEN;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;

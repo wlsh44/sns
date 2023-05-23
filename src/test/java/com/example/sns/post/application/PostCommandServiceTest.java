@@ -2,6 +2,8 @@ package com.example.sns.post.application;
 
 import com.example.sns.common.infrastructure.imagestore.exception.TemporaryFileException;
 import com.example.sns.common.support.ServiceTest;
+import com.example.sns.post.application.dto.PostUpdateRequest;
+import com.example.sns.post.application.dto.PostUploadRequest;
 import com.example.sns.post.domain.Comment;
 import com.example.sns.post.domain.CommentRepository;
 import com.example.sns.post.domain.Post;
@@ -17,6 +19,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -88,9 +92,11 @@ class PostCommandServiceTest extends ServiceTest {
     void uploadFailed_memberNotFound() throws Exception {
         //given
         Long notExistMemberId = 9999L;
+        PostUploadRequest uploadRequest = getBasicUploadRequest();
+        List<MultipartFile> postImages = getBasicPostImages();
 
         //when then
-        assertThatThrownBy(() -> postCommandService.uploadPost(notExistMemberId, getBasicUploadRequest(), getBasicPostImages()))
+        assertThatThrownBy(() -> postCommandService.uploadPost(notExistMemberId, uploadRequest, postImages))
                 .isInstanceOf(MemberNotFoundException.class);
     }
 
@@ -99,11 +105,14 @@ class PostCommandServiceTest extends ServiceTest {
     void uploadFailed_imageStoreException() throws Exception {
         //given
         Member member = memberRepository.save(getBasicMember());
+        PostUploadRequest uploadRequest = getBasicUploadRequest();
+        List<MultipartFile> postImages = getBasicPostImages();
+        Long memberId = member.getId();
         given(imageStore.savePostImages(any()))
                 .willThrow(new ImageStoreException());
 
         //when then
-        assertThatThrownBy(() -> postCommandService.uploadPost(member.getId(), getBasicUploadRequest(), getBasicPostImages()))
+        assertThatThrownBy(() -> postCommandService.uploadPost(member.getId(), uploadRequest, postImages))
                 .isInstanceOf(ImageStoreException.class);
     }
 
@@ -112,11 +121,14 @@ class PostCommandServiceTest extends ServiceTest {
     void uploadFailed_temporaryFileException() throws Exception {
         //given
         Member member = memberRepository.save(getBasicMember());
+        PostUploadRequest uploadRequest = getBasicUploadRequest();
+        List<MultipartFile> postImages = getBasicPostImages();
+        Long memberId = member.getId();
         given(imageStore.savePostImages(any()))
                 .willThrow(new TemporaryFileException(TemporaryFileException.TRANSFER_ERROR));
 
         //when then
-        assertThatThrownBy(() -> postCommandService.uploadPost(member.getId(), getBasicUploadRequest(), getBasicPostImages()))
+        assertThatThrownBy(() -> postCommandService.uploadPost(memberId, uploadRequest, postImages))
                 .isInstanceOf(TemporaryFileException.class);
     }
 
@@ -145,10 +157,13 @@ class PostCommandServiceTest extends ServiceTest {
     void editFeed_feedNotFound() throws Exception {
         //given
         Member member = memberRepository.save(getBasicMember());
+        PostUpdateRequest updateRequest = getBasicUpdateRequest();
+        Long memberId = member.getId();
         Long notExistFeedId = 1L;
+        List<MultipartFile> postImages = List.of(BASIC_POST_IMAGE2);
 
         //when then
-        assertThatThrownBy(() -> postCommandService.updatePost(member.getId(), notExistFeedId, getBasicUpdateRequest(), List.of(BASIC_POST_IMAGE2)))
+        assertThatThrownBy(() -> postCommandService.updatePost(memberId, notExistFeedId, updateRequest, postImages))
             .isInstanceOf(PostNotFoundException.class);
     }
 
@@ -169,9 +184,9 @@ class PostCommandServiceTest extends ServiceTest {
         List<Post> postList = postRepository.findAll();
         List<Comment> comments = commentRepository.findAll();
         List<PostImage> postImages = getPostImages();
-        assertThat(comments.size()).isEqualTo(0);
-        assertThat(postList.size()).isEqualTo(0);
-        assertThat(postImages.size()).isEqualTo(0);
+        assertThat(comments).isEmpty();
+        assertThat(postList).isEmpty();
+        assertThat(postImages).isEmpty();
     }
 
     @Test
@@ -179,10 +194,11 @@ class PostCommandServiceTest extends ServiceTest {
     void delete_postNotFound() throws Exception {
         //given
         Member member = memberRepository.save(getBasicMember());
+        Long memberId = member.getId();
         Long notExistPostId = 9999L;
 
         //when then
-        assertThatThrownBy(() -> postCommandService.deletePost(member.getId(), notExistPostId))
+        assertThatThrownBy(() -> postCommandService.deletePost(memberId, notExistPostId))
                 .isInstanceOf(PostNotFoundException.class);
     }
 
@@ -193,9 +209,11 @@ class PostCommandServiceTest extends ServiceTest {
         Member member = memberRepository.save(getBasicMember());
         Member member2 = memberRepository.save(getBasicMember2());
         Post post = postRepository.save(Post.createPost(member2, BASIC_POST_CONTENT));
+        Long memberId = member.getId();
+        Long postId = post.getId();
 
         //when then
-        assertThatThrownBy(() -> postCommandService.deletePost(member.getId(), post.getId()))
+        assertThatThrownBy(() -> postCommandService.deletePost(memberId, postId))
                 .isInstanceOf(NotPostAuthorException.class);
     }
 

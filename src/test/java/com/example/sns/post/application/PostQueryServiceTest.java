@@ -24,9 +24,6 @@ import static com.example.sns.common.fixtures.PostFixture.BASIC_POST_CONTENT;
 import static com.example.sns.common.fixtures.PostFixture.getBasicPost;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.ArgumentMatchers.any;
 
 class PostQueryServiceTest extends ServiceTest {
 
@@ -74,9 +71,10 @@ class PostQueryServiceTest extends ServiceTest {
         Long notExistId = 999L;
         Member author = memberRepository.save(getBasicMember());
         Post post = postRepository.save(getBasicPost(author));
+        Long postId = post.getId();
 
         //when
-        assertThatThrownBy(() -> postQueryService.findPost(notExistId, post.getId()))
+        assertThatThrownBy(() -> postQueryService.findPost(notExistId, postId))
                 .isInstanceOf(MemberNotFoundException.class);
     }
 
@@ -86,9 +84,10 @@ class PostQueryServiceTest extends ServiceTest {
         //given
         Long notExistId = 999L;
         Member author = memberRepository.save(getBasicMember());
+        Long authorId = author.getId();
 
         //when
-        assertThatThrownBy(() -> postQueryService.findPost(author.getId(), notExistId))
+        assertThatThrownBy(() -> postQueryService.findPost(authorId, notExistId))
                 .isInstanceOf(PostNotFoundException.class);
     }
 }

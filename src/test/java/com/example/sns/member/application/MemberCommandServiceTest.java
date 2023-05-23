@@ -84,12 +84,12 @@ class MemberCommandServiceTest extends ServiceTest {
     void updateMemberTest_alreadyExistUsername() throws Exception {
         //given
         memberRepository.save(getBasicMember());
-        Member member = memberRepository.save(getBasicMember2());
+        Long memberId = memberRepository.save(getBasicMember2()).getId();
         MemberUpdateRequest request = new MemberUpdateRequest(BASIC_USERNAME, BASIC_BIOGRAPHY2);
         MultipartFile image = mock(MultipartFile.class);
 
         //when then
-        assertThatThrownBy(() -> memberCommandService.updateMember(member.getId(), request, image))
+        assertThatThrownBy(() -> memberCommandService.updateMember(memberId, request, image))
                 .isInstanceOf(AlreadyExistUsernameException.class);
     }
 
@@ -97,7 +97,7 @@ class MemberCommandServiceTest extends ServiceTest {
     @DisplayName("프로필 저장에 실패할 경우 예외가 발생해야 함")
     void updateMemberTest_imageStoreException() throws Exception {
         //given
-        Member member = memberRepository.save(getBasicMember());
+        Long memberId = memberRepository.save(getBasicMember()).getId();
         MemberUpdateRequest request = new MemberUpdateRequest(BASIC_USERNAME2, BASIC_BIOGRAPHY2);
         MultipartFile image = mock(MultipartFile.class);
         given(imageStore.saveImage(any(), any()))
@@ -106,7 +106,7 @@ class MemberCommandServiceTest extends ServiceTest {
                 .willReturn(false);
 
         //when then
-        assertThatThrownBy(() -> memberCommandService.updateMember(member.getId(), request, image))
+        assertThatThrownBy(() -> memberCommandService.updateMember(memberId, request, image))
                 .isInstanceOf(ImageStoreException.class);
     }
 
@@ -114,14 +114,14 @@ class MemberCommandServiceTest extends ServiceTest {
     @DisplayName("아미지가 없을 경우 예외가 발생해야 함")
     void updateMemberTest_invalidImage() throws Exception {
         //given
-        Member member = memberRepository.save(getBasicMember());
+        Long memberId = memberRepository.save(getBasicMember()).getId();
         MemberUpdateRequest request = new MemberUpdateRequest(BASIC_USERNAME2, BASIC_BIOGRAPHY2);
         MultipartFile image = mock(MultipartFile.class);
         given(image.isEmpty())
                 .willReturn(true);
 
         //when then
-        assertThatThrownBy(() -> memberCommandService.updateMember(member.getId(), request, image))
+        assertThatThrownBy(() -> memberCommandService.updateMember(memberId, request, image))
                 .isInstanceOf(InvalidImageException.class);
     }
 

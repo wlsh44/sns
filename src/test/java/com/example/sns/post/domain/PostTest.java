@@ -12,7 +12,6 @@ import static com.example.sns.common.fixtures.PostFixture.EDIT_POST_CONTENT;
 import static com.example.sns.common.fixtures.PostFixture.POST_IMAGE_PATH1;
 import static com.example.sns.common.fixtures.PostFixture.POST_IMAGE_PATH2;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 
 class PostTest {
@@ -45,7 +44,7 @@ class PostTest {
         Post post = Post.createPost(member, null);
 
         //then
-        assertThat(post.getContent()).isEqualTo("");
+        assertThat(post.getContent()).isEmpty();
     }
 
     @Test

@@ -18,7 +18,6 @@ import java.util.List;
 import static com.example.sns.common.fixtures.AlarmFixture.getFollowAlarm;
 import static com.example.sns.common.fixtures.MemberFixture.getBasicMember;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class AlarmQueryServiceTest extends ServiceTest {
 

@@ -9,7 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import javax.persistence.EntityManager;
 
 @ApplicationTest
-public class ServiceTest {
+public abstract class ServiceTest {
 
     @Autowired
     protected MemberRepository memberRepository;
