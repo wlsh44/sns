@@ -2,7 +2,6 @@ package com.example.sns.post.application;
 
 import com.example.sns.common.infrastructure.imagestore.exception.TemporaryFileException;
 import com.example.sns.common.support.ServiceTest;
-import com.example.sns.post.application.dto.PostUpdateRequest;
 import com.example.sns.post.application.dto.PostUploadRequest;
 import com.example.sns.post.domain.Comment;
 import com.example.sns.post.domain.CommentRepository;
@@ -19,7 +18,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -130,6 +128,28 @@ class PostCommandServiceTest extends ServiceTest {
         //when then
         assertThatThrownBy(() -> postCommandService.uploadPost(memberId, uploadRequest, postImages))
                 .isInstanceOf(TemporaryFileException.class);
+    }
+
+    @Test
+    @DisplayName("게시글을 수정하면 수정한 데이터를 갖고 있어야 함")
+    void editPost() throws Exception {
+        //given
+        Member member = memberRepository.save(getBasicMember());
+        Post post = postRepository.save(Post.createPost(member, BASIC_POST_CONTENT));
+        post.updatePostImage(List.of(new PostImage(POST_IMAGE_PATH1, post), new PostImage(POST_IMAGE_PATH2, post)));
+        given(imageStore.savePostImages(any()))
+                .willReturn(List.of(POST_IMAGE_PATH2));
+
+        //when
+        postCommandService.updatePost(member.getId(), post.getId(), getBasicUpdateRequest(), List.of(BASIC_POST_IMAGE2));
+
+        //then
+        Post updatePost = postRepository.findAll().get(0);
+        List<PostImage> postImages = em.createQuery("select i from PostImage i where i.post.id = :id", PostImage.class)
+                .setParameter("id", updatePost.getId())
+                .getResultList();
+        assertThat(postImages).hasSize(1);
+        assertThat(updatePost.getContent()).isEqualTo(EDIT_POST_CONTENT);
     }
 
     @Test
