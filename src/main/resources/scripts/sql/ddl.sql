@@ -1,7 +1,7 @@
 CREATE TABLE `member` (
                           `id` bigint NOT NULL AUTO_INCREMENT,
-                          `created_at` datetime NOT NULL,
-                          `last_modified_at` datetime NOT NULL,
+                          `created_at` datetime NOT NULL DEFAULT now(),
+                          `last_modified_at` datetime NOT NULL DEFAULT now(),
                           `email` varchar(255) NOT NULL,
                           `name` varchar(255) NOT NULL,
                           `social_id` varchar(255) NOT NULL,
@@ -13,8 +13,8 @@ CREATE TABLE `member` (
 
 CREATE TABLE `device` (
                           `id` bigint NOT NULL AUTO_INCREMENT,
-                          `created_at` datetime NOT NULL,
-                          `last_modified_at` datetime NOT NULL,
+                          `created_at` datetime NOT NULL DEFAULT now(),
+                          `last_modified_at` datetime NOT NULL DEFAULT now(),
                           `token` varchar(255) NOT NULL,
                           `member_id` bigint NOT NULL,
                           PRIMARY KEY (`id`),
@@ -24,8 +24,8 @@ CREATE TABLE `device` (
 
 CREATE TABLE `post` (
                         `id` bigint NOT NULL AUTO_INCREMENT,
-                        `created_at` datetime NOT NULL,
-                        `last_modified_at` datetime NOT NULL,
+                        `created_at` datetime NOT NULL DEFAULT now(),
+                        `last_modified_at` datetime NOT NULL DEFAULT now(),
                         `content` text NOT NULL DEFAULT (''),
                         `member_id` bigint NOT NULL,
                         PRIMARY KEY (`id`),
@@ -44,8 +44,8 @@ CREATE TABLE `post_image` (
 
 CREATE TABLE `follow` (
                           `id` bigint NOT NULL AUTO_INCREMENT,
-                          `created_at` datetime NOT NULL,
-                          `last_modified_at` datetime NOT NULL,
+                          `created_at` datetime NOT NULL DEFAULT now(),
+                          `last_modified_at` datetime NOT NULL DEFAULT now(),
                           `follower_id` bigint NOT NULL,
                           `following_id` bigint NOT NULL,
                           PRIMARY KEY (`id`),
@@ -57,8 +57,8 @@ CREATE TABLE `follow` (
 
 CREATE TABLE `likes` (
                          `id` bigint NOT NULL AUTO_INCREMENT,
-                         `created_at` datetime NOT NULL,
-                         `last_modified_at` datetime NOT NULL,
+                         `created_at` datetime NOT NULL DEFAULT now(),
+                         `last_modified_at` datetime NOT NULL DEFAULT now(),
                          `member_id` bigint NOT NULL,
                          `post_id` bigint NOT NULL,
                          PRIMARY KEY (`id`),
@@ -70,8 +70,8 @@ CREATE TABLE `likes` (
 
 CREATE TABLE `comment` (
                            `id` bigint NOT NULL AUTO_INCREMENT,
-                           `created_at` datetime NOT NULL,
-                           `last_modified_at` datetime NOT NULL,
+                           `created_at` datetime NOT NULL DEFAULT now(),
+                           `last_modified_at` datetime NOT NULL DEFAULT now(),
                            `content` varchar(255) NOT NULL,
                            `member_id` bigint NOT NULL,
                            `post_id` bigint NOT NULL,
@@ -84,8 +84,8 @@ CREATE TABLE `comment` (
 
 CREATE TABLE `alarm` (
                          `id` bigint NOT NULL AUTO_INCREMENT,
-                         `created_at` datetime NOT NULL,
-                         `last_modified_at` datetime NOT NULL,
+                         `created_at` datetime NOT NULL DEFAULT now(),
+                         `last_modified_at` datetime NOT NULL DEFAULT now(),
                          `member_id` bigint NOT NULL,
                          `is_read` tinyint(1) NOT NULL,
                          `text` varchar(255) NOT NULL,
