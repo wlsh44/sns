@@ -1,4 +1,4 @@
-insert into post_image (post_id, image_path) values ('1', 'http://dummyimage.com/124x100.png/cc0000/ffffff');
+insert into post_image (post_id, image_path) values ('2', 'http://dummyimage.com/124x100.png/cc0000/ffffff');
 insert into post_image (post_id, image_path) values ('2', 'http://dummyimage.com/140x100.png/5fa2dd/ffffff');
 insert into post_image (post_id, image_path) values ('3', 'http://dummyimage.com/114x100.png/5fa2dd/ffffff');
 insert into post_image (post_id, image_path) values ('4', 'http://dummyimage.com/190x100.png/dddddd/000000');
