@@ -1,7 +1,6 @@
 package com.example.sns.like.application;
 
 import com.example.sns.common.support.ServiceTest;
-import com.example.sns.like.application.LikeService;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.exception.MemberNotFoundException;
 import com.example.sns.like.domain.Like;
@@ -55,7 +54,7 @@ class LikeServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("같은 유저가 동시에 좋아요를 누를 경우 좋아요가 하나만 생기고 likeCount가 하나만 올라야 함")
-    void likeTest_30() throws Exception {
+    void likeTest_30_sameMembers() throws Exception {
         //given
         int threadCount = 30;
         Member member = memberRepository.save(getBasicMember());
@@ -85,7 +84,7 @@ class LikeServiceTest extends ServiceTest {
 
     @Test
     @DisplayName("100명이 동시에 좋아요를 누를 경우 100개의 좋아요와 likeCount가 100개 올라야 함")
-    void likeTest_30_2() throws Exception {
+    void likeTest_100_differentMembers() throws Exception {
         //given
         int threadCount = 100;
         Member member = memberRepository.save(getBasicMember());
