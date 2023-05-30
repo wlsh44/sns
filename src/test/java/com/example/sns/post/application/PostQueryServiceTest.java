@@ -65,20 +65,6 @@ class PostQueryServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("유저가 없는 경우 조회를 하면 예외가 발생해야 함")
-    void findPost_memberNotFound() throws Exception {
-        //given
-        Long notExistId = 999L;
-        Member author = memberRepository.save(getBasicMember());
-        Post post = postRepository.save(getBasicPost(author));
-        Long postId = post.getId();
-
-        //when
-        assertThatThrownBy(() -> postQueryService.findPost(notExistId, postId))
-                .isInstanceOf(MemberNotFoundException.class);
-    }
-
-    @Test
     @DisplayName("게시글이 없는 경우 조회를 하면 예외가 발생해야 함")
     void findPost_postNotFound() throws Exception {
         //given

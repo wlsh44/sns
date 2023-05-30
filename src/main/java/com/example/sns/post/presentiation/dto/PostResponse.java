@@ -37,7 +37,7 @@ public class PostResponse {
                 author.getUsername(),
                 author.getProfile(),
                 getImageUrls(post.getImages()),
-                post.getLikes().size(),
+                post.getLikeCount(),
                 post.getContent(),
                 post.getCreatedAt(),
                 like

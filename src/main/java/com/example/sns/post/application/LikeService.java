@@ -26,8 +26,11 @@ public class LikeService {
     public void like(Long memberId, Long postId) {
         Member member = getMember(memberId);
         Post post = getPost(postId);
+
         validateAlreadyLikedPost(memberId, postId);
-        post.addLike(member);
+
+        likeRepository.save(new Like(post, member));
+        post.increaseLikeCount();
     }
 
     private void validateAlreadyLikedPost(Long memberId, Long postId) {
@@ -41,7 +44,8 @@ public class LikeService {
         Post post = getPost(postId);
         Like like = getLike(memberId, postId);
 
-        post.removeLike(like);
+        likeRepository.delete(like);
+        post.decreaseLikeCount();
     }
 
     private void validateExistsMember(Long memberId) {
