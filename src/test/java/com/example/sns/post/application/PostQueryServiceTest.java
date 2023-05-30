@@ -2,8 +2,8 @@ package com.example.sns.post.application;
 
 import com.example.sns.common.support.ServiceTest;
 import com.example.sns.common.infrastructure.imagestore.ImageStore;
+import com.example.sns.like.application.LikeService;
 import com.example.sns.member.domain.Member;
-import com.example.sns.member.exception.MemberNotFoundException;
 import com.example.sns.post.presentiation.dto.PostResponse;
 import com.example.sns.post.domain.CommentRepository;
 import com.example.sns.post.domain.Post;

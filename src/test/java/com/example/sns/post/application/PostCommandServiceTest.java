@@ -2,6 +2,7 @@ package com.example.sns.post.application;
 
 import com.example.sns.common.infrastructure.imagestore.exception.TemporaryFileException;
 import com.example.sns.common.support.ServiceTest;
+import com.example.sns.like.application.LikeService;
 import com.example.sns.post.application.dto.PostUploadRequest;
 import com.example.sns.post.domain.Comment;
 import com.example.sns.post.domain.CommentRepository;
@@ -13,7 +14,6 @@ import com.example.sns.post.exception.PostNotFoundException;
 import com.example.sns.common.infrastructure.imagestore.exception.ImageStoreException;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.exception.MemberNotFoundException;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

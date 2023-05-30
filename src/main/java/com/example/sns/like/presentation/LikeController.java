@@ -1,7 +1,7 @@
-package com.example.sns.post.presentiation;
+package com.example.sns.like.presentation;
 
 import com.example.sns.auth.presentation.Authenticated;
-import com.example.sns.post.application.LikeService;
+import com.example.sns.like.application.LikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

@@ -1,7 +1,8 @@
-package com.example.sns.post.domain;
+package com.example.sns.like.domain;
 
 import com.example.sns.common.entity.BaseTimeEntity;
 import com.example.sns.member.domain.Member;
+import com.example.sns.post.domain.Post;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

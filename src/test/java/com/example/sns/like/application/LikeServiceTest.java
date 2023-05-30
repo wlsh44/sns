@@ -1,10 +1,11 @@
-package com.example.sns.post.application;
+package com.example.sns.like.application;
 
 import com.example.sns.common.support.ServiceTest;
+import com.example.sns.like.application.LikeService;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.exception.MemberNotFoundException;
-import com.example.sns.post.domain.Like;
-import com.example.sns.post.domain.LikeRepository;
+import com.example.sns.like.domain.Like;
+import com.example.sns.like.domain.LikeRepository;
 import com.example.sns.post.domain.Post;
 import com.example.sns.post.domain.PostRepository;
 import com.example.sns.post.exception.AlreadyLikedPostException;

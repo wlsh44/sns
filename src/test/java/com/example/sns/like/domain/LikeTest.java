@@ -1,6 +1,8 @@
-package com.example.sns.post.domain;
+package com.example.sns.like.domain;
 
+import com.example.sns.like.domain.Like;
 import com.example.sns.member.domain.Member;
+import com.example.sns.post.domain.Post;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
