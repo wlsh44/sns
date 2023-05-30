@@ -20,7 +20,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("select p from Post p order by p.createdAt desc")
     Slice<Post> findRecentFeed(Pageable pageable);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("update Post p set p.likeCount = p.likeCount + 1 where p.id = :postId")
     void increaseLikeCount(@Param("postId") Long postId);
 }
