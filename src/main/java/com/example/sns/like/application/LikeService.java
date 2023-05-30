@@ -11,6 +11,7 @@ import com.example.sns.post.exception.AlreadyLikedPostException;
 import com.example.sns.post.exception.NotLikedPostException;
 import com.example.sns.post.exception.PostNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,8 +30,12 @@ public class LikeService {
 
         validateAlreadyLikedPost(memberId, postId);
 
-        likeRepository.save(new Like(post, member));
-        post.increaseLikeCount();
+        try {
+            likeRepository.save(new Like(post, member));
+            postRepository.increaseLikeCount(postId);
+        } catch (DataIntegrityViolationException e) {
+            throw new AlreadyLikedPostException(postId, memberId);
+        }
     }
 
     private void validateAlreadyLikedPost(Long memberId, Long postId) {

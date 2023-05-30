@@ -15,10 +15,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Getter
 @Entity
-@Table(name = "likes")
+@Table(
+        name = "likes",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "memberIdPostId",
+                        columnNames= {"member_id", "post_id"}
+                )
+        })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Like extends BaseTimeEntity {
 
