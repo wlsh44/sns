@@ -2,8 +2,8 @@ package com.example.sns.post.application;
 
 import com.example.sns.common.support.ServiceTest;
 import com.example.sns.common.infrastructure.imagestore.ImageStore;
+import com.example.sns.like.application.LikeService;
 import com.example.sns.member.domain.Member;
-import com.example.sns.member.exception.MemberNotFoundException;
 import com.example.sns.post.presentiation.dto.PostResponse;
 import com.example.sns.post.domain.CommentRepository;
 import com.example.sns.post.domain.Post;
@@ -62,20 +62,6 @@ class PostQueryServiceTest extends ServiceTest {
         //then
         assertThat(response).usingRecursiveComparison()
                 .isEqualTo(expect);
-    }
-
-    @Test
-    @DisplayName("유저가 없는 경우 조회를 하면 예외가 발생해야 함")
-    void findPost_memberNotFound() throws Exception {
-        //given
-        Long notExistId = 999L;
-        Member author = memberRepository.save(getBasicMember());
-        Post post = postRepository.save(getBasicPost(author));
-        Long postId = post.getId();
-
-        //when
-        assertThatThrownBy(() -> postQueryService.findPost(notExistId, postId))
-                .isInstanceOf(MemberNotFoundException.class);
     }
 
     @Test

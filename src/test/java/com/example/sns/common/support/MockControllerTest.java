@@ -12,7 +12,7 @@ import com.example.sns.member.application.MemberQueryService;
 import com.example.sns.post.application.CommentCommandService;
 import com.example.sns.post.application.CommentQueryService;
 import com.example.sns.post.application.FeedService;
-import com.example.sns.post.application.LikeService;
+import com.example.sns.like.application.LikeService;
 import com.example.sns.post.application.PostQueryService;
 import com.example.sns.post.application.PostCommandService;
 import com.example.sns.follow.application.FollowService;

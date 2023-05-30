@@ -32,14 +32,13 @@ public class Post extends BaseTimeEntity {
     @Embedded
     private Author author;
 
+    private int likeCount;
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private final List<PostImage> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
     private final List<Comment> comments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private final List<Like> likes = new ArrayList<>();
 
     public Post(Author author, String content) {
         this.content = content;
@@ -79,14 +78,6 @@ public class Post extends BaseTimeEntity {
         comment.mappingPost(this);
     }
 
-    public void addLike(Member member) {
-        likes.add(new Like(this, member));
-    }
-
-    public void removeLike(Like like) {
-        likes.remove(like);
-    }
-
     public void validateIsAuthor(Long memberId) {
         if (!author.isAuthor(memberId)) {
             throw new NotPostAuthorException();
@@ -95,5 +86,18 @@ public class Post extends BaseTimeEntity {
 
     public String getThumbnailImagePath() {
         return images.get(0).getImagePath();
+    }
+
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void increaseLikeCount() {
+        likeCount++;
+    }
+
+    public void decreaseLikeCount() {
+        assert likeCount != 0;
+        likeCount--;
     }
 }

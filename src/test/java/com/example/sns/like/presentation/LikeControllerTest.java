@@ -1,4 +1,4 @@
-package com.example.sns.post.presentiation;
+package com.example.sns.like.presentation;
 
 import com.example.sns.common.support.MockControllerTest;
 import com.example.sns.member.exception.MemberNotFoundException;

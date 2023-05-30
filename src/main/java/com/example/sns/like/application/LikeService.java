@@ -1,16 +1,17 @@
-package com.example.sns.post.application;
+package com.example.sns.like.application;
 
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.domain.MemberRepository;
 import com.example.sns.member.exception.MemberNotFoundException;
-import com.example.sns.post.domain.Like;
-import com.example.sns.post.domain.LikeRepository;
+import com.example.sns.like.domain.Like;
+import com.example.sns.like.domain.LikeRepository;
 import com.example.sns.post.domain.Post;
 import com.example.sns.post.domain.PostRepository;
 import com.example.sns.post.exception.AlreadyLikedPostException;
 import com.example.sns.post.exception.NotLikedPostException;
 import com.example.sns.post.exception.PostNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,8 +27,15 @@ public class LikeService {
     public void like(Long memberId, Long postId) {
         Member member = getMember(memberId);
         Post post = getPost(postId);
+
         validateAlreadyLikedPost(memberId, postId);
-        post.addLike(member);
+
+        try {
+            likeRepository.save(new Like(post, member));
+            postRepository.increaseLikeCount(postId);
+        } catch (DataIntegrityViolationException e) {
+            throw new AlreadyLikedPostException(postId, memberId);
+        }
     }
 
     private void validateAlreadyLikedPost(Long memberId, Long postId) {
@@ -41,7 +49,8 @@ public class LikeService {
         Post post = getPost(postId);
         Like like = getLike(memberId, postId);
 
-        post.removeLike(like);
+        likeRepository.delete(like);
+        post.decreaseLikeCount();
     }
 
     private void validateExistsMember(Long memberId) {

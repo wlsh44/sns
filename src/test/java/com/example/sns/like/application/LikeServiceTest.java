@@ -1,10 +1,11 @@
-package com.example.sns.post.application;
+package com.example.sns.like.application;
 
 import com.example.sns.common.support.ServiceTest;
+import com.example.sns.like.application.LikeService;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.exception.MemberNotFoundException;
-import com.example.sns.post.domain.Like;
-import com.example.sns.post.domain.LikeRepository;
+import com.example.sns.like.domain.Like;
+import com.example.sns.like.domain.LikeRepository;
 import com.example.sns.post.domain.Post;
 import com.example.sns.post.domain.PostRepository;
 import com.example.sns.post.exception.AlreadyLikedPostException;
@@ -15,6 +16,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static com.example.sns.common.fixtures.MemberFixture.getBasicMember;
 import static com.example.sns.common.fixtures.PostFixture.getBasicPost;
@@ -33,7 +37,7 @@ class LikeServiceTest extends ServiceTest {
     PostRepository postRepository;
 
     @Test
-    @DisplayName("좋아요를 성공해야 함")
+    @DisplayName("좋아요를 누르면 좋아요가 생기며 게시글의 likeCount가 하나 올라야 함")
     void likeTest() throws Exception {
         //given
         Member member = memberRepository.save(getBasicMember());
@@ -44,7 +48,70 @@ class LikeServiceTest extends ServiceTest {
 
         //then
         List<Like> likes = likeRepository.findAll();
+        Post findPost = postRepository.findById(post.getId()).get();
         assertThat(likes).hasSize(1);
+        assertThat(findPost.getLikeCount()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("같은 유저가 동시에 좋아요를 누를 경우 좋아요가 하나만 생기고 likeCount가 하나만 올라야 함")
+    void likeTest_30() throws Exception {
+        //given
+        int threadCount = 30;
+        Member member = memberRepository.save(getBasicMember());
+        Post post = postRepository.save(getBasicPost(member));
+
+        ExecutorService executorService = Executors.newFixedThreadPool(8);
+        CountDownLatch latch = new CountDownLatch(threadCount);
+
+        //when
+        for (int i = 0; i < threadCount; i++) {
+            executorService.submit(() -> {
+                try {
+                    likeService.like(member.getId(), post.getId());
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
+        latch.await();
+
+        //then
+        List<Like> likes = likeRepository.findAll();
+        Post findPost = postRepository.findById(post.getId()).get();
+        assertThat(likes).hasSize(1);
+        assertThat(findPost.getLikeCount()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("100명이 동시에 좋아요를 누를 경우 100개의 좋아요와 likeCount가 100개 올라야 함")
+    void likeTest_30_2() throws Exception {
+        //given
+        int threadCount = 100;
+        Member member = memberRepository.save(getBasicMember());
+        Post post = postRepository.save(getBasicPost(member));
+
+        ExecutorService executorService = Executors.newFixedThreadPool(32);
+        CountDownLatch latch = new CountDownLatch(threadCount);
+
+        //when
+        for (int i = 0; i < threadCount; i++) {
+            executorService.submit(() -> {
+                try {
+                    Member newMember = memberRepository.save(getBasicMember());
+                    likeService.like(newMember.getId(), post.getId());
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
+        latch.await();
+
+        //then
+        List<Like> likes = likeRepository.findAll();
+        Post findPost = postRepository.findById(post.getId()).get();
+        assertThat(likes).hasSize(threadCount);
+        assertThat(findPost.getLikeCount()).isEqualTo(threadCount);
     }
 
     @Test
