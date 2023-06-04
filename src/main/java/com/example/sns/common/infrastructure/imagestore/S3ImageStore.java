@@ -10,6 +10,7 @@ import com.example.sns.common.infrastructure.imagestore.exception.ImageStoreExce
 import com.example.sns.common.infrastructure.imagestore.exception.TemporaryFileException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +23,7 @@ import static com.example.sns.common.infrastructure.imagestore.exception.Tempora
 
 @Slf4j
 @Component
+@Profile("prod")
 public class S3ImageStore implements ImageStore {
 
     private final String bucket;
