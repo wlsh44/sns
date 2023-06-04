@@ -18,3 +18,9 @@ services:
     restart: always
     links:
       - controller
+    deploy:
+      resources:
+        limits:
+          memory: 2g
+        reservations:
+          memory: 512m
