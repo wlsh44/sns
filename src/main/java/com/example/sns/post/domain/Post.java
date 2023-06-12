@@ -92,10 +92,6 @@ public class Post extends BaseTimeEntity {
         return likeCount;
     }
 
-    public void increaseLikeCount() {
-        likeCount++;
-    }
-
     public void decreaseLikeCount() {
         assert likeCount != 0;
         likeCount--;
