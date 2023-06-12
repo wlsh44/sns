@@ -6,9 +6,11 @@ import com.example.sns.alarm.domain.AlarmType;
 import com.example.sns.common.infrastructure.fcm.AlarmService;
 import com.example.sns.common.infrastructure.fcm.dto.AlarmTargetsDto;
 import com.example.sns.common.infrastructure.fcm.dto.MessageDto;
+import com.example.sns.post.domain.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.List;
@@ -17,10 +19,11 @@ import static com.example.sns.alarm.domain.AlarmType.POST_UPLOAD;
 
 @Component
 @RequiredArgsConstructor
-public class PostUploadEventHandler {
+public class PostEventHandler {
 
     private final AlarmService alarmService;
     private final AlarmRepository alarmRepository;
+    private final PostRepository postRepository;
 
     @Async
     @TransactionalEventListener
@@ -38,5 +41,14 @@ public class PostUploadEventHandler {
         return tokens.stream()
                 .map(token -> new MessageDto(token, text, AlarmType.POST_UPLOAD.name()))
                 .toList();
+    }
+
+    @Async
+    @Transactional
+    @TransactionalEventListener
+    public void increaseLikeCount(PostLikeCountIncreasedEvent event) {
+        Long postId = event.getPostId();
+
+        postRepository.increaseLikeCount(postId);
     }
 }
