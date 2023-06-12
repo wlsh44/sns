@@ -5,12 +5,14 @@ import com.example.sns.member.domain.MemberRepository;
 import com.example.sns.member.exception.MemberNotFoundException;
 import com.example.sns.like.domain.Like;
 import com.example.sns.like.domain.LikeRepository;
+import com.example.sns.post.application.PostLikeCountIncreasedEvent;
 import com.example.sns.post.domain.Post;
 import com.example.sns.post.domain.PostRepository;
 import com.example.sns.post.exception.AlreadyLikedPostException;
 import com.example.sns.post.exception.NotLikedPostException;
 import com.example.sns.post.exception.PostNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,16 +25,17 @@ public class LikeService {
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
     private final LikeRepository likeRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     public void like(Long memberId, Long postId) {
-        Member member = getMember(memberId);
         Post post = getPost(postId);
+        Member member = getMember(memberId);
 
         validateAlreadyLikedPost(memberId, postId);
 
         try {
             likeRepository.save(new Like(post, member));
-            postRepository.increaseLikeCount(postId);
+            eventPublisher.publishEvent(new PostLikeCountIncreasedEvent(postId));
         } catch (DataIntegrityViolationException e) {
             throw new AlreadyLikedPostException(postId, memberId);
         }

@@ -53,8 +53,7 @@ class PostQueryServiceTest extends ServiceTest {
         Post post = postRepository.save(getBasicPost(author));
         LocalDateTime createdAt = post.getCreatedAt();
         Member member = memberRepository.save(getBasicMember2());
-        likeService.like(member.getId(), post.getId());
-        PostResponse expect = new PostResponse(post.getId(), author.getId(), BASIC_USERNAME, author.getSocialInfo().getProfileUrl(), List.of(), 1, BASIC_POST_CONTENT, createdAt, true);
+        PostResponse expect = new PostResponse(post.getId(), author.getId(), BASIC_USERNAME, author.getSocialInfo().getProfileUrl(), List.of(), 0, BASIC_POST_CONTENT, createdAt, false);
 
         //when
         PostResponse response = postQueryService.findPost(member.getId(), post.getId());

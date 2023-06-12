@@ -32,10 +32,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @RecordApplicationEvents
-class PostUploadEventHandlerTest extends ServiceTest {
+class PostEventHandlerTest extends ServiceTest {
 
     @Autowired
-    PostUploadEventHandler alarmEventHandler;
+    PostEventHandler alarmEventHandler;
 
     @MockBean
     AlarmService alarmService;
