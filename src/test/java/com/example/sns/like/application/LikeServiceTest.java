@@ -1,10 +1,10 @@
 package com.example.sns.like.application;
 
 import com.example.sns.common.support.ServiceTest;
-import com.example.sns.member.domain.Member;
-import com.example.sns.member.exception.MemberNotFoundException;
 import com.example.sns.like.domain.Like;
 import com.example.sns.like.domain.LikeRepository;
+import com.example.sns.member.domain.Member;
+import com.example.sns.member.exception.MemberNotFoundException;
 import com.example.sns.post.domain.Post;
 import com.example.sns.post.domain.PostRepository;
 import com.example.sns.post.exception.AlreadyLikedPostException;
@@ -14,6 +14,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -89,16 +90,23 @@ class LikeServiceTest extends ServiceTest {
         int threadCount = 100;
         Member member = memberRepository.save(getBasicMember());
         Post post = postRepository.save(getBasicPost(member));
+        List<Member> members = new ArrayList<>();
+        for (int i = 0; i < threadCount; i++) {
+            members.add(memberRepository.save(getBasicMember()));
+        }
 
         ExecutorService executorService = Executors.newFixedThreadPool(32);
         CountDownLatch latch = new CountDownLatch(threadCount);
 
         //when
         for (int i = 0; i < threadCount; i++) {
+            int finalI = i;
             executorService.submit(() -> {
                 try {
-                    Member newMember = memberRepository.save(getBasicMember());
-                    likeService.like(newMember.getId(), post.getId());
+                    likeService.like(members.get(finalI).getId(), post.getId());
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 } finally {
                     latch.countDown();
                 }
