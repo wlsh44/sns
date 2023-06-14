@@ -25,7 +25,6 @@ public class LikeService {
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
     private final LikeRepository likeRepository;
-    private final ApplicationEventPublisher eventPublisher;
 
     public void like(Long memberId, Long postId) {
         Post post = getPost(postId);
@@ -33,12 +32,7 @@ public class LikeService {
 
         validateAlreadyLikedPost(memberId, postId);
 
-        try {
-            likeRepository.save(new Like(post, member));
-            eventPublisher.publishEvent(new PostLikeCountIncreasedEvent(postId));
-        } catch (DataIntegrityViolationException e) {
-            throw new AlreadyLikedPostException(postId, memberId);
-        }
+        likeRepository.save(new Like(post, member));
     }
 
     private void validateAlreadyLikedPost(Long memberId, Long postId) {
@@ -52,7 +46,7 @@ public class LikeService {
         Post post = getPost(postId);
         Like like = getLike(memberId, postId);
 
-        likeRepository.delete(like);
+        likeRepository.remove(like);
         post.decreaseLikeCount();
     }
 

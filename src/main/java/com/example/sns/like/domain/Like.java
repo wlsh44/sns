@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -34,20 +35,18 @@ public class Like extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private Post post;
+    @Column(name = "post_id")
+    private Long postId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @Column(name = "member_id")
+    private Long memberId;
 
-    public Like(Post post, Member member) {
-        this.post = post;
-        this.member = member;
+    public Like(Long postId, Long memberId) {
+        this.postId = postId;
+        this.memberId = memberId;
     }
 
-    public boolean hasMember(Member member) {
-        return this.member.equals(member);
+    public Like(Post post, Member member) {
+        this(post.getId(), member.getId());
     }
 }
