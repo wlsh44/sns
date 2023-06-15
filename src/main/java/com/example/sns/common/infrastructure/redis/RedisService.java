@@ -19,6 +19,8 @@ public class RedisService {
     private static final String KEY_FORMAT = ":%s";
     private static final String ALL = "*";
 
+    private final RedisTemplate<String, Object> redisTemplate;
+
     public String makeKey(RedisPrefix prefix, Object ...args) {
         StringBuilder key = new StringBuilder(prefix.getPrefix());
         for (Object arg : args) {
@@ -27,9 +29,9 @@ public class RedisService {
         return key.toString();
     }
 
-    public List<String> scanKeys(RedisPrefix prefix, RedisTemplate<String, ?> redisTemplate) {
+    public List<String> scanKeys(RedisPrefix prefix) {
         String pattern = makeKey(prefix, ALL);
-        RedisConnection connection = getRedisConnection(redisTemplate);
+        RedisConnection connection = getRedisConnection();
         ScanOptions scanOptions = getScanOptions(pattern);
 
         Cursor<byte[]> cursor = connection.scan(scanOptions);
@@ -37,7 +39,7 @@ public class RedisService {
         return getKeys(cursor);
     }
 
-    private RedisConnection getRedisConnection(RedisTemplate<String, ?> redisTemplate) {
+    private RedisConnection getRedisConnection() {
         RedisConnectionFactory connectionFactory = redisTemplate.getConnectionFactory();
         assert connectionFactory != null;
         return connectionFactory.getConnection();

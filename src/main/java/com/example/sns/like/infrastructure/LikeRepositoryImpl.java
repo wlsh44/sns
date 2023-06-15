@@ -20,7 +20,7 @@ import static com.example.sns.common.infrastructure.redis.RedisConst.LIKE_EXPIRE
 public class LikeRepositoryImpl implements LikeRepository {
 
     private final LikeJpaRepository likeRDBRepository;
-    private final RedisTemplate<String, Like> likeRedisTemplate;
+    private final RedisTemplate<String, Object> likeRedisTemplate;
     private final RedisService redisService;
 
     @Override

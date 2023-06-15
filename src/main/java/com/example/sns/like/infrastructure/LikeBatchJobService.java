@@ -2,7 +2,6 @@ package com.example.sns.like.infrastructure;
 
 import com.example.sns.common.infrastructure.redis.RedisPrefix;
 import com.example.sns.common.infrastructure.redis.RedisService;
-import com.example.sns.like.domain.Like;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -28,7 +27,6 @@ public class LikeBatchJobService {
 
     private final JdbcTemplate jdbcTemplate;
     private final RedisService redisService;
-    private final RedisTemplate<String, Like> likeRedisTemplate;
 
     public void updateRDB() {
         List<String> keys = findLikeKeys();
@@ -53,9 +51,9 @@ public class LikeBatchJobService {
     private List<String> findLikeKeys() {
         LocalDateTime findStartTime = LocalDateTime.now();
 
-        List<String> keys = redisService.scanKeys(RedisPrefix.LIKE_PUSH, likeRedisTemplate);
-        log.info("{}개 배치 작업 진행", keys.size());
+        List<String> keys = redisService.scanKeys(RedisPrefix.LIKE_PUSH);
 
+        log.info("{}개 배치 작업 진행", keys.size());
         LocalDateTime findEndTime = LocalDateTime.now();
         if (Duration.between(findStartTime, findEndTime).getSeconds() >= LIKE_EXPIRED_SECONDS * 60) {
             log.warn("좋아요 데이터 유실 발생");
