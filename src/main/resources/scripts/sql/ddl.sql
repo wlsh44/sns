@@ -27,7 +27,6 @@ CREATE TABLE `post` (
                         `created_at` datetime NOT NULL DEFAULT now(),
                         `last_modified_at` datetime NOT NULL DEFAULT now(),
                         `content` text NOT NULL DEFAULT (''),
-                        `like_count` bigint NOT NULL DEFAULT 0,
                         `member_id` bigint NOT NULL,
                         PRIMARY KEY (`id`),
                         KEY `FK83s99f4kx8oiqm3ro0sasmpww` (`member_id`),
@@ -65,8 +64,6 @@ CREATE TABLE `likes` (
                          PRIMARY KEY (`id`),
                          KEY `FKa4vkf1skcfu5r6o5gfb5jf295` (`member_id`),
                          KEY `FKowd6f4s7x9f3w50pvlo6x3b41` (`post_id`),
-                         CONSTRAINT `FKa4vkf1skcfu5r6o5gfb5jf295` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`),
-                         CONSTRAINT `FKowd6f4s7x9f3w50pvlo6x3b41` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`),
                          CONSTRAINT `memberIdPostId` UNIQUE (`member_id`, `post_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
