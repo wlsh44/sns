@@ -5,11 +5,10 @@ import com.example.sns.common.infrastructure.redis.RedisService;
 import com.example.sns.like.domain.Like;
 import com.example.sns.like.domain.LikeRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -20,14 +19,8 @@ import static com.example.sns.common.infrastructure.redis.RedisConst.LIKE_EXPIRE
 public class LikeRepositoryImpl implements LikeRepository {
 
     private final LikeJpaRepository likeRDBRepository;
-    private final RedisTemplate<String, Object> likeRedisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
     private final RedisService redisService;
-
-    @Override
-    @Cacheable(value = "likePushed", key = "#memberId+ ':' + #postId", cacheManager = "cacheManager")
-    public Optional<Like> findByMemberIdAndPostId(Long memberId, Long postId) {
-        return likeRDBRepository.findByMemberIdAndPostId(memberId, postId);
-    }
 
     @Override
     public boolean existsByMemberIdAndPostId(Long memberId, Long postId) {
@@ -36,7 +29,7 @@ public class LikeRepositoryImpl implements LikeRepository {
 
     private boolean isExistsInCache(Long memberId, Long postId) {
         String key = redisService.makeKey(RedisPrefix.LIKE_PUSH, memberId, postId);
-        return Optional.ofNullable(likeRedisTemplate.opsForValue().get(key))
+        return Optional.ofNullable(redisTemplate.opsForValue().get(key))
                 .isPresent();
     }
 
@@ -45,14 +38,21 @@ public class LikeRepositoryImpl implements LikeRepository {
     }
 
     @Override
-    @CacheEvict(value = "likePushed", key = "#like.memberId + ':' + #like.postId", cacheManager = "cacheManager")
-    public void remove(Like like) {
-        likeRDBRepository.delete(like);
+    public void removeByMemberIdAndPostId(Long memberId, Long postId) {
+        String key = redisService.makeKey(RedisPrefix.LIKE_PUSH, memberId, postId);
+        Boolean cacheDelete = redisTemplate.delete(key);
+        if (isCacheDeleted(cacheDelete)) {
+            likeRDBRepository.deleteByMemberIdAndPostId(memberId, postId);
+        }
+    }
+
+    private boolean isCacheDeleted(Boolean cacheDelete) {
+        return Boolean.FALSE.equals(cacheDelete);
     }
 
     @Override
     public void save(Like like) {
         String key = redisService.makeKey(RedisPrefix.LIKE_PUSH, like.getMemberId(), like.getPostId());
-        likeRedisTemplate.opsForValue().set(key, like, LIKE_EXPIRED_SECONDS, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(key, LocalDateTime.now().toString(), LIKE_EXPIRED_SECONDS, TimeUnit.SECONDS);
     }
 }

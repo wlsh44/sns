@@ -8,9 +8,7 @@ import java.util.Optional;
 public interface LikeRepository {
     boolean existsByMemberIdAndPostId(Long memberId, Long postId);
 
-    Optional<Like> findByMemberIdAndPostId(Long memberId, Long postId);
-
-    void remove(Like like);
+    void removeByMemberIdAndPostId(Long memberId, Long postId);
 
     void save(Like like);
 }
