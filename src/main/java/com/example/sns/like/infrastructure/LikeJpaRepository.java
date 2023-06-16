@@ -11,4 +11,6 @@ public interface LikeJpaRepository extends JpaRepository<Like, Long> {
 
     @Modifying
     void deleteByMemberIdAndPostId(Long memberId, Long postId);
+
+    int countByPostId(Long postId);
 }

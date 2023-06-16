@@ -11,4 +11,6 @@ public interface LikeRepository {
     void removeByMemberIdAndPostId(Long memberId, Long postId);
 
     void save(Like like);
+
+    int countByPostId(Long postId);
 }

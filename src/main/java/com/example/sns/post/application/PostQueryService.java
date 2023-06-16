@@ -21,7 +21,8 @@ public class PostQueryService {
         Post post = getPost(postId);
 
         boolean like = likeRepository.existsByMemberIdAndPostId(memberId, postId);
-        return PostResponse.from(post, like);
+        int likeCount = likeRepository.countByPostId(postId);
+        return PostResponse.from(post, like, likeCount);
     }
 
     private Post getPost(Long postId) {

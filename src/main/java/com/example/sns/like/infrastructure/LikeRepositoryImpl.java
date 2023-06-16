@@ -55,4 +55,9 @@ public class LikeRepositoryImpl implements LikeRepository {
         String key = redisService.makeKey(RedisPrefix.LIKE_PUSH, like.getMemberId(), like.getPostId());
         redisTemplate.opsForValue().set(key, LocalDateTime.now().toString(), LIKE_EXPIRED_SECONDS, TimeUnit.SECONDS);
     }
+
+    @Override
+    public int countByPostId(Long postId) {
+        return likeRDBRepository.countByPostId(postId);
+    }
 }
