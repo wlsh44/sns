@@ -1,6 +1,7 @@
 package com.example.sns.post.domain;
 
 import com.example.sns.common.entity.BaseTimeEntity;
+import com.example.sns.like.domain.Like;
 import com.example.sns.member.domain.Member;
 import com.example.sns.post.exception.NotPostAuthorException;
 import lombok.AccessLevel;
@@ -31,8 +32,6 @@ public class Post extends BaseTimeEntity {
 
     @Embedded
     private Author author;
-
-    private int likeCount;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private final List<PostImage> images = new ArrayList<>();
@@ -88,12 +87,12 @@ public class Post extends BaseTimeEntity {
         return images.get(0).getImagePath();
     }
 
-    public int getLikeCount() {
-        return likeCount;
-    }
+//    public int getLikeCount() {
+//        return likeCount;
+//    }
 
-    public void decreaseLikeCount() {
-        assert likeCount != 0;
-        likeCount--;
-    }
+//    public void decreaseLikeCount() {
+//        assert likeCount != 0;
+//        likeCount--;
+//    }
 }

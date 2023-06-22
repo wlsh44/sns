@@ -53,3 +53,4 @@ data-dev.sql
 
 src/test/resources/application-integration-test.yml
 *key.pem
+/src/main/resources/scripts/pinpoint-agent/

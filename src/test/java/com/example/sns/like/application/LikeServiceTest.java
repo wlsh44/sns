@@ -1,8 +1,12 @@
 package com.example.sns.like.application;
 
+import com.example.sns.common.infrastructure.redis.RedisPrefix;
+import com.example.sns.common.infrastructure.redis.RedisService;
 import com.example.sns.common.support.ServiceTest;
 import com.example.sns.like.domain.Like;
 import com.example.sns.like.domain.LikeRepository;
+import com.example.sns.like.infrastructure.LikeJpaRepository;
+import com.example.sns.like.infrastructure.LikeRepositoryImpl;
 import com.example.sns.member.domain.Member;
 import com.example.sns.member.exception.MemberNotFoundException;
 import com.example.sns.post.domain.Post;
@@ -10,9 +14,11 @@ import com.example.sns.post.domain.PostRepository;
 import com.example.sns.post.exception.AlreadyLikedPostException;
 import com.example.sns.post.exception.NotLikedPostException;
 import com.example.sns.post.exception.PostNotFoundException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,10 +37,18 @@ class LikeServiceTest extends ServiceTest {
     LikeService likeService;
 
     @Autowired
-    LikeRepository likeRepository;
+    RedisService redisService;
 
     @Autowired
     PostRepository postRepository;
+
+    @Autowired
+    RedisTemplate<String, Object> redisTemplate;
+
+    @AfterEach
+    void clear() {
+        redisTemplate.getConnectionFactory().getConnection().flushAll();
+    }
 
     @Test
     @DisplayName("좋아요를 누르면 좋아요가 생기며 게시글의 likeCount가 하나 올라야 함")
@@ -47,10 +61,8 @@ class LikeServiceTest extends ServiceTest {
         likeService.like(member.getId(), post.getId());
 
         //then
-        List<Like> likes = likeRepository.findAll();
-        Post findPost = postRepository.findById(post.getId()).get();
+        List<String> likes = redisService.scanKeys(RedisPrefix.LIKE_PUSH);
         assertThat(likes).hasSize(1);
-        assertThat(findPost.getLikeCount()).isEqualTo(1);
     }
 
     @Test
@@ -77,10 +89,8 @@ class LikeServiceTest extends ServiceTest {
         latch.await();
 
         //then
-        List<Like> likes = likeRepository.findAll();
-        Post findPost = postRepository.findById(post.getId()).get();
+        List<String> likes = redisService.scanKeys(RedisPrefix.LIKE_PUSH);
         assertThat(likes).hasSize(1);
-        assertThat(findPost.getLikeCount()).isEqualTo(1);
     }
 
     @Test
@@ -115,37 +125,8 @@ class LikeServiceTest extends ServiceTest {
         latch.await();
 
         //then
-        List<Like> likes = likeRepository.findAll();
-        Post findPost = postRepository.findById(post.getId()).get();
+        List<String> likes = redisService.scanKeys(RedisPrefix.LIKE_PUSH);
         assertThat(likes).hasSize(threadCount);
-        assertThat(findPost.getLikeCount()).isEqualTo(threadCount);
-    }
-
-    @Test
-    @DisplayName("유저가 없는 경우 좋아요를 누를 때 예외가 발생해야 함")
-    void likeTest_memberNotFound() throws Exception {
-        //given
-        Long notExistId = 999L;
-        Member member = memberRepository.save(getBasicMember());
-        Post post = postRepository.save(getBasicPost(member));
-        Long postId = post.getId();
-
-        //when
-        assertThatThrownBy(() -> likeService.like(notExistId, postId))
-                .isInstanceOf(MemberNotFoundException.class);
-    }
-
-    @Test
-    @DisplayName("포스트가 없는 경우 좋아요를 누를 때 예외가 발생해야 함")
-    void likeTest_postNotFound() throws Exception {
-        //given
-        Long notExistId = 999L;
-        Member member = memberRepository.save(getBasicMember());
-        Long memberId = member.getId();
-
-        //when
-        assertThatThrownBy(() -> likeService.like(memberId, notExistId))
-                .isInstanceOf(PostNotFoundException.class);
     }
 
     @Test
@@ -175,35 +156,8 @@ class LikeServiceTest extends ServiceTest {
         likeService.cancelLike(member.getId(), post.getId());
 
         //then
-        List<Like> likes = likeRepository.findAll();
+        List<String> likes = redisService.scanKeys(RedisPrefix.LIKE_PUSH);
         assertThat(likes).isEmpty();
-    }
-
-    @Test
-    @DisplayName("유저가 없는 경우 좋아요 취소를 할 떄 예외가 발생해야 함")
-    void cancelLikeTest_memberNotFound() throws Exception {
-        //given
-        Long notExistId = 999L;
-        Member member = memberRepository.save(getBasicMember());
-        Post post = postRepository.save(getBasicPost(member));
-        Long postId = post.getId();
-
-        //when
-        assertThatThrownBy(() -> likeService.cancelLike(notExistId, postId))
-                .isInstanceOf(MemberNotFoundException.class);
-    }
-
-    @Test
-    @DisplayName("포스트가 없는 경우 좋아요 취소를 할 떄 예외가 발생해야 함")
-    void cancelLikeTest_postNotFound() throws Exception {
-        //given
-        Long notExistId = 999L;
-        Member member = memberRepository.save(getBasicMember());
-        Long memberId = member.getId();
-
-        //when
-        assertThatThrownBy(() -> likeService.cancelLike(memberId, notExistId))
-                .isInstanceOf(PostNotFoundException.class);
     }
 
     @Test

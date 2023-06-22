@@ -1,19 +1,10 @@
 package com.example.sns.like.application;
 
-import com.example.sns.member.domain.Member;
-import com.example.sns.member.domain.MemberRepository;
-import com.example.sns.member.exception.MemberNotFoundException;
 import com.example.sns.like.domain.Like;
 import com.example.sns.like.domain.LikeRepository;
-import com.example.sns.post.application.PostLikeCountIncreasedEvent;
-import com.example.sns.post.domain.Post;
-import com.example.sns.post.domain.PostRepository;
 import com.example.sns.post.exception.AlreadyLikedPostException;
 import com.example.sns.post.exception.NotLikedPostException;
-import com.example.sns.post.exception.PostNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,23 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class LikeService {
 
-    private final MemberRepository memberRepository;
-    private final PostRepository postRepository;
     private final LikeRepository likeRepository;
-    private final ApplicationEventPublisher eventPublisher;
 
     public void like(Long memberId, Long postId) {
-        Post post = getPost(postId);
-        Member member = getMember(memberId);
-
         validateAlreadyLikedPost(memberId, postId);
 
-        try {
-            likeRepository.save(new Like(post, member));
-            eventPublisher.publishEvent(new PostLikeCountIncreasedEvent(postId));
-        } catch (DataIntegrityViolationException e) {
-            throw new AlreadyLikedPostException(postId, memberId);
-        }
+        likeRepository.save(new Like(memberId, postId));
     }
 
     private void validateAlreadyLikedPost(Long memberId, Long postId) {
@@ -48,32 +28,13 @@ public class LikeService {
     }
 
     public void cancelLike(Long memberId, Long postId) {
-        validateExistsMember(memberId);
-        Post post = getPost(postId);
-        Like like = getLike(memberId, postId);
-
-        likeRepository.delete(like);
-        post.decreaseLikeCount();
+        validateLikedPost(memberId, postId);
+        likeRepository.removeByMemberIdAndPostId(memberId, postId);
     }
 
-    private void validateExistsMember(Long memberId) {
-        if (!memberRepository.existsById(memberId)) {
-            throw new MemberNotFoundException(memberId);
+    private void validateLikedPost(Long memberId, Long postId) {
+        if (!likeRepository.existsByMemberIdAndPostId(memberId, postId)) {
+            throw new NotLikedPostException();
         }
-    }
-
-    private Like getLike(Long memberId, Long postId) {
-        return likeRepository.findByMemberIdAndPostId(memberId, postId)
-                .orElseThrow(NotLikedPostException::new);
-    }
-
-    private Post getPost(Long postId) {
-        return postRepository.findById(postId)
-                .orElseThrow(() -> new PostNotFoundException(postId));
-    }
-
-    private Member getMember(Long memberId) {
-        return memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(memberId));
     }
 }

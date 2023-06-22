@@ -31,7 +31,7 @@ public class FeedService {
 
     private List<PostResponse> getPostResponses(Long memberId, Slice<Post> myFeedSlice) {
         return myFeedSlice.getContent().stream()
-                .map(post -> PostResponse.from(post, isMemberLikePost(memberId, post)))
+                .map(post -> PostResponse.from(post, isMemberLikePost(memberId, post), likeRepository.countByPostId(post.getId())))
                 .toList();
     }
 
