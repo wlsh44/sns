@@ -18,37 +18,9 @@ import static com.example.sns.common.infrastructure.redis.RedisConst.LIKE_EXPIRE
 @RequiredArgsConstructor
 public class LikeRepositoryImpl implements LikeRepository {
 
-    private final LikeJpaRepository likeRDBRepository;
+    private final LikeJpaRepository likeJpaRepository;
     private final RedisTemplate<String, Object> redisTemplate;
     private final RedisService redisService;
-
-    @Override
-    public boolean existsByMemberIdAndPostId(Long memberId, Long postId) {
-        return isExistsInCache(memberId, postId) || isExistsInRDB(memberId, postId);
-    }
-
-    private boolean isExistsInCache(Long memberId, Long postId) {
-        String key = redisService.makeKey(RedisPrefix.LIKE_PUSH, memberId, postId);
-        return Optional.ofNullable(redisTemplate.opsForValue().get(key))
-                .isPresent();
-    }
-
-    private boolean isExistsInRDB(Long memberId, Long postId) {
-        return likeRDBRepository.existsByMemberIdAndPostId(memberId, postId);
-    }
-
-    @Override
-    public void removeByMemberIdAndPostId(Long memberId, Long postId) {
-        String key = redisService.makeKey(RedisPrefix.LIKE_PUSH, memberId, postId);
-        Boolean cacheDelete = redisTemplate.delete(key);
-        if (isCacheDeleted(cacheDelete)) {
-            likeRDBRepository.deleteByMemberIdAndPostId(memberId, postId);
-        }
-    }
-
-    private boolean isCacheDeleted(Boolean cacheDelete) {
-        return Boolean.FALSE.equals(cacheDelete);
-    }
 
     @Override
     public void save(Like like) {
@@ -57,7 +29,35 @@ public class LikeRepositoryImpl implements LikeRepository {
     }
 
     @Override
+    public boolean existsByMemberIdAndPostId(Long memberId, Long postId) {
+        return isExistsInCache(memberId, postId) || isExistsInDB(memberId, postId);
+    }
+
+    private boolean isExistsInCache(Long memberId, Long postId) {
+        String key = redisService.makeKey(RedisPrefix.LIKE_PUSH, memberId, postId);
+        return Optional.ofNullable(redisTemplate.opsForValue().get(key))
+                .isPresent();
+    }
+
+    private boolean isExistsInDB(Long memberId, Long postId) {
+        return likeJpaRepository.existsByMemberIdAndPostId(memberId, postId);
+    }
+
+    @Override
+    public void removeByMemberIdAndPostId(Long memberId, Long postId) {
+        String key = redisService.makeKey(RedisPrefix.LIKE_PUSH, memberId, postId);
+        Boolean cacheDelete = redisTemplate.delete(key);
+        if (isCacheDeleted(cacheDelete)) {
+            likeJpaRepository.deleteByMemberIdAndPostId(memberId, postId);
+        }
+    }
+
+    private boolean isCacheDeleted(Boolean cacheDelete) {
+        return Boolean.FALSE.equals(cacheDelete);
+    }
+
+    @Override
     public int countByPostId(Long postId) {
-        return likeRDBRepository.countByPostId(postId);
+        return likeJpaRepository.countByPostId(postId);
     }
 }
