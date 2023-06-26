@@ -45,7 +45,7 @@ public class RedisService {
         return connectionFactory.getConnection();
     }
 
-    private static ScanOptions getScanOptions(String pattern) {
+    private ScanOptions getScanOptions(String pattern) {
         return ScanOptions
                 .scanOptions()
                 .match(pattern)
