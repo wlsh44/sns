@@ -20,16 +20,9 @@ public class LikeBatchJobScheduler {
         LocalDateTime start = LocalDateTime.now();
         log.info("배치 스케줄링 시작 Time: {}", start);
 
-        executeJob();
+        likeBatchJobService.updateRDB();
 
         LocalDateTime end = LocalDateTime.now();
         log.info("배치 스케줄링 종료 Time: {}, elapsed: {}", end, Duration.between(start, end));
-    }
-
-    private void executeJob() {
-        LocalDateTime insertStart = LocalDateTime.now();
-
-        likeBatchJobService.updateRDB();
-        log.info("배치 작업 종료 elapsed: {}", Duration.between(insertStart, LocalDateTime.now()));
     }
 }

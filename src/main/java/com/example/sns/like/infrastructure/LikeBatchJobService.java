@@ -33,8 +33,13 @@ public class LikeBatchJobService {
     private final RedisTemplate<String, Object> redisTemplate;
 
     public void updateRDB() {
-        List<String> keys = findLikeKeys();
+        List<String> keys = redisService.scanKeys(RedisPrefix.LIKE_PUSH);
+        log.info("{}개 배치 작업 진행", keys.size());
 
+        doBatchInsert(keys);
+    }
+
+    private void doBatchInsert(List<String> keys) {
         String sql = "INSERT IGNORE INTO likes (member_id, post_id, created_at, last_modified_at) values (?, ?, ?, ?)";
         jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
             @Override
@@ -65,18 +70,5 @@ public class LikeBatchJobService {
         return Optional.ofNullable(value)
                 .map(LocalDateTime::parse)
                 .orElseGet(LocalDateTime::now);
-    }
-
-    private List<String> findLikeKeys() {
-        LocalDateTime findStartTime = LocalDateTime.now();
-
-        List<String> keys = redisService.scanKeys(RedisPrefix.LIKE_PUSH);
-
-        log.info("{}개 배치 작업 진행", keys.size());
-        LocalDateTime findEndTime = LocalDateTime.now();
-        if (Duration.between(findStartTime, findEndTime).getSeconds() >= LIKE_EXPIRED_SECONDS * 60) {
-            log.warn("좋아요 데이터 유실 발생");
-        }
-        return keys;
     }
 }
