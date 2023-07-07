@@ -4,7 +4,7 @@
 
 Instagram과 유사한 간단한 SNS 서비스 백엔드 구현<br>
 ~~도메인 주소: https://wlsh-sns.duckdns.org/ <br>~~
-위키: https://github.com/wlsh44/sns/wiki
+위키: https://github.com/wlsh44/sns/wiki<br>
 프로젝트 소개 Url: https://garrulous-peony-f8e.notion.site/SNS-fbafe8ae31ab4dcc912b3772d0080676
 
 ## 📌 프로젝트 목표 및 중점 사항
